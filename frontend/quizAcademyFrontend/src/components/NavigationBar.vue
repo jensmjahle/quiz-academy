@@ -6,10 +6,10 @@
   <div id = "navigation-bar">
     <nav>
       <RouterLink to="/" class="router-button">Home</RouterLink>
-      <RouterLink to="/quizzes" class="router-button">Quizzes</RouterLink>
+      <RouterLink to="/quizzes" class="router-button">My Quizzes</RouterLink>
       <RouterLink to="/create" class="router-button">Create Quiz</RouterLink>
-      <RouterLink to="/login" class="router-button">Log in</RouterLink>
-      <RouterLink to="/signup" class="router-button">Register New User</RouterLink>
+      <RouterLink to="/login" class="router-button">Log In</RouterLink>
+      <RouterLink to="/signup" class="router-button">Sign In</RouterLink>
     </nav>
   </div>
 </template>
@@ -23,21 +23,24 @@
   background-color: var(--secondary-color);
   font-size: calc(1.2vw + 1.2vh);
   width: 100%;
+  display: flex;
+  justify-content: center;
+
 }
 
 nav {
   display: flex;
-  justify-content: space-around;
-  color: #242424;
+  justify-content: center;
   margin-top: 5px;
   margin-bottom: 5px;
+  width: 75%;
 }
 
 .router-button {
   color: var(--fourth-color);
   text-decoration: none;
-  width: 100%;
   text-align: center;
+  max-width: 15%;
   border-bottom-width: 4px;
   border-top-width: 4px;
   border-bottom-style: solid;
@@ -48,6 +51,11 @@ nav {
 }
 
 .router-button:hover {
+  color: var(--base-color);
+  border-bottom-color: var(--tertiary-color);
+}
+
+.router-link-active {
   color: var(--base-color);
   border-bottom-color: var(--tertiary-color);
 }

@@ -14,7 +14,6 @@
   width: 100vw;
 
 
-
 }
 
 #header {
@@ -43,7 +42,7 @@
   height: 10vh;
   width: 100vw;
   background-color: var(--secondary-color);
-  padding: 20px;
+
 
 }
 
