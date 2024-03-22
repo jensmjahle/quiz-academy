@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class DemoApplicationTests {
+class QuizAcademyApplicationTests {
 
 	@Test
 	void contextLoads() {
