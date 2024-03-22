@@ -1,13 +1,16 @@
 @import "colorPalette.css";
 
 :root {
-  font-family: "Berlin Sans FB",serif;
+
+  --font-family: "Berlin Sans FB",serif;
+  --secondary-font-family: "Arial",sans-serif;
+
+  font-family: var(--font-family);
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -40,20 +43,20 @@ h3 {
 
 h4 {
   font-size: calc(1.5vh + 1.5vw);
-  font-weight: 700;
+  font-weight: 600;
   margin: 0;
   padding: 0;
 }
 
 h5 {
   font-size: calc(1vh + 1vw);
-  font-weight: 700;
+  font-weight: 600;
   margin: 0;
   padding: 0;
 }
 
 p {
-  font-size: calc(0.5vh + 0.5vw);
+  font-size: calc(0.7vh + 0.8vw);
   font-weight: 400;
   margin: 0;
   padding: 0;

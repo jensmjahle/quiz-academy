@@ -1,4 +1,26 @@
+:root {
 
+  /* Color Palette */
+  --primary-color: #25A18E;
+  --secondary-color: #7AE582;
+  --tertiary-color: #9FFFCB;
+  --fourth-color: #00A5CF;
+  --fifth-color: #004E64;
+
+/* Alternative Color Palette */
+  /*
+  --primary-color: #E76F51;
+  --secondary-color: #F4A261;
+  --tertiary-color: #E9C46A;
+  --fourth-color: #264653;
+
+   */
+
+  & button {
+    background-color: var(--fourth-color);
+  }
+
+}
 
 /* Light mode */
 @media (prefers-color-scheme: light) {
@@ -9,16 +31,10 @@
     --base-color: #213547;
     --base-contrast-color: #ffffff;
 
-    --primary-color: #25A18E;
-    --secondary-color: #7AE582;
-    --tertiary-color: #9FFFCB;
-    --fourth-color: #00A5CF;
-    --fifth-color: #004E64;
-
   }
 
   button {
-    background-color: #f9f9f9;
+    border-color: #213547;
   }
 }
 
@@ -31,24 +47,9 @@
     --base-color: #f9f9f9;
     --base-contrast-color: #213547;
 
-    --primary-color: #25A18E;
-    --secondary-color: #7AE582;
-    --tertiary-color: #9FFFCB;
-    --fourth-color: #00A5CF;
-    --fifth-color: #004E64;
-
-
-    /*
-    --primary-color: #E76F51;
-    --secondary-color: #F4A261;
-    --tertiary-color: #E9C46A;
-    --fourth-color: #264653;
-
-     */
-
   }
 
   button {
-    background-color: #242424;
+    border-color: #f9f9f9;
   }
 }

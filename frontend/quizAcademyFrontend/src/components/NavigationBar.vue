@@ -17,6 +17,9 @@
 <style scoped>
 
 #navigation-bar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   background-color: var(--secondary-color);
   font-size: calc(1.2vw + 1.2vh);
   width: 100%;
