@@ -19,20 +19,20 @@ export default {
     methods: {
         // placeholders for all methods on click
         editQuiz() {
-            console.log('Edit quiz:', this.selectedQuiz);
+            console.log("Edit quiz:", this.selectedQuiz);
         },
         playQuiz() {
-            console.log('Play quiz:', this.selectedQuiz);
+            console.log("Play quiz:", this.selectedQuiz);
         },
         exportCSV() {
-            console.log('Export as CSV:', this.selectedQuiz);
+            console.log("Export as CSV:", this.selectedQuiz);
         },
         closeDialog() {
-            this.$emit('close');
+            this.$emit("close");
         },
         closeDialogOutside(event) {
             // Check if the clicked element is outside of the dialog
-            if (!event.target.closest('.dialog')) {
+            if (!event.target.closest(".dialog")) {
                 this.closeDialog();
             }
         }
@@ -71,7 +71,6 @@ export default {
     cursor: pointer;
     width: 100%; /* Make buttons full width */
     height: 65px;
-
 }
 
 .cancel-button {
