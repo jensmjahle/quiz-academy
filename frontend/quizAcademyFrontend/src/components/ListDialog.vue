@@ -1,10 +1,12 @@
 <template>
-    <div class="dialog" v-if="selectedQuiz">
-        <div class="dialog-content">
-            <button @click="editQuiz">Edit</button>
-            <button @click="playQuiz">Play</button>
-            <button @click="exportCSV">Export as CSV</button>
-            <button class="close-button" @click="closeDialog">Close</button>
+    <div class="dialog-overlay" v-if="selectedQuiz" @click="closeDialogOutside">
+        <div class="dialog">
+            <div class="dialog-content">
+                <button @click="editQuiz">Edit</button>
+                <button @click="playQuiz">Play</button>
+                <button @click="exportCSV">Export as CSV</button>
+                <button class="cancel-button" @click="closeDialog">Cancel</button>
+            </div>
         </div>
     </div>
 </template>
@@ -15,6 +17,7 @@ export default {
         selectedQuiz: Object
     },
     methods: {
+        // placeholders for all methods on click
         editQuiz() {
             console.log('Edit quiz:', this.selectedQuiz);
         },
@@ -26,17 +29,31 @@ export default {
         },
         closeDialog() {
             this.$emit('close');
+        },
+        closeDialogOutside(event) {
+            // Check if the clicked element is outside of the dialog
+            if (!event.target.closest('.dialog')) {
+                this.closeDialog();
+            }
         }
     }
 };
 </script>
 
 <style scoped>
-.dialog {
+.dialog-overlay {
     position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+}
+
+.dialog {
     background-color: #213547;
     padding: 20px;
     border: 1px solid #ccc;
@@ -45,7 +62,7 @@ export default {
 
 .dialog-content {
     display: flex;
-    flex-direction: column; /* Align items vertically */
+    flex-direction: row; /* Align items horizontally */
     gap: 10px; /* Add gap between buttons */
 }
 
@@ -53,11 +70,13 @@ export default {
     padding: 10px 20px;
     cursor: pointer;
     width: 100%; /* Make buttons full width */
+    height: 65px;
+
 }
 
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
+.cancel-button {
+    align-self: flex-end; /* Align to the right */
+    padding: 10px 20px;
+    height: 65px;
 }
 </style>
