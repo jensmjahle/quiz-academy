@@ -1,6 +1,7 @@
-import { mount } from "@vue/test-utils";
+import {mount, RouterLinkStub} from "@vue/test-utils";
 import NavigationBar from "../NavigationBar.vue";
 import { describe, it, expect } from "vitest";
+
 
 describe("NavigationBar", () => {
     it("renders navigation links correctly", () => {
@@ -18,5 +19,17 @@ describe("NavigationBar", () => {
         expect(links[4].text()).toBe("Sign Up");
     });
 
-    // Add more test cases as needed
+
+    it("navigation links are correctly linked to routes", async () => {
+        const wrapper = mount(NavigationBar);
+
+        // Check if navigation links are correctly linked to routes
+        const links = wrapper.findAll(".router-button");
+        expect(links[0].attributes("to")).toBe("/");
+        expect(links[1].attributes("to")).toBe("/quizzes");
+        expect(links[2].attributes("to")).toBe("/create");
+        expect(links[3].attributes("to")).toBe("/login");
+        expect(links[4].attributes("to")).toBe("/signup");
+    });
+
 });
