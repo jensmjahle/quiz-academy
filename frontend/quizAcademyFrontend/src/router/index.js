@@ -1,18 +1,17 @@
-import MainView from "../views/MainView.vue";
-import {createRouter, createWebHistory} from "vue-router";
-import QuizzesView from "../views/QuizzesView.vue";
+import { createRouter, createWebHistory } from "vue-router";
+import HomepageView from "../views/HomepageView.vue";
+import MyQuizzesView from "../views/MyQuizzesView.vue";
 
 export default createRouter({
     history: createWebHistory(),
     routes: [
         {
             path: "/",
-            component: MainView,
+            component: HomepageView
         },
         {
             path: "/quizzes",
-            component: QuizzesView,
+            component: MyQuizzesView
         }
-
-    ],
+    ]
 });
