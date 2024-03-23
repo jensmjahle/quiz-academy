@@ -9,7 +9,7 @@
       <RouterLink to="/quizzes" class="router-button">My Quizzes</RouterLink>
       <RouterLink to="/create" class="router-button">Create Quiz</RouterLink>
       <RouterLink to="/login" class="router-button">Log In</RouterLink>
-      <RouterLink to="/signup" class="router-button">Sign In</RouterLink>
+      <RouterLink to="/signup" class="router-button">Sign Up</RouterLink>
     </nav>
   </div>
 </template>
