@@ -20,10 +20,14 @@ export default {
     padding-bottom: 10px;
     margin-bottom: 10px; /* Add margin between items */
     cursor: pointer; /* Change cursor to pointer */
-    padding-right: 10px; /* Add padding to prevent content from overlapping the scrollbar */
+    border-radius: 10px;
+    font-size: 33px;
+    text-align: center;
+    background-color: var(--secondary-color);
+    color: var(--fourth-color);
 }
 
 .quiz-item:hover {
-    background-color: #213547; /* Change background color on hover */
+    background-color: var(--tertiary-color); /* Change background color on hover */
 }
 </style>
