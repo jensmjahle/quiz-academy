@@ -1,55 +1,52 @@
 :root {
+    /* Color Palette */
 
-  /* Color Palette */
-  --primary-color: #25A18E;
-  --secondary-color: #7AE582;
-  --tertiary-color: #9FFFCB;
-  --fourth-color: #00A5CF;
-  --fifth-color: #004E64;
+    --primary-color: #25a18e;
+    --secondary-color: #7ae582;
+    --tertiary-color: #9fffcb;
+    --fourth-color: #00a5cf;
+    --fifth-color: #004e64;
 
-/* Alternative Color Palette */
-  /*
+    /* Alternative Color Palette */
+    /*
   --primary-color: #E76F51;
   --secondary-color: #F4A261;
   --tertiary-color: #E9C46A;
   --fourth-color: #264653;
+  --fifth-color: #2A9D8F;
+*/
 
-   */
-
-  & button {
-    background-color: var(--fourth-color);
-  }
-
+    & button {
+        background-color: var(--fourth-color);
+    }
 }
 
 /* Light mode */
 @media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+    :root {
+        color: #213547;
+        background-color: #ffffff;
 
-    --base-color: #213547;
-    --base-contrast-color: #ffffff;
+        --base-color: #213547;
+        --base-contrast-color: #ffffff;
+    }
 
-  }
-
-  button {
-    border-color: #213547;
-  }
+    button {
+        border-color: #213547;
+    }
 }
 
 /* Dark mode */
 @media (prefers-color-scheme: dark) {
-  :root {
-    color: #f9f9f9;
-    background-color: #213547;
+    :root {
+        color: #f9f9f9;
+        background-color: #213547;
 
-    --base-color: #f9f9f9;
-    --base-contrast-color: #213547;
+        --base-color: #f9f9f9;
+        --base-contrast-color: #213547;
+    }
 
-  }
-
-  button {
-    border-color: #f9f9f9;
-  }
+    button {
+        border-color: #f9f9f9;
+    }
 }

@@ -1,66 +1,59 @@
 @import "colorPalette.css";
 
 :root {
+    --font-family: "Berlin Sans FB", serif;
+    --secondary-font-family: "Arial", sans-serif;
 
-  --font-family: "Berlin Sans FB",serif;
-  --secondary-font-family: "Arial",sans-serif;
+    font-family: var(--font-family);
+    line-height: 1.5;
+    font-weight: 400;
 
-  font-family: var(--font-family);
-  line-height: 1.5;
-  font-weight: 400;
+    color-scheme: light dark;
 
-  color-scheme: light dark;
-
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 h1 {
-  font-size: calc(4vh + 4vw);
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
+    font-size: calc(4vh + 4vw);
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
 }
 
 h2 {
-  font-size: calc(3vh + 3vw);
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
+    font-size: calc(3vh + 3vw);
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
 }
 
 h3 {
-  font-size: calc(2vh + 2vw);
-  font-weight: 700;
-  margin: 0;
-  padding: 0;
+    font-size: calc(2vh + 2vw);
+    font-weight: 700;
+    margin: 0;
+    padding: 0;
 }
 
 h4 {
-  font-size: calc(1.5vh + 1.5vw);
-  font-weight: 600;
-  margin: 0;
-  padding: 0;
+    font-size: calc(1.5vh + 1.5vw);
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
 }
 
 h5 {
-  font-size: calc(1vh + 1vw);
-  font-weight: 600;
-  margin: 0;
-  padding: 0;
+    font-size: calc(1vh + 1vw);
+    font-weight: 600;
+    margin: 0;
+    padding: 0;
 }
 
 p {
-  font-size: calc(0.7vh + 0.8vw);
-  font-weight: 400;
-  margin: 0;
-  padding: 0;
+    font-size: calc(0.7vh + 0.8vw);
+    font-weight: 400;
+    margin: 0;
+    padding: 0;
 }
-
-
-
