@@ -33,6 +33,11 @@
   "prettier": {
     "tabWidth": 4,
     "semi": true,
-    "singleQuote": false
+    "singleQuote": false,
+    "printWidth": 100,
+    "trailingComma": "none",
+    "arrowParens": "always",
+    "bracketSpacing": true
+
   }
 }
