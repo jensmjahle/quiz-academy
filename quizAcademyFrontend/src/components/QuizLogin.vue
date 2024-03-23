@@ -39,33 +39,32 @@ export default {
 
 <style scoped>
 .login-form {
-  max-width: 300px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 100%; /* Ensure the form takes up the available width */
+  padding: 50px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
 
 .form-group {
   margin-bottom: 20px;
+  text-align: left; /* Align child elements to the left */
 }
 
-label {
-  display: block;
-  margin-bottom: 5px;
-}
+
 
 input[type="text"],
 input[type="password"] {
-  width: 100%;
+  width: calc(100%); /* Adjust input width to account for margin-right */
+
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
+
+
 button {
-  display: block;
-  width: 100%;
+  width: calc(100% - 5px ); /* Adjust button width to account for border */
   padding: 10px;
   background-color: #007bff;
   color: #fff;
