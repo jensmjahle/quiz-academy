@@ -23,7 +23,7 @@ const quizzesBeforeChecks = ref([
     { id: 8, name: 'Mock Quiz 8' },
     { id: 9, name: 'Mock Quiz 9' },
     { id: 10, name: 'Mock Quiz 10' },
-    { id: 11, name: 'Mock Quiz 11aaaaaaa1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' },
+    { id: 11, name: 'Mock Quiz 11aaaaaaa1aa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaaaaa' },
 ]);
 
 
