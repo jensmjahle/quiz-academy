@@ -16,12 +16,30 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
       username: '',
       password: ''
     };
+  },
+  mounted() {
+    // Use localStorage to load user input data
+    const storedSignUpUser = JSON.parse(localStorage.getItem('signUpUser'));
+    if (storedSignUpUser) {
+      this.username = storedSignUpUser.username;
+      this.password = storedSignUpUser.password;
+    }
+  },
+  watch: {
+    // Watch for changes in username and password and update localStorage
+    username(value) {
+      localStorage.setItem('signUpUser', JSON.stringify({ username: value, password: this.password }));
+    },
+    password(value) {
+      localStorage.setItem('signUpUser', JSON.stringify({ username: this.username, password: value }));
+    }
   },
   methods: {
     login() {
