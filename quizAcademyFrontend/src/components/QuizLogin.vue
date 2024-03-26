@@ -16,12 +16,30 @@
 </template>
 
 <script>
+
 export default {
   data() {
     return {
       username: '',
       password: ''
     };
+  },
+  mounted() {
+    // Use localStorage to load user input data
+    const storedLoginUser = JSON.parse(localStorage.getItem('loginUser'));
+    if (storedLoginUser) {
+      this.username = storedLoginUser.username;
+      this.password = storedLoginUser.password;
+    }
+  },
+  watch: {
+    // Watch for changes in username and password and update localStorage
+    username(value) {
+      localStorage.setItem('loginUser', JSON.stringify({ username: value, password: this.password }));
+    },
+    password(value) {
+      localStorage.setItem('loginUser', JSON.stringify({ username: this.username, password: value }));
+    }
   },
   methods: {
     login() {
@@ -50,21 +68,16 @@ export default {
   text-align: left; /* Align child elements to the left */
 }
 
-
-
 input[type="text"],
 input[type="password"] {
   width: calc(100%); /* Adjust input width to account for margin-right */
-
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
-
-
 button {
-  width: calc(100% - 5px ); /* Adjust button width to account for border */
+  width: calc(100% - 5px); /* Adjust button width to account for border */
   padding: 10px;
   background-color: #007bff;
   color: #fff;
