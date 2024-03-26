@@ -54,13 +54,13 @@ const closeDialog = () => {
     scrollbar-gutter: stable; /* Prevent scrollbar from overlapping content */
     scrollbar-color: var(--secondary-color) var(--primary-color); /* Set scrollbar colors */
     overflow-x: clip;
-    justify-content: center;
-    display: flex;
+    width: 70%;
+    padding-left: 15%;
 }
 
 .quiz-list {
     list-style-type: none; /* Remove bulletpoints */
     padding: 0;
-    width: 450px;
+    justify-content: center;
 }
 </style>

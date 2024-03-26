@@ -21,7 +21,7 @@ export default {
     margin-bottom: 10px; /* Add margin between items */
     cursor: pointer; /* Change cursor to pointer */
     border-radius: 10px;
-    font-size: 33px;
+    font-size: calc(25px + 3vmin);
     text-align: center;
     background-color: var(--secondary-color);
     color: var(--fourth-color);

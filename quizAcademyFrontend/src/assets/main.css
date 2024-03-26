@@ -20,7 +20,7 @@
     align-items: center;
     width: 100vw;
     background-color: var(--primary-color);
-    padding: 20px;
+    padding: 1px;
 }
 
 #body {
