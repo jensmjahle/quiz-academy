@@ -48,6 +48,9 @@ export default {
       console.log('Username:', this.username);
       console.log('Password:', this.password);
 
+      //delete local storage after login
+      localStorage.removeItem('loginUser');
+
       // After successful login, you can redirect the user to another page
       // For example, using Vue Router: this.$router.push('/dashboard');
     }
