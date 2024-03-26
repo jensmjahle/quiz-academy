@@ -54,10 +54,13 @@ export default {
 }
 
 .dialog {
-    background-color: #213547;
+    background-color: var(--secondary-color);
     padding: 20px;
     border: 1px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    /* rounds edges of box*/
+
 }
 
 .dialog-content {
@@ -65,14 +68,15 @@ export default {
     flex-direction: row; /* Align items horizontally */
     gap: 10px; /* Add gap between buttons */
 }
-
+/*
 .dialog button {
     padding: 10px 20px;
     cursor: pointer;
-    width: 100%; /* Make buttons full width */
+    width: 100%; /* Make buttons full width *
     height: 65px;
 
-}
+}*/
+
 
 .cancel-button {
     align-self: flex-end; /* Align to the right */

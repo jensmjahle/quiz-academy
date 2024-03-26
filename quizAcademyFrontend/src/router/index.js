@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomepageView from "../views/HomepageView.vue";
-import MyQuizzesView from "../views/MyQuizzesView.vue";
+import QuizzesView from "../views/QuizzesView.vue";
+import LoginView from "../views/QuizLoginView.vue";
+import SigninWiew from "../views/QuizSigninView.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -11,7 +13,15 @@ export default createRouter({
         },
         {
             path: "/quizzes",
-            component: MyQuizzesView
+            component: QuizzesView
+        },
+        {
+            path: "/login",
+            component: LoginView
+        },
+        {
+            path: "/signup",
+            component: SigninWiew
         }
     ]
 });
