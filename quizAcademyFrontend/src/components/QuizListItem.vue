@@ -25,6 +25,8 @@ export default {
     text-align: center;
     background-color: var(--secondary-color);
     color: var(--fourth-color);
+    word-break: break-word;
+    word-wrap: break-word;
 }
 
 .quiz-item:hover {
