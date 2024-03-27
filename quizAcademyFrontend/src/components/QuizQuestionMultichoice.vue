@@ -18,6 +18,9 @@
             <input id = "input" type="text" placeholder="alternative 4"/>
             <input id = checkbox type="checkbox" />
         </div>
+        <div>
+            <button>Submit</button>
+        </div>
     </div>
 
 </template>

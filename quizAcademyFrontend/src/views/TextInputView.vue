@@ -1,9 +1,13 @@
 <script setup>
 
+import QuizQuestionTextInput from "../components/QuizQuestionTextInput.vue";
 </script>
 
 <template>
-  $END$
+    <div>
+        <QuizQuestionTextInput />
+    </div>
+
 </template>
 
 <style scoped>
