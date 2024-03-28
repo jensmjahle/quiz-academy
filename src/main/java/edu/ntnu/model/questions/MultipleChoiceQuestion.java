@@ -1,28 +1,25 @@
-package edu.ntnu.entities.questions;
+package edu.ntnu.model.questions;
 
-import edu.ntnu.entities.Question;
-import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
+/**
+ * Represents a multiple choice question.
+ * This is a subclass of the Question class.
+ */
 @Entity
 public class MultipleChoiceQuestion extends Question {
 
   @Column(nullable = false)
-  private String answerAlternatives;
+  private String alternative1;
+  private String alternative2;
+  private String alternative3;
+  private String alternative4;
   @Column(nullable = false)
   private String correctAlternative;
 
   public MultipleChoiceQuestion() {
-
   }
-
 
 
   public String getCorrectAlternative() {

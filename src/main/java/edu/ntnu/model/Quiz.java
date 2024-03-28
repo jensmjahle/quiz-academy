@@ -1,8 +1,8 @@
-package edu.ntnu.entities;
-
+package edu.ntnu.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,16 +13,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import java.util.List;
-import jdk.internal.icu.text.UnicodeSet;
 
-
+/**
+ * Represents a quiz in the system. A quiz is a collection of questions that a user can answer.
+ */
 @Entity
 @Table(name = "quizzes")
-public class Quiz{
+public class Quiz {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -42,7 +40,7 @@ public class Quiz{
   private List<Tag> tags;
 
   @Column(nullable = false)
-  private Date quiz_creation_date;
+  private Date quizCreationDate;
 
 
   public Quiz() {
@@ -88,12 +86,12 @@ public class Quiz{
     this.tags = tags;
   }
 
-  public Date getQuiz_creation_date() {
-    return quiz_creation_date;
+  public Date getQuizCreationDate() {
+    return quizCreationDate;
   }
 
-  public void setQuiz_creation_date(Date quiz_creation_date) {
-    this.quiz_creation_date = quiz_creation_date;
+  public void setQuizCreationDate(Date quizCreationDate) {
+    this.quizCreationDate = quizCreationDate;
   }
 
   public void addTag(Tag tag) {

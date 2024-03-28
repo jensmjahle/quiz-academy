@@ -1,9 +1,12 @@
-package edu.ntnu.repositories;
+package edu.ntnu.repository;
 
-import edu.ntnu.entities.Quiz;
+import edu.ntnu.model.Quiz;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+/**
+ * Repository for the Quiz entity.
+ */
 @Repository
 public interface QuizRepository extends JpaRepository<Quiz, Long> {
 

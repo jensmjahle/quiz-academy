@@ -1,13 +1,15 @@
-package edu.ntnu.entities;
+package edu.ntnu.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+/**
+ * Represents a tag in the system. A tag is a category or keyword that describes a quiz.
+ */
 @Entity
 @Table(name = "tags")
 public class Tag {
@@ -18,7 +20,8 @@ public class Tag {
   @Column(nullable = false)
   private String tagName;
 
-  public Tag(){}
+  public Tag() {
+  }
 
   public long getTagId() {
     return tagId;

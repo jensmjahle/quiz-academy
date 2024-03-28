@@ -1,28 +1,21 @@
-package edu.ntnu.entities.questions;
+package edu.ntnu.model.questions;
 
-import edu.ntnu.entities.Question;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Represents a question where the user can input a text answer.
+ * This is a subclass of the Question class.
+ */
 @Entity
 @Table(name = "textInputQuestions")
 public class TextInputQuestion extends Question {
-  @Column(nullable = false)
-  private String question;
+
   @Column(nullable = false)
   private String answer;
 
   public TextInputQuestion() {
-  }
-
-  public String getQuestion() {
-    return question;
-  }
-
-  public void setQuestion(String question) {
-    this.question = question;
   }
 
   public String getAnswer() {

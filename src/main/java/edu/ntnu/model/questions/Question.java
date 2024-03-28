@@ -1,23 +1,18 @@
-package edu.ntnu.entities;
+package edu.ntnu.model.questions;
 
-import java.util.List;
+import edu.ntnu.model.Quiz;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.DiscriminatorType;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
+/**
+ * Represents a question in the system. A question is a part of a quiz that a user can answer.
+ * This is an abstract class that is extended by different types of questions.
+ */
 @MappedSuperclass
 public abstract class Question {
 
@@ -25,14 +20,14 @@ public abstract class Question {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long questionId;
 
+  @Column(nullable = false)
+  private String questionText;
   @ManyToOne
   @JoinColumn(name = "quizId")
   private Quiz quiz;
 
   public Question() {
   }
-
-
 
 
 }
