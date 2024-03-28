@@ -30,6 +30,17 @@ public abstract class Question {
   }
 
 
+  public void setQuestionText(String sampleMultipleChoiceQuestion) {
+    this.questionText = sampleMultipleChoiceQuestion;
+  }
+
+  public String getQuestionText() {
+    return questionText;
+  }
+
+  public Long getQuestionId() {
+    return questionId;
+  }
 }
 
 

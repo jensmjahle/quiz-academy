@@ -23,6 +23,10 @@ public class Tag {
   public Tag() {
   }
 
+  public Tag(String tagName) {
+    this.tagName = tagName;
+  }
+
   public long getTagId() {
     return tagId;
   }

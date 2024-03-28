@@ -30,4 +30,36 @@ public class MultipleChoiceQuestion extends Question {
   public void setCorrectAlternative(String newCorrectAlternative) {
     this.correctAlternative = newCorrectAlternative;
   }
+
+  public void setAlternative1(String s) {
+    this.alternative1 = s;
+  }
+
+  public String getAlternative1() {
+    return alternative1;
+  }
+
+  public void setAlternative2(String s) {
+    this.alternative2 = s;
+  }
+
+  public String getAlternative2() {
+    return alternative2;
+  }
+
+  public void setAlternative3(String s) {
+    this.alternative3 = s;
+  }
+
+  public String getAlternative3() {
+    return alternative3;
+  }
+
+  public void setAlternative4(String s) {
+    this.alternative4 = s;
+  }
+
+  public String getAlternative4() {
+    return alternative4;
+  }
 }

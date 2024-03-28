@@ -25,6 +25,13 @@ public class User {
    */
   public User() {
   }
+  public User(String username, String password, String email, String firstName, String lastName) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
 
   /**
    * Returns the username of the user.
