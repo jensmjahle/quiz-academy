@@ -8,7 +8,6 @@ public class UserDTO {
   private String firstName;
   private String lastName;
 
-  // Constructors
   public UserDTO() {
   }
 
@@ -20,7 +19,7 @@ public class UserDTO {
     this.lastName = lastName;
   }
 
-  // Getters and setters
+
   public String getUsername() {
     return username;
   }
