@@ -1,6 +1,7 @@
 package edu.ntnu.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
@@ -37,7 +38,7 @@ public class Quiz {
       joinColumns = @JoinColumn(name = "quizId"),
       inverseJoinColumns = @JoinColumn(name = "tagId")
   )
-  private List<Tag> tags;
+  private List<Tag> tags = new ArrayList<>();
 
   @Column(nullable = false)
   private Date quizCreationDate;
