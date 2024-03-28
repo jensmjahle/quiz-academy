@@ -35,8 +35,10 @@ unit-test-job:   # This job runs in the test stage.
     - echo "Code coverage is 90%"
   artifacts:
     when: always  # Always create artifacts even if the job fails
+    paths:
+      - rspec.xml  # Specify the location of JUnit XML reports
     reports:
-      junit: test-reports/*.xml  # Specify the location of JUnit XML reports
+      junit: rspec.xml  # Specify the location of JUnit XML reports
 
 
 lint-test-job:   # This job also runs in the test stage.
