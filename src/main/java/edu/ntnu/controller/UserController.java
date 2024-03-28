@@ -1,6 +1,8 @@
 package edu.ntnu.controller;
 
 import edu.ntnu.dto.UserDTO;
+import java.util.logging.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,14 +13,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import edu.ntnu.repository.UserRepository;
-import edu.ntnu.entity.User;
+import edu.ntnu.repositories.UserRepository;
+import edu.ntnu.entities.User;
 
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
+  Logger logger = Logger.getLogger(UserController.class.getName());
+
+  private final ModelMapper modelMapper = new ModelMapper();
   @Autowired
   private UserRepository userRepository;
 
@@ -38,19 +43,22 @@ public class UserController {
    * @param userDTO UserDTO object
    * @return ResponseEntity<String>
    */
+
   @PostMapping()
   public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
-    System.out.println(userDTO.toString());
-    User user = new User();
-    user.setUsername(userDTO.getUsername());
-    user.setPassword(userDTO.getPassword());
-    user.setEmail(userDTO.getEmail());
-    user.setFirstName(userDTO.getFirstName());
-    user.setLastName(userDTO.getLastName());
+    logger.info("Creating user");
+    User user = modelMapper.map(userDTO, User.class);
 
-    userRepository.save(user);
-
-    return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+    if (userRepository.findByUsername(user.getUsername()) != null) {
+      return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
+    } else {
+      try {
+        userRepository.save(user);
+        return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
+      } catch (Exception e) {
+        return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+    }
   }
 
 }

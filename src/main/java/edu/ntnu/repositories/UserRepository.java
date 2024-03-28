@@ -1,7 +1,6 @@
-package edu.ntnu.repository;
+package edu.ntnu.repositories;
 
-import edu.ntnu.entity.User;
-import java.util.List;
+import edu.ntnu.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

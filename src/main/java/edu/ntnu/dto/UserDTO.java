@@ -1,25 +1,26 @@
-package edu.ntnu.entity;
+package edu.ntnu.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "users")
-public class User {
-  @Id
-  @Column(nullable = false, unique = true)
+public class UserDTO {
   private String username;
-  @Column(nullable = false)
   private String password;
   private String email;
   private String firstName;
   private String lastName;
 
-  public User() {
+  // Constructors
+  public UserDTO() {
   }
 
+  public UserDTO(String username, String password, String email, String firstName, String lastName) {
+    this.username = username;
+    this.password = password;
+    this.email = email;
+    this.firstName = firstName;
+    this.lastName = lastName;
+  }
+
+  // Getters and setters
   public String getUsername() {
     return username;
   }
@@ -60,6 +61,15 @@ public class User {
     this.lastName = lastName;
   }
 
-
-
+  @Override
+  public String toString() {
+    return "UserDTO{" +
+        "username='" + username + '\'' +
+        ", password='" + password + '\'' +
+        ", email='" + email + '\'' +
+        ", firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        '}';
+  }
 }
+
