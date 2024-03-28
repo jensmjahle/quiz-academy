@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import edu.ntnu.entities.User;
-import edu.ntnu.repositories.UserRepository;
+import edu.ntnu.model.User;
+import edu.ntnu.repository.UserRepository;
 import java.util.logging.Logger;
 
 /**
