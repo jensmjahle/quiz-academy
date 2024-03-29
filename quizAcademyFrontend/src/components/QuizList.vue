@@ -23,7 +23,8 @@ const quizzesBeforeChecks = ref([
     { id: 8, name: 'Mock Quiz 8' },
     { id: 9, name: 'Mock Quiz 9' },
     { id: 10, name: 'Mock Quiz 10' },
-    { id: 11, name: 'Mock Quiz 11aaaaaaa1aa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaaaaa' },
+    { id: 11, name: 'Mock Quiz 11aaaaaaa1aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa' },
+    { id: 12, name: 'Hallo hallo hallo Hallo hallo hallo Hallo hallo hallo Hallo hallo hallo Hallo hallo hallo Hallo hallo hallo Hallo hallo hallo Hallo hallo hallo '}
 ]);
 
 
@@ -53,13 +54,13 @@ const closeDialog = () => {
     scrollbar-gutter: stable; /* Prevent scrollbar from overlapping content */
     scrollbar-color: var(--secondary-color) var(--primary-color); /* Set scrollbar colors */
     overflow-x: clip;
-    justify-content: center;
-    display: flex;
+    width: 70%;
+    padding-left: 15%;
 }
 
 .quiz-list {
     list-style-type: none; /* Remove bulletpoints */
     padding: 0;
-    width: 450px;
+    justify-content: center;
 }
 </style>

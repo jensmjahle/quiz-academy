@@ -6,6 +6,7 @@ import CreateQuizzesView from "../views/CreateQuizzesView.vue";
 import MultichoiceView from "../views/MultichoiceView.vue";
 import DragAndDropView from "../views/DragAndDropView.vue";
 import TextInputView from "../views/TextInputView.vue";
+import SigninWiew from "../views/QuizSigninView.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -45,6 +46,10 @@ export default createRouter({
             path: "/create_quiz/drag_and_drop",
             name: "drag_and_drop",
             component: DragAndDropView
+        },
+        {
+            path: "/signup",
+            component: SigninWiew
         }
     ]
 });

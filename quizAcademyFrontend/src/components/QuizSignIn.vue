@@ -1,6 +1,6 @@
 <template>
   <div class="login-form">
-    <h2>Login</h2>
+    <h2>Sign up</h2>
     <form @submit.prevent="login">
       <div class="form-group">
         <label for="username">Username:</label>
@@ -10,7 +10,7 @@
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password" required>
       </div>
-      <button type="submit">Login</button>
+      <button type="submit">Sign up</button>
     </form>
   </div>
 </template>
@@ -26,19 +26,19 @@ export default {
   },
   mounted() {
     // Use localStorage to load user input data
-    const storedLoginUser = JSON.parse(localStorage.getItem('loginUser'));
-    if (storedLoginUser) {
-      this.username = storedLoginUser.username;
-      this.password = storedLoginUser.password;
+    const storedSignUpUser = JSON.parse(localStorage.getItem('signUpUser'));
+    if (storedSignUpUser) {
+      this.username = storedSignUpUser.username;
+      this.password = storedSignUpUser.password;
     }
   },
   watch: {
     // Watch for changes in username and password and update localStorage
     username(value) {
-      localStorage.setItem('loginUser', JSON.stringify({ username: value, password: this.password }));
+      localStorage.setItem('signUpUser', JSON.stringify({ username: value, password: this.password }));
     },
     password(value) {
-      localStorage.setItem('loginUser', JSON.stringify({ username: this.username, password: value }));
+      localStorage.setItem('signUpUser', JSON.stringify({ username: this.username, password: value }));
     }
   },
   methods: {
@@ -48,8 +48,8 @@ export default {
       console.log('Username:', this.username);
       console.log('Password:', this.password);
 
-      //delete local storage after login
-      localStorage.removeItem('loginUser');
+      // Delete local storage after sign up
+      localStorage.removeItem('signUpUser');
 
       // After successful login, you can redirect the user to another page
       // For example, using Vue Router: this.$router.push('/dashboard');
@@ -71,16 +71,21 @@ export default {
   text-align: left; /* Align child elements to the left */
 }
 
+
+
 input[type="text"],
 input[type="password"] {
   width: calc(100%); /* Adjust input width to account for margin-right */
+
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
 
+
+
 button {
-  width: calc(100% - 5px); /* Adjust button width to account for border */
+  width: calc(100% - 5px ); /* Adjust button width to account for border */
   padding: 10px;
   background-color: #007bff;
   color: #fff;
