@@ -1,12 +1,12 @@
 <script setup>
 
-import QuizQuestionMultichoice from "../components/QuizQuestionMultichoice.vue";
+import CreateQuiz from "../components/CreateQuiz.vue";
 
 </script>
 
 <template>
     <div>
-        <QuizQuestion />
+        <CreateQuiz />
     </div>
 </template>
 

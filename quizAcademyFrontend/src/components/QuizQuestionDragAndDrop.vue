@@ -1,5 +1,17 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+let route = useRoute();
+let router = useRouter();
+
+let quizId = ref(0);
+
+onMounted(() => {
+    if (route.params.quizId) {
+        quizId.value = route.params.quizId;
+    }
+});
 
 const categories = ref([{ name: '', items: '' }]);
 const storedData = ref({});
@@ -19,13 +31,20 @@ const removeCategory = (index) => {
     }
 };
 
-const storeData = () => {
+const submitForm = () => {
+    const quizData = {
+        'D&D': {}
+    };
+
     categories.value.forEach(category => {
         const items = category.items.split('*');
-        storedData.value[category.name] = items;
+        quizData['D&D'][category.name] = items;
     });
-    console.log(storedData.value);
+
+    console.log(quizData);
+    router.push('/create_quiz');
 }
+
 </script>
 
 <template>
@@ -53,7 +72,7 @@ const storeData = () => {
             </div>
         <div id="buttons">
             <button id="add_category" @click="addCategory">Add a category</button>
-            <button id="submit_question" @click="storeData">Submit</button>
+            <button id="submit_question" @click="submitForm">Submit</button>
         </div>
     </div>
 </template>

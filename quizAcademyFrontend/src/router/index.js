@@ -4,8 +4,8 @@ import QuizzesView from "../views/QuizzesView.vue";
 import LoginView from "../views/QuizLoginView.vue";
 import CreateQuizzesView from "../views/CreateQuizzesView.vue";
 import MultichoiceView from "../views/MultichoiceView.vue";
-import TextInputView from "../views/TextInputView.vue";
 import DragAndDropView from "../views/DragAndDropView.vue";
+import TextInputView from "../views/TextInputView.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -27,15 +27,23 @@ export default createRouter({
             component: CreateQuizzesView
         },
         {
+            path: "/create_quiz/",
+            name: "create_quiz",
+            component: CreateQuizzesView
+        },
+        {
             path: "/create_quiz/multichoice",
+            name: "multichoice",
             component: MultichoiceView
         },
         {
             path: "/create_quiz/text_input",
+            name: "text_input",
             component: TextInputView
         },
         {
             path: "/create_quiz/drag_and_drop",
+            name: "drag_and_drop",
             component: DragAndDropView
         }
     ]

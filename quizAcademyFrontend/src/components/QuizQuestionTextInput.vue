@@ -1,18 +1,34 @@
 <script setup>
+import { ref} from 'vue';
+import { useRouter } from 'vue-router';
 
+let router = useRouter();
+
+let questionText = ref('');
+let questionAnswer = ref('');
+
+function submitQuestion() {
+    const questionObject = {
+        TI: 'TI',
+        question: questionText.value,
+        answer: questionAnswer.value,
+    };
+    console.log(questionObject);
+    router.push('/create_quiz');
+}
 </script>
 
 <template>
     <div id = "full_question">
-        <div id = "text_response_ques   tion">
-            <input id="input" type="text" placeholder="Question" />
+        <div id = "text_response_question">
+            <input id="input" type="text" v-model="questionText" placeholder="Question" />
             <input id="input" type="text" placeholder="Answer" />
         </div>
         <div>
             <h5>Separate correct answers with: *</h5>
         </div>
         <div>
-            <button>Submit</button>
+            <button @click="submitQuestion">Submit</button>
         </div>
     </div>
 
@@ -46,6 +62,5 @@
 #input::placeholder {
     text-align: center;
 }
-
 
 </style>

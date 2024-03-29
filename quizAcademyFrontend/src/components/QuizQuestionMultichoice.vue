@@ -1,29 +1,48 @@
-<script setup>
-
-</script>
-
 <template>
     <div id="QuizQuestionMultichoice">
         <div id="question">
-            <h5 id = "quiz_question">Q.1</h5>
-            <input id = "input" type="text" v-model="quizQuestion" placeholder="Enter your question here" />
+            <h5 id="quiz_question">Q.1</h5>
+            <input id="input" v-model="question" type="text" placeholder="Enter your question here" />
         </div>
         <div id="alternatives">
-            <input id = "input" type="text" v-model="quizQuestion" placeholder="alternative 1"/>
-            <input id = checkbox type="checkbox" />
-            <input id = "input" type="text" v-model="quizQuestion" placeholder="alternative 2"/>
-            <input id = checkbox type="checkbox" />
-            <input id = "input" type="text" v-model="quizQuestion" placeholder="alternative 3"/>
-            <input id = checkbox type="checkbox" />
-            <input id = "input" type="text" placeholder="alternative 4"/>
-            <input id = checkbox type="checkbox" />
+            <div v-for="(alternative, index) in alternatives" :key="index">
+                <input id="input" v-model="alternative.text" type="text" :placeholder="'alternative ' + (index + 1)"/>
+                <input id="checkbox" v-model="alternative.correct" type="checkbox" />
+            </div>
         </div>
         <div>
-            <button>Submit</button>
+            <button @click="submitForm">Submit</button>
         </div>
     </div>
-
 </template>
+
+<script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+
+const question = ref('');
+const alternatives = ref([
+    { text: '', correct: false },
+    { text: '', correct: false },
+    { text: '', correct: false },
+    { text: '', correct: false }
+]);
+
+const submitForm = () => {
+    const formData = {
+        type: 'MC',
+        question: question.value,
+        alternatives: alternatives.value.map(alternative => ({
+            text: alternative.text,
+            correct: !!alternative.correct
+        }))
+    };
+    console.log(formData);
+    router.push('/create_quiz');
+}
+</script>
 
 <style scoped>
 @media only screen and (max-width: 600px) {
