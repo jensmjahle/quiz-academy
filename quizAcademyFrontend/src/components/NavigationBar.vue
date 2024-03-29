@@ -5,7 +5,7 @@
         <nav>
             <RouterLink to="/" class="router-button">Home</RouterLink>
             <RouterLink to="/quizzes" class="router-button">My Quizzes</RouterLink>
-            <RouterLink to="/create" class="router-button">Create Quiz</RouterLink>
+            <RouterLink to="/create_quiz" class="router-button">Create Quiz</RouterLink>
             <RouterLink to="/login" class="router-button">Log In</RouterLink>
             <RouterLink to="/signup" class="router-button">Sign Up</RouterLink>
         </nav>
