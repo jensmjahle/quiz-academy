@@ -34,10 +34,12 @@ public class UserService {
    * @param username The username of the user to get.
    * @return ResponseEntity with the User object and status code.
    */
-  public ResponseEntity<User> getUserByUsername(String username) {
+  public ResponseEntity<UserDTO> getUserByUsername(String username) {
     User user = userRepository.findByUsername(username);
-    if (user != null) {
-      return new ResponseEntity<>(user, HttpStatus.OK);
+    UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+    if (userDTO != null) {
+      logger.info("User with username " + username + " found. Returning user.");
+      return new ResponseEntity<>(userDTO, HttpStatus.OK);
     } else {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
