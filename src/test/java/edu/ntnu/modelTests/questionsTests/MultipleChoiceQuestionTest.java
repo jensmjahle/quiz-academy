@@ -24,7 +24,7 @@ public class MultipleChoiceQuestionTest {
     multipleChoiceQuestion.setAlternative2(alternative2);
     multipleChoiceQuestion.setAlternative3(alternative3);
     multipleChoiceQuestion.setAlternative4(alternative4);
-    multipleChoiceQuestion.setCorrectAlternative(correctAlternative);
+    multipleChoiceQuestion.setCorrectAlternatives(correctAlternative);
 
     // Assert
     assertThat(multipleChoiceQuestion).isNotNull();
@@ -32,7 +32,7 @@ public class MultipleChoiceQuestionTest {
     assertThat(multipleChoiceQuestion.getAlternative2()).isEqualTo(alternative2);
     assertThat(multipleChoiceQuestion.getAlternative3()).isEqualTo(alternative3);
     assertThat(multipleChoiceQuestion.getAlternative4()).isEqualTo(alternative4);
-    assertThat(multipleChoiceQuestion.getCorrectAlternative()).isEqualTo(correctAlternative);
+    assertThat(multipleChoiceQuestion.getCorrectAlternatives()).isEqualTo(correctAlternative);
   }
 
   @Test
@@ -51,14 +51,14 @@ public class MultipleChoiceQuestionTest {
     multipleChoiceQuestion.setAlternative2(alternative2);
     multipleChoiceQuestion.setAlternative3(alternative3);
     multipleChoiceQuestion.setAlternative4(alternative4);
-    multipleChoiceQuestion.setCorrectAlternative(correctAlternative);
+    multipleChoiceQuestion.setCorrectAlternatives(correctAlternative);
 
     // Assert
     assertThat(multipleChoiceQuestion.getAlternative1()).isEqualTo(alternative1);
     assertThat(multipleChoiceQuestion.getAlternative2()).isEqualTo(alternative2);
     assertThat(multipleChoiceQuestion.getAlternative3()).isEqualTo(alternative3);
     assertThat(multipleChoiceQuestion.getAlternative4()).isEqualTo(alternative4);
-    assertThat(multipleChoiceQuestion.getCorrectAlternative()).isEqualTo(correctAlternative);
+    assertThat(multipleChoiceQuestion.getCorrectAlternatives()).isEqualTo(correctAlternative);
   }
 }
 

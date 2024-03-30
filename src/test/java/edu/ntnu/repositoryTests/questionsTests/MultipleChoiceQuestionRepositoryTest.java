@@ -63,7 +63,7 @@ public class MultipleChoiceQuestionRepositoryTest {
 
     // Update the MultipleChoiceQuestion
     savedQuestion.setQuestionText("Updated question text");
-    savedQuestion.setCorrectAlternative("Updated correct alternative");
+    savedQuestion.setCorrectAlternatives("Updated correct alternative");
     savedQuestion.setAlternative1("Updated alternative 1");
     savedQuestion.setAlternative2("Updated alternative 2");
     savedQuestion.setAlternative3("Updated alternative 3");
@@ -77,7 +77,7 @@ public class MultipleChoiceQuestionRepositoryTest {
 
     // Check that the MultipleChoiceQuestion was updated correctly
     assertThat(retrievedQuestion.getQuestionText()).isEqualTo(savedQuestion.getQuestionText());
-    assertThat(retrievedQuestion.getCorrectAlternative()).isEqualTo(savedQuestion.getCorrectAlternative());
+    assertThat(retrievedQuestion.getCorrectAlternatives()).isEqualTo(savedQuestion.getCorrectAlternatives());
     assertThat(retrievedQuestion.getAlternative1()).isEqualTo(savedQuestion.getAlternative1());
     assertThat(retrievedQuestion.getAlternative2()).isEqualTo(savedQuestion.getAlternative2());
     assertThat(retrievedQuestion.getAlternative3()).isEqualTo(savedQuestion.getAlternative3());
@@ -88,7 +88,7 @@ public class MultipleChoiceQuestionRepositoryTest {
   private static MultipleChoiceQuestion getMultipleChoiceQuestion() {
     MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
     multipleChoiceQuestion.setQuestionText("Sample multiple choice question");
-    multipleChoiceQuestion.setCorrectAlternative("Sample alternative 1");
+    multipleChoiceQuestion.setCorrectAlternatives("Sample alternative 1");
     multipleChoiceQuestion.setAlternative1("Sample alternative 1");
     multipleChoiceQuestion.setAlternative2("Sample alternative 2");
     multipleChoiceQuestion.setAlternative3("Sample alternative 3");

@@ -16,19 +16,19 @@ public class MultipleChoiceQuestion extends Question {
   private String alternative3;
   private String alternative4;
   @Column(nullable = false)
-  private String correctAlternative;
+  private String correctAlternatives;
 
   public MultipleChoiceQuestion() {
   }
 
 
-  public String getCorrectAlternative() {
-    return correctAlternative;
+  public String getCorrectAlternatives() {
+    return correctAlternatives;
   }
 
 
-  public void setCorrectAlternative(String newCorrectAlternative) {
-    this.correctAlternative = newCorrectAlternative;
+  public void setCorrectAlternatives(String newCorrectAlternative) {
+    this.correctAlternatives = newCorrectAlternative;
   }
 
   public void setAlternative1(String s) {
