@@ -59,11 +59,13 @@ export default {
     // Clear local storage when the component is destroyed
     localStorage.removeItem('signUpUser');
   },
-  beforeUpdate() {
-    // Clear local storage when the component is updated
-    localStorage.removeItem('signUpUser');
-  }
 };
+
+window.addEventListener('beforeunload', function(event) {
+  // Remove item whenever page is refreshed
+  localStorage.removeItem('signUpUser');
+});
+
 </script>
 
 <style scoped>
