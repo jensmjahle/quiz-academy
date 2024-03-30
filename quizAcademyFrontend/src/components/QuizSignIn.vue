@@ -54,6 +54,14 @@ export default {
       // After successful login, you can redirect the user to another page
       // For example, using Vue Router: this.$router.push('/dashboard');
     }
+  },
+  beforeDestroy() {
+    // Clear local storage when the component is destroyed
+    localStorage.removeItem('signUpUser');
+  },
+  beforeUpdate() {
+    // Clear local storage when the component is updated
+    localStorage.removeItem('signUpUser');
   }
 };
 </script>
