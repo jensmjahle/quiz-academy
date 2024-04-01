@@ -207,7 +207,7 @@ public class QuizService {
       }
 
       // Delete quiz
-      quizRepository.deleteById(quizId);
+      quizRepository.deleteByQuizId(quizId);
       logger.info("Quiz with id " + quizId + " deleted successfully.");
       return ResponseEntity.ok("Quiz deleted successfully.");
     } catch (Exception e) {

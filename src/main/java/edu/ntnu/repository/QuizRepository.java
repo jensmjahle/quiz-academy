@@ -23,6 +23,11 @@ public interface QuizRepository extends JpaRepository<Quiz, Long> {
 
   @Query("SELECT q.tags FROM Quiz q WHERE q.quizId = :quizId")
   Iterable<Tag> findAllTagsByQuizId(Long quizId);
+
+  @Modifying
+  @Transactional
+  @Query("DELETE FROM Quiz q WHERE q.quizId = :quizId")
+  void deleteByQuizId(Long quizId);
 /*
   @Transactional
   @Modifying
