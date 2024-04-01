@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,8 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/quiz")
 @CrossOrigin(origins = "http://localhost:5173")
 public class QuizController {
-  private Logger logger = Logger.getLogger(QuizController.class.getName());
-
+  private final Logger logger = Logger.getLogger(QuizController.class.getName());
   private final QuizService quizService;
 
   @Autowired
@@ -36,6 +36,12 @@ public class QuizController {
   public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes(@PathVariable String username) {
     logger.info("Received request to get all quizzes for user: " + username + ".");
     return quizService.getAllQuizzes(username);
+  }
+
+  @DeleteMapping("/delete/{quizId}")
+  public ResponseEntity<String> deleteQuiz(@PathVariable Long quizId) {
+    logger.info("Received request to delete quiz with id: " + quizId + ".");
+    return quizService.deleteQuiz(quizId);
   }
 
   @PostMapping("/create")

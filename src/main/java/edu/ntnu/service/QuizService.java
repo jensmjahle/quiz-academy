@@ -190,4 +190,29 @@ public class QuizService {
       return ResponseEntity.status(500).build();
     }
   }
+
+  public ResponseEntity<String> deleteQuiz(Long quizId) {
+    try {
+
+      // Delete questions associated with the quiz
+      List<MultipleChoiceQuestion> multipleChoiceQuestions = (List<MultipleChoiceQuestion>) multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quizId);
+      List<TextInputQuestion> textInputQuestions = (List<TextInputQuestion>) textInputQuestionRepository.findAllByQuiz_QuizId(quizId);
+
+      if (multipleChoiceQuestions != null) {
+        multipleChoiceQuestionRepository.deleteAll(multipleChoiceQuestions);
+      }
+
+      if (textInputQuestions != null) {
+        textInputQuestionRepository.deleteAll(textInputQuestions);
+      }
+
+      // Delete quiz
+      quizRepository.deleteById(quizId);
+      logger.info("Quiz with id " + quizId + " deleted successfully.");
+      return ResponseEntity.ok("Quiz deleted successfully.");
+    } catch (Exception e) {
+      logger.severe("An error occurred while deleting quiz with id " + quizId + ": " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
 }

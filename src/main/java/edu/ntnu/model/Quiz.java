@@ -24,7 +24,6 @@ import javax.persistence.Table;
 public class Quiz {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-
   private Long quizId;
   private String quizName;
   private String quizDescription;
