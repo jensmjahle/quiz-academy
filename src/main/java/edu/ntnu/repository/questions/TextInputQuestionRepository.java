@@ -1,5 +1,6 @@
 package edu.ntnu.repository.questions;
 
+import edu.ntnu.model.questions.TextInputQuestion;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TextInputQuestionRepository extends QuestionRepository {
 
-
+Iterable<TextInputQuestion> findAllByQuiz_QuizId(Long quizId);
 }

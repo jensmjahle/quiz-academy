@@ -2,7 +2,9 @@ package edu.ntnu.service;
 
 import edu.ntnu.dto.QuizDTO;
 import edu.ntnu.dto.TagDTO;
+import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
+import edu.ntnu.dto.questions.TextInputQuestionDTO;
 import edu.ntnu.model.Quiz;
 import edu.ntnu.model.Tag;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
@@ -10,6 +12,7 @@ import edu.ntnu.model.questions.TextInputQuestion;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import org.modelmapper.ModelMapper;
@@ -65,7 +68,8 @@ public class QuizService {
         // Convert quizzes to DTOs
         Iterable<QuizDTO> quizDTOs = mapQuizzesToDTO(quizzes);
 
-        logger.info("Quizzes found. Returning quizzes.");
+        int numQuizzes = ((List<QuizDTO>) quizDTOs).size();
+        logger.info(numQuizzes + " quizzes found. Returning quizzes.");
         return ResponseEntity.ok(quizDTOs);
       } else {
         logger.info("No quizzes found.");
@@ -90,37 +94,55 @@ public class QuizService {
       List<QuizDTO> quizDTOs = new ArrayList<>();
 
       for (Quiz quiz : quizzes) {
-        QuizDTO quizDTO = new QuizDTO();
-        quizDTO.setQuizId(quiz.getQuizId());
-        quizDTO.setQuizName(quiz.getQuizName());
-        quizDTO.setQuizDescription(quiz.getQuizDescription());
-        quizDTO.setQuizCreationDate(quiz.getQuizCreationDate());
-        quizDTO.setUser(quiz.getUser().getUsername());
+        QuizDTO quizDTO = new QuizDTO(
+            quiz.getQuizId(),
+            quiz.getQuizName(),
+            quiz.getQuizDescription(),
+            quiz.getUser().getUsername(),
+            new ArrayList<>(),
+            quiz.getQuizCreationDate(),
+            new ArrayList<>()
+        );
+
 
         // Add tags to the DTO //
-        Iterable<Tag> quizTags = quizRepository.findAllTags_ByQuizId(quiz.getQuizId());
-        List<TagDTO> tags = new ArrayList<>();
-        for (Tag tag : quizTags) {
-          TagDTO tagDTO = modelMapper.map(tag, TagDTO.class);
-          tags.add(tagDTO);
+        Iterable<Tag> quizTags = quizRepository.findAllTagsByQuizId(quiz.getQuizId());
+        System.out.println("hello");
+        if (quizTags != null) {
+          List<TagDTO> tags = new ArrayList<>();
+          for (Tag tag : quizTags) {
+            TagDTO tagDTO = modelMapper.map(tag, TagDTO.class);
+            tags.add(tagDTO);
+          }
+          quizDTO.setTags(tags);
         }
-        quizDTO.setTags(tags);
 
 
         // Add questions to the DTO //
-        Iterable<MultipleChoiceQuestion> multipleChoiceQuestions = multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quiz.getQuizId());
-        Iterable<TextInputQuestion> textInputQuestions = textInputQuestionRepository.findAllByQuiz_QuizId(quiz.getQuizId());
+        List<MultipleChoiceQuestion> multipleChoiceQuestions = (List<MultipleChoiceQuestion>) multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quiz.getQuizId());
+        List<TextInputQuestion> textInputQuestions = (List<TextInputQuestion>) textInputQuestionRepository.findAllByQuiz_QuizId(quiz.getQuizId());
 
         // MultipleChoiceQuestion
-        for (MultipleChoiceQuestion multipleChoiceQuestion : multipleChoiceQuestions) {
-          QuestionDTO questionDTO = modelMapper.map(multipleChoiceQuestion, QuestionDTO.class);
-          quizDTO.addQuestion(questionDTO);
+        if (multipleChoiceQuestions != null) {
+          for (MultipleChoiceQuestion multipleChoiceQuestion : multipleChoiceQuestions) {
+            MultipleChoiceQuestionDTO multipleChoiceQuestionDTO = new MultipleChoiceQuestionDTO(
+                multipleChoiceQuestion.getQuestionId(),
+                multipleChoiceQuestion.getQuestionText(),
+                multipleChoiceQuestion.getQuizId(),
+                splitStringToList(multipleChoiceQuestion.getAlternatives()),
+                splitStringToList(multipleChoiceQuestion.getCorrectAlternatives())
+            );
+            quizDTO.addQuestion(multipleChoiceQuestionDTO);
+          }
         }
 
         // TextInputQuestion
-        for (TextInputQuestion textInputQuestion : textInputQuestions) {
-          QuestionDTO questionDTO = modelMapper.map(textInputQuestion, QuestionDTO.class);
-          quizDTO.addQuestion(questionDTO);
+        if (textInputQuestions != null) {
+          for (TextInputQuestion textInputQuestion : textInputQuestions) {
+            TextInputQuestionDTO textInputQuestionDTO = modelMapper.map(textInputQuestion,
+                TextInputQuestionDTO.class);
+            quizDTO.addQuestion(textInputQuestionDTO);
+          }
         }
 
         quizDTOs.add(quizDTO);
@@ -132,7 +154,22 @@ public class QuizService {
     }
     }
 
+  /**
+   * Splits a string formatted like "cow*dog*cat" into a list of strings like cow,dog,cat.
+   *
+   * @param input String to split (example "cow*dog*cat")
+   *
+   * @return A list of string
+   */
+  List<String> splitStringToList(String input) {
+    // Split the input string by the delimiter "*"
+    String[] parts = input.split("\\*");
 
+    // Convert the array of strings to a list
+    List<String> resultList = Arrays.asList(parts);
+
+    return resultList;
+}
 
 
 }

@@ -41,6 +41,10 @@ public abstract class Question {
   public Long getQuestionId() {
     return questionId;
   }
+
+  public Long getQuizId() {
+    return quiz.getQuizId();
+  }
 }
 
 

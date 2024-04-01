@@ -10,17 +10,25 @@ import javax.persistence.Entity;
 @Entity
 public class MultipleChoiceQuestion extends Question {
 
+  //alternatives seperated by '*': "dog*cat*milk"
   @Column(nullable = false)
-  private String alternative1;
-  private String alternative2;
-  private String alternative3;
-  private String alternative4;
+  private String alternatives;
+
+  //correct alternatives seperated by '*': "cat*feline*kitty*pussycat"
   @Column(nullable = false)
   private String correctAlternatives;
 
   public MultipleChoiceQuestion() {
   }
 
+
+  public String getAlternatives() {
+    return alternatives;
+  }
+
+  public void setAlternatives(String alternatives) {
+    this.alternatives = alternatives;
+  }
 
   public String getCorrectAlternatives() {
     return correctAlternatives;
@@ -31,35 +39,4 @@ public class MultipleChoiceQuestion extends Question {
     this.correctAlternatives = newCorrectAlternative;
   }
 
-  public void setAlternative1(String s) {
-    this.alternative1 = s;
-  }
-
-  public String getAlternative1() {
-    return alternative1;
-  }
-
-  public void setAlternative2(String s) {
-    this.alternative2 = s;
-  }
-
-  public String getAlternative2() {
-    return alternative2;
-  }
-
-  public void setAlternative3(String s) {
-    this.alternative3 = s;
-  }
-
-  public String getAlternative3() {
-    return alternative3;
-  }
-
-  public void setAlternative4(String s) {
-    this.alternative4 = s;
-  }
-
-  public String getAlternative4() {
-    return alternative4;
-  }
 }

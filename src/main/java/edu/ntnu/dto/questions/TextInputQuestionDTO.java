@@ -1,29 +1,23 @@
 package edu.ntnu.dto.questions;
 
+import java.util.List;
+
 public class TextInputQuestionDTO extends QuestionDTO {
-  private String answer;
+  private List<String> answers;
 
   public TextInputQuestionDTO() {
   }
 
-  public TextInputQuestionDTO(Long questionId, String questionText, Long quizId, String answer) {
+  public TextInputQuestionDTO(Long questionId, String questionText, Long quizId, List<String> answers) {
     super(questionId, questionText, quizId);
-    this.answer = answer;
+    this.answers = answers;
   }
 
-
-  public String getAnswer() {
-    return answer;
+  public List<String> getAnswers() {
+    return answers;
   }
 
-  public void setAnswer(String answer) {
-    this.answer = answer;
-  }
-
-  @Override
-  public String toString() {
-    return "TextInputQuestionDTO{" +
-        "answer='" + answer + '\'' +
-        '}';
+  public void setAnswers(List<String> answers) {
+    this.answers = answers;
   }
 }
