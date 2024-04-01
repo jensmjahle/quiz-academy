@@ -3,27 +3,31 @@ package edu.ntnu.dto;
 import edu.ntnu.dto.questions.QuestionDTO;
 import java.util.Date;
 import java.util.List;
+import org.springframework.lang.Nullable;
 
 public class QuizDTO {
   private Long quizId;
   private String quizName;
   private String quizDescription;
-  private String username;
+  private String user;
+  @Nullable
   private List<TagDTO> tags;
   private Date quizCreationDate;
+  @Nullable
   private List<QuestionDTO> questions;
 
   public QuizDTO() {
   }
 
-  public QuizDTO(Long quizId, String quizName, String quizDescription, String username, List<TagDTO> tags, Date quizCreationDate, List<QuestionDTO> questions) {
+  public QuizDTO(Long quizId, String quizName, String quizDescription, String user, List<TagDTO> tags, Date quizCreationDate, List<QuestionDTO> questions) {
     this.quizId = quizId;
     this.quizName = quizName;
     this.quizDescription = quizDescription;
-    this.username = username;
+    this.user = user;
     this.tags = tags;
     this.quizCreationDate = quizCreationDate;
     this.questions = questions;
+
   }
 
   public Long getQuizId() {
@@ -51,11 +55,11 @@ public class QuizDTO {
   }
 
   public String getUser() {
-    return username;
+    return user;
   }
 
   public void setUser(String username) {
-    this.username = username;
+    this.user = username;
   }
 
   public List<TagDTO> getTags() {
@@ -74,9 +78,6 @@ public class QuizDTO {
     this.quizCreationDate = quizCreationDate;
   }
 
-  public List<QuestionDTO> getQuestions() {
-    return questions;
-  }
 
   public void setQuestions(List<QuestionDTO> questions) {
     this.questions = questions;
@@ -104,10 +105,14 @@ public class QuizDTO {
         "quizId=" + quizId +
         ", quizName='" + quizName + '\'' +
         ", quizDescription='" + quizDescription + '\'' +
-        ", user=" + username +
+        ", user=" + user +
         ", tags=" + tags +
         ", quizCreationDate=" + quizCreationDate +
         ", questions=" + questions +
         '}';
+  }
+
+  public List<QuestionDTO> getQuestions() {
+    return questions;
   }
 }
