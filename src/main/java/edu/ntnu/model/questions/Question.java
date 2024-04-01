@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.SequenceGenerator;
 
 /**
  * Represents a question in the system. A question is a part of a quiz that a user can answer.
@@ -17,7 +18,8 @@ import javax.persistence.MappedSuperclass;
 public abstract class Question {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionIdGenerator")
+  @SequenceGenerator(name = "questionIdGenerator", sequenceName = "question_sequence", allocationSize = 1)
   private Long questionId;
 
   @Column(nullable = false)
@@ -53,6 +55,7 @@ public abstract class Question {
     return quiz.getQuizId();
   }
   public void setQuizId(Long quizId) {
+    this.quiz = new Quiz();
     this.quiz.setQuizId(quizId);
   }
 }

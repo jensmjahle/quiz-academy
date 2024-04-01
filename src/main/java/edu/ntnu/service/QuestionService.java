@@ -9,7 +9,9 @@ import edu.ntnu.repository.questions.QuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class QuestionService {
   private final MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
   private final TextInputQuestionRepository textInputQuestionRepository;
   Logger logger = Logger.getLogger(QuestionService.class.getName());
+  static ModelMapper modelMapper = new ModelMapper();
 
   @Autowired
   public QuestionService(MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository) {
@@ -72,24 +75,24 @@ public class QuestionService {
   public static MultipleChoiceQuestion convertToMultipleChoiceQuestion(
       MultipleChoiceQuestionDTO multipleChoiceQuestionDTO) {
 
-    return new MultipleChoiceQuestion(
-        multipleChoiceQuestionDTO.getQuestionId(),
-        multipleChoiceQuestionDTO.getQuestionText(),
-        multipleChoiceQuestionDTO.getQuizId(),
-        joinListToString(multipleChoiceQuestionDTO.getAlternatives()),
-        joinListToString(multipleChoiceQuestionDTO.getCorrectAlternatives())
-    );
+
+    MultipleChoiceQuestion question = new MultipleChoiceQuestion();
+    question.setQuestionText(multipleChoiceQuestionDTO.getQuestionText());
+    question.setQuizId(multipleChoiceQuestionDTO.getQuizId());
+    question.setAlternatives(joinListToString(multipleChoiceQuestionDTO.getAlternatives()));
+    question.setCorrectAlternatives(joinListToString(multipleChoiceQuestionDTO.getCorrectAlternatives()));
+    return question;
   }
 
   public static TextInputQuestion convertToTextInputQuestion(
       TextInputQuestionDTO textInputQuestionDTO) {
 
-    return new TextInputQuestion(
-        textInputQuestionDTO.getQuestionId(),
-        textInputQuestionDTO.getQuestionText(),
-        textInputQuestionDTO.getQuizId(),
-        joinListToString(textInputQuestionDTO.getAnswers())
-    );
+    TextInputQuestion question = new TextInputQuestion();
+    question.setQuestionText(textInputQuestionDTO.getQuestionText());
+    question.setQuizId(textInputQuestionDTO.getQuizId());
+    question.setAnswer(joinListToString(textInputQuestionDTO.getAnswers()));
+    return question;
+
   }
 
   public void saveMultipleChoiceQuestion(MultipleChoiceQuestionDTO questionDTO) {
