@@ -69,6 +69,33 @@ public class QuestionService {
     );
   }
 
+  public static MultipleChoiceQuestion convertToMultipleChoiceQuestion(
+      MultipleChoiceQuestionDTO multipleChoiceQuestionDTO) {
+
+    return new MultipleChoiceQuestion(
+        multipleChoiceQuestionDTO.getQuestionId(),
+        multipleChoiceQuestionDTO.getQuestionText(),
+        multipleChoiceQuestionDTO.getQuizId(),
+        joinListToString(multipleChoiceQuestionDTO.getAlternatives()),
+        joinListToString(multipleChoiceQuestionDTO.getCorrectAlternatives())
+    );
+  }
+
+  public static TextInputQuestion convertToTextInputQuestion(
+      TextInputQuestionDTO textInputQuestionDTO) {
+
+    return new TextInputQuestion(
+        textInputQuestionDTO.getQuestionId(),
+        textInputQuestionDTO.getQuestionText(),
+        textInputQuestionDTO.getQuizId(),
+        joinListToString(textInputQuestionDTO.getAnswers())
+    );
+  }
+
+  private static String joinListToString(List<String> list) {
+    return String.join("*", list);
+  }
+
   /**
    * Splits a string formatted like "cow*dog*cat" into a list of strings like cow,dog,cat.
    *
@@ -76,7 +103,7 @@ public class QuestionService {
    *
    * @return A list of string
    */
-  static List<String> splitStringToList(String input) {
+  private static List<String> splitStringToList(String input) {
     String[] parts = input.split("\\*");
 
     return Arrays.asList(parts);

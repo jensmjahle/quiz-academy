@@ -21,6 +21,12 @@ public class MultipleChoiceQuestion extends Question {
   public MultipleChoiceQuestion() {
   }
 
+  public MultipleChoiceQuestion(Long questionId, String questionText, Long quizId, String s, String s1) {
+super(questionId, questionText, quizId);
+    this.alternatives = s;
+    this.correctAlternatives = s1;
+  }
+
 
   public String getAlternatives() {
     return alternatives;

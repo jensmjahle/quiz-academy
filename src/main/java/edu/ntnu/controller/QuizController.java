@@ -1,7 +1,6 @@
 package edu.ntnu.controller;
 
 import edu.ntnu.dto.QuizDTO;
-import edu.ntnu.model.Quiz;
 import edu.ntnu.service.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +22,7 @@ public class QuizController {
     this.quizService = quizService;
   }
 
- @GetMapping
+ @GetMapping("/{quizId}")
   public ResponseEntity<QuizDTO> getQuiz(@PathVariable Long quizId) {
     return quizService.getQuiz(quizId);
   }
@@ -32,5 +31,7 @@ public class QuizController {
   public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes(@PathVariable String username) {
     return quizService.getAllQuizzes(username);
   }
+
+
 
 }

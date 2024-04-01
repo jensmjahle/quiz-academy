@@ -18,6 +18,11 @@ public class TextInputQuestion extends Question {
   public TextInputQuestion() {
   }
 
+  public TextInputQuestion(Long questionId, String questionText, Long quizId, String s) {
+    super(questionId, questionText, quizId);
+    this.answer = s;
+  }
+
   public String getAnswer() {
     return answer;
   }

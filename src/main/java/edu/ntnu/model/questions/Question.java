@@ -29,6 +29,13 @@ public abstract class Question {
   public Question() {
   }
 
+  public Question(Long questionId, String questionText, Long quizId) {
+    this.questionId = questionId;
+    this.questionText = questionText;
+    this.quiz = new Quiz();
+    this.quiz.setQuizId(quizId);
+  }
+
 
   public void setQuestionText(String sampleMultipleChoiceQuestion) {
     this.questionText = sampleMultipleChoiceQuestion;
