@@ -2,11 +2,13 @@ package edu.ntnu.service;
 
 import edu.ntnu.dto.QuizDTO;
 import edu.ntnu.dto.TagDTO;
+import edu.ntnu.dto.UserDTO;
 import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.dto.questions.TextInputQuestionDTO;
 import edu.ntnu.model.Quiz;
 import edu.ntnu.model.Tag;
+import edu.ntnu.model.User;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
 import edu.ntnu.model.questions.TextInputQuestion;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
@@ -27,15 +29,17 @@ public class QuizService {
   private final QuizRepository quizRepository;
   private final MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
   private final TextInputQuestionRepository textInputQuestionRepository;
+  private final UserService userService;
   private final ModelMapper modelMapper = new ModelMapper();
 
   private final Logger logger = Logger.getLogger(QuizService.class.getName());
 
   @Autowired
-  public QuizService(QuizRepository quizRepository, MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository) {
+  public QuizService(QuizRepository quizRepository, MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository, UserService userService) {
     this.quizRepository = quizRepository;
     this.multipleChoiceQuestionRepository = multipleChoiceQuestionRepository;
     this.textInputQuestionRepository = textInputQuestionRepository;
+    this.userService = userService;
   }
 
   public ResponseEntity<QuizDTO> getQuiz(Long quizId) {
@@ -107,7 +111,6 @@ public class QuizService {
 
         // Add tags to the DTO //
         Iterable<Tag> quizTags = quizRepository.findAllTagsByQuizId(quiz.getQuizId());
-        System.out.println("hello");
         if (quizTags != null) {
           List<TagDTO> tags = new ArrayList<>();
           for (Tag tag : quizTags) {
@@ -148,6 +151,43 @@ public class QuizService {
     }
 
 
+  public ResponseEntity<QuizDTO> createQuiz(QuizDTO quizDTO) {
+    try {
+      // Map DTO to entity
+      Quiz quiz = modelMapper.map(quizDTO, Quiz.class);
 
+      // Retrieve and set user from database
+      User user = modelMapper.map(userService.getUserByUsername(quizDTO.getUser()).getBody(), User.class);
+      quiz.setUser(user);
 
+      // Save quiz to database
+      Quiz savedQuiz = quizRepository.save(quiz);
+
+      // Save questions to database
+      List<QuestionDTO> questions = quizDTO.getQuestions();
+      if (questions == null) {
+        logger.warning("No questions found for quiz with title " + savedQuiz.getQuizName() + ". Quiz created without questions.");
+      } else {
+        for (QuestionDTO question : questions) {
+          if (question instanceof MultipleChoiceQuestionDTO) {
+            MultipleChoiceQuestion multipleChoiceQuestion = QuestionService.convertToMultipleChoiceQuestion(
+                (MultipleChoiceQuestionDTO) question);
+            multipleChoiceQuestion.setQuizId(savedQuiz.getQuizId());
+            multipleChoiceQuestionRepository.save(multipleChoiceQuestion);
+          } else if (question instanceof TextInputQuestionDTO) {
+            TextInputQuestion textInputQuestion = QuestionService.convertToTextInputQuestion(
+                (TextInputQuestionDTO) question);
+            textInputQuestion.setQuizId(savedQuiz.getQuizId());
+            textInputQuestionRepository.save(textInputQuestion);
+          }
+        }
+      }
+
+      logger.info("Quiz \"" + quiz.getQuizName() + "\" created successfully.");
+      return ResponseEntity.ok(modelMapper.map(savedQuiz, QuizDTO.class));
+    } catch (Exception e) {
+      logger.severe("An error occurred while creating quiz: " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
 }

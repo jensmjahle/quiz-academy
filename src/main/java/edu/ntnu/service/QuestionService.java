@@ -92,6 +92,18 @@ public class QuestionService {
     );
   }
 
+  public void saveMultipleChoiceQuestion(MultipleChoiceQuestionDTO questionDTO) {
+    MultipleChoiceQuestion question = convertToMultipleChoiceQuestion(questionDTO);
+    multipleChoiceQuestionRepository.save(question);
+    logger.info("Multiple choice question saved successfully.");
+  }
+
+  public void saveTextInputQuestion(TextInputQuestionDTO questionDTO) {
+    TextInputQuestion question = convertToTextInputQuestion(questionDTO);
+    textInputQuestionRepository.save(question);
+    logger.info("Text input question saved successfully.");
+  }
+
   private static String joinListToString(List<String> list) {
     return String.join("*", list);
   }

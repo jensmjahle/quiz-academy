@@ -52,6 +52,9 @@ public abstract class Question {
   public Long getQuizId() {
     return quiz.getQuizId();
   }
+  public void setQuizId(Long quizId) {
+    this.quiz.setQuizId(quizId);
+  }
 }
 
 
