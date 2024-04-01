@@ -125,13 +125,7 @@ public class QuizService {
         // MultipleChoiceQuestion
         if (multipleChoiceQuestions != null) {
           for (MultipleChoiceQuestion multipleChoiceQuestion : multipleChoiceQuestions) {
-            MultipleChoiceQuestionDTO multipleChoiceQuestionDTO = new MultipleChoiceQuestionDTO(
-                multipleChoiceQuestion.getQuestionId(),
-                multipleChoiceQuestion.getQuestionText(),
-                multipleChoiceQuestion.getQuizId(),
-                splitStringToList(multipleChoiceQuestion.getAlternatives()),
-                splitStringToList(multipleChoiceQuestion.getCorrectAlternatives())
-            );
+            MultipleChoiceQuestionDTO multipleChoiceQuestionDTO = QuestionService.convertToMultipleChoiceQuestionDTO(multipleChoiceQuestion);
             quizDTO.addQuestion(multipleChoiceQuestionDTO);
           }
         }
@@ -139,8 +133,7 @@ public class QuizService {
         // TextInputQuestion
         if (textInputQuestions != null) {
           for (TextInputQuestion textInputQuestion : textInputQuestions) {
-            TextInputQuestionDTO textInputQuestionDTO = modelMapper.map(textInputQuestion,
-                TextInputQuestionDTO.class);
+            TextInputQuestionDTO textInputQuestionDTO = QuestionService.convertToTextInputQuestionDTO(textInputQuestion);
             quizDTO.addQuestion(textInputQuestionDTO);
           }
         }
@@ -154,22 +147,7 @@ public class QuizService {
     }
     }
 
-  /**
-   * Splits a string formatted like "cow*dog*cat" into a list of strings like cow,dog,cat.
-   *
-   * @param input String to split (example "cow*dog*cat")
-   *
-   * @return A list of string
-   */
-  List<String> splitStringToList(String input) {
-    // Split the input string by the delimiter "*"
-    String[] parts = input.split("\\*");
 
-    // Convert the array of strings to a list
-    List<String> resultList = Arrays.asList(parts);
-
-    return resultList;
-}
 
 
 }
