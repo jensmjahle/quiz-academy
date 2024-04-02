@@ -18,14 +18,16 @@ public class QuizMapper {
   private final Logger logger = Logger.getLogger(QuizMapper.class.getName());
   private final UserService userService;
   private final QuestionService questionService;
+  private final QuestionMapper questionMapper;
   private final TagMapper tagMapper;
 
 
   @Autowired
-  public QuizMapper(UserService userService, TagMapper tagMapper, QuestionService questionService) {
+  public QuizMapper(UserService userService, TagMapper tagMapper, QuestionService questionService, QuestionMapper questionMapper) {
     this.userService = userService;
     this.questionService = questionService;
     this.tagMapper = tagMapper;
+    this.questionMapper = questionMapper;
   }
 
     public QuizDTO toQuizDTOWithoutQuestions(Quiz quiz) {
@@ -48,7 +50,7 @@ public class QuizMapper {
         // Map the questions to QuestionDTO objects
         List<QuestionDTO> questionDTOs = new ArrayList<>();
         for (Question question : questions) {
-          questionDTOs.add(QuestionMapper.toQuestionDTO(question));
+          questionDTOs.add(questionMapper.toQuestionDTO(question));
         }
         quizDTO.setQuestions(questionDTOs);
 
