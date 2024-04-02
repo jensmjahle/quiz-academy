@@ -23,7 +23,11 @@ public class Tag {
   public Tag() {
   }
 
-  public Tag(String tagName) {
+  public Tag( String tagName) {
+    this.tagName = tagName;
+  }
+  public Tag(long tagId, String tagName) {
+    this.tagId = tagId;
     this.tagName = tagName;
   }
 

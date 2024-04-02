@@ -79,4 +79,8 @@ public class UserService {
       return new ResponseEntity<>("Error creating user", HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
+
+  public User getUserObjectByUsername(String username) {
+    return userRepository.findByUsername(username);
+  }
 }

@@ -5,11 +5,13 @@ import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.dto.questions.TextInputQuestionDTO;
 import edu.ntnu.enums.QuestionType;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
+import edu.ntnu.model.questions.Question;
 import edu.ntnu.model.questions.TextInputQuestion;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
 import edu.ntnu.repository.questions.QuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
 import edu.ntnu.utils.QuestionTypeIdentifier;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,6 @@ public class QuestionService {
     this.multipleChoiceQuestionRepository = multipleChoiceQuestionRepository;
     this.textInputQuestionRepository = textInputQuestionRepository;
   }
-
 
   public void deleteMultipleChoiceQuestion(Long questionId) {
     try {
@@ -222,5 +223,16 @@ public class QuestionService {
       return ResponseEntity.status(500).build();
     }
     return ResponseEntity.ok("Question updated successfully.");
+  }
+  public  Iterable<Question> getAllQuestions(Long quizId) {
+    Iterable<MultipleChoiceQuestion> multipleChoiceQuestions = multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quizId);
+    Iterable<TextInputQuestion> textInputQuestions = textInputQuestionRepository.findAllByQuiz_QuizId(quizId);
+
+    // Combine all questions into one list
+    List<Question> combinedQuestions = new ArrayList<>();
+    multipleChoiceQuestions.forEach(combinedQuestions::add);
+    textInputQuestions.forEach(combinedQuestions::add);
+
+    return combinedQuestions;
   }
 }
