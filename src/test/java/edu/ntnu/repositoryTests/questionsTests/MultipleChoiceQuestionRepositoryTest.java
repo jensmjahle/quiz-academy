@@ -63,11 +63,8 @@ public class MultipleChoiceQuestionRepositoryTest {
 
     // Update the MultipleChoiceQuestion
     savedQuestion.setQuestionText("Updated question text");
-    savedQuestion.setCorrectAlternatives("Updated correct alternative");
-    savedQuestion.setAlternative1("Updated alternative 1");
-    savedQuestion.setAlternative2("Updated alternative 2");
-    savedQuestion.setAlternative3("Updated alternative 3");
-    savedQuestion.setAlternative4("Updated alternative 4");
+    savedQuestion.setCorrectAlternatives("dog");
+    savedQuestion.setAlternatives("cow*dog*cat*fish");
 
     // Save the updated MultipleChoiceQuestion to the database
     MultipleChoiceQuestion updatedQuestion = multipleChoiceQuestionRepository.save(savedQuestion);
@@ -78,10 +75,8 @@ public class MultipleChoiceQuestionRepositoryTest {
     // Check that the MultipleChoiceQuestion was updated correctly
     assertThat(retrievedQuestion.getQuestionText()).isEqualTo(savedQuestion.getQuestionText());
     assertThat(retrievedQuestion.getCorrectAlternatives()).isEqualTo(savedQuestion.getCorrectAlternatives());
-    assertThat(retrievedQuestion.getAlternative1()).isEqualTo(savedQuestion.getAlternative1());
-    assertThat(retrievedQuestion.getAlternative2()).isEqualTo(savedQuestion.getAlternative2());
-    assertThat(retrievedQuestion.getAlternative3()).isEqualTo(savedQuestion.getAlternative3());
-    assertThat(retrievedQuestion.getAlternative4()).isEqualTo(savedQuestion.getAlternative4());
+    assertThat(retrievedQuestion.getAlternatives()).isEqualTo(savedQuestion.getAlternatives());
+
   }
 
 
@@ -89,10 +84,7 @@ public class MultipleChoiceQuestionRepositoryTest {
     MultipleChoiceQuestion multipleChoiceQuestion = new MultipleChoiceQuestion();
     multipleChoiceQuestion.setQuestionText("Sample multiple choice question");
     multipleChoiceQuestion.setCorrectAlternatives("Sample alternative 1");
-    multipleChoiceQuestion.setAlternative1("Sample alternative 1");
-    multipleChoiceQuestion.setAlternative2("Sample alternative 2");
-    multipleChoiceQuestion.setAlternative3("Sample alternative 3");
-    multipleChoiceQuestion.setAlternative4("Sample alternative 4");
+    multipleChoiceQuestion.setAlternatives("Sample alternative 1*Sample alternative 2*Sample alternative 3*Sample alternative 4");
     return multipleChoiceQuestion;
   }
 
