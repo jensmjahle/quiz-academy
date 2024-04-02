@@ -1,23 +1,19 @@
 package edu.ntnu.service;
 
-import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
-import edu.ntnu.dto.questions.TextInputQuestionDTO;
 import edu.ntnu.enums.QuestionType;
+import edu.ntnu.mapper.QuestionMapper;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
 import edu.ntnu.model.questions.Question;
 import edu.ntnu.model.questions.TextInputQuestion;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
-import edu.ntnu.repository.questions.QuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
 import edu.ntnu.utils.QuestionTypeIdentifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Logger;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -25,145 +21,53 @@ import org.springframework.stereotype.Service;
 public class QuestionService {
   private final MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
   private final TextInputQuestionRepository textInputQuestionRepository;
-  Logger logger = Logger.getLogger(QuestionService.class.getName());
-  static ModelMapper modelMapper = new ModelMapper();
+  private final QuestionMapper questionMapper;
+  private final Logger logger = Logger.getLogger(QuestionService.class.getName());
 
   @Autowired
-  public QuestionService(MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository) {
+  public QuestionService(MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository, QuestionMapper questionMapper) {
     this.multipleChoiceQuestionRepository = multipleChoiceQuestionRepository;
     this.textInputQuestionRepository = textInputQuestionRepository;
+    this.questionMapper = questionMapper;
   }
 
-  public void deleteMultipleChoiceQuestion(Long questionId) {
-    try {
-      MultipleChoiceQuestion multipleChoiceQuestion = multipleChoiceQuestionRepository.findByQuestionId(questionId);
-      multipleChoiceQuestionRepository.delete(multipleChoiceQuestion);
-      logger.info("Multiple choice question with id " + questionId + " deleted.");
-    } catch (Exception e) {
-      logger.severe("An error occurred while deleting multiple choice question with id " + questionId + ": " + e.getMessage());
-      throw e;
-    }
-  }
-
-  public void deleteTextInputQuestion(Long questionId) {
-    try {
-      TextInputQuestion textInputQuestion = textInputQuestionRepository.findByQuestionId(questionId);
-      textInputQuestionRepository.delete(textInputQuestion);
-      logger.info("Text input question with id " + questionId + " deleted.");
-    } catch (Exception e) {
-      logger.severe("An error occurred while deleting text input question with id " + questionId + ": " + e.getMessage());
-      throw e;
-    }
-  }
-
-  public static MultipleChoiceQuestionDTO convertToMultipleChoiceQuestionDTO(
-      MultipleChoiceQuestion multipleChoiceQuestion) {
-
-    return new MultipleChoiceQuestionDTO(
-        multipleChoiceQuestion.getQuestionId(),
-        multipleChoiceQuestion.getQuestionText(),
-        multipleChoiceQuestion.getQuizId(),
-        splitStringToList(multipleChoiceQuestion.getAlternatives()),
-        splitStringToList(multipleChoiceQuestion.getCorrectAlternatives())
-    );
-  }
-
-  public static TextInputQuestionDTO convertToTextInputQuestionDTO(
-      TextInputQuestion textInputQuestion) {
-
-    return new TextInputQuestionDTO(
-        textInputQuestion.getQuestionId(),
-        textInputQuestion.getQuestionText(),
-        textInputQuestion.getQuizId(),
-        splitStringToList(textInputQuestion.getAnswer())
-    );
-  }
-
-  public static MultipleChoiceQuestion convertToMultipleChoiceQuestion(
-      MultipleChoiceQuestionDTO multipleChoiceQuestionDTO) {
-
-
-    MultipleChoiceQuestion question = new MultipleChoiceQuestion();
-    question.setQuestionText(multipleChoiceQuestionDTO.getQuestionText());
-    question.setQuizId(multipleChoiceQuestionDTO.getQuizId());
-    question.setAlternatives(joinListToString(multipleChoiceQuestionDTO.getAlternatives()));
-    question.setCorrectAlternatives(joinListToString(multipleChoiceQuestionDTO.getCorrectAlternatives()));
-    return question;
-  }
-
-  public static TextInputQuestion convertToTextInputQuestion(
-      TextInputQuestionDTO textInputQuestionDTO) {
-
-    TextInputQuestion question = new TextInputQuestion();
-    question.setQuestionText(textInputQuestionDTO.getQuestionText());
-    question.setQuizId(textInputQuestionDTO.getQuizId());
-    question.setAnswer(joinListToString(textInputQuestionDTO.getAnswers()));
-    return question;
-
-  }
-
-  public void saveMultipleChoiceQuestion(MultipleChoiceQuestionDTO questionDTO) {
-    MultipleChoiceQuestion question = convertToMultipleChoiceQuestion(questionDTO);
-    multipleChoiceQuestionRepository.save(question);
-    logger.info("Multiple choice question saved successfully.");
-  }
-
-  public void saveTextInputQuestion(TextInputQuestionDTO questionDTO) {
-    TextInputQuestion question = convertToTextInputQuestion(questionDTO);
-    textInputQuestionRepository.save(question);
-    logger.info("Text input question saved successfully.");
-  }
-
-  private static String joinListToString(List<String> list) {
-    return String.join("*", list);
-  }
-
-  /**
-   * Splits a string formatted like "cow*dog*cat" into a list of strings like cow,dog,cat.
-   *
-   * @param input String to split (example "cow*dog*cat")
-   *
-   * @return A list of string
-   */
-  private static List<String> splitStringToList(String input) {
-    String[] parts = input.split("\\*");
-
-    return Arrays.asList(parts);
-  }
 
   public ResponseEntity<QuestionDTO> getQuestion(Long questionId) {
-    MultipleChoiceQuestion multipleChoiceQuestion = multipleChoiceQuestionRepository.findByQuestionId(questionId);
-    TextInputQuestion textInputQuestion = textInputQuestionRepository.findByQuestionId(questionId);
+    try {
+      // Get the question from the database
+      Question question = getQuestionById(questionId);
 
-    // Check if the question was found in the multipleChoiceQuestion table
-    if (multipleChoiceQuestion != null) {
-      return ResponseEntity.ok(convertToMultipleChoiceQuestionDTO(multipleChoiceQuestion));
-    }
-    // Check if the question was found in the textInputQuestion table
-    else if (textInputQuestion != null) {
-      return ResponseEntity.ok(convertToTextInputQuestionDTO(textInputQuestion));
-    }
-    else {
-      return ResponseEntity.notFound().build();
-    }
+      // Convert the question to a DTO
+      QuestionDTO questionDTO = questionMapper.toQuestionDTO(question);
 
+      return ResponseEntity.ok(questionDTO);
+
+    } catch (Exception e) {
+      logger.severe("An error occurred while getting question with id " + questionId + ": " + e.getMessage());
+
+      return ResponseEntity.status(500).build();
+    }
   }
 
   public ResponseEntity<QuestionDTO> createQuestion(QuestionDTO questionDTO) {
     try {
+      // Identify the question type
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
 
+      // Convert the DTO to a model
+      Question question = questionMapper.toQuestion(questionDTO);
+
+      // Save the question to the correct repository
       switch (questionType) {
         case MULTIPLE_CHOICE:
-          saveMultipleChoiceQuestion((MultipleChoiceQuestionDTO) questionDTO);
+          multipleChoiceQuestionRepository.save((MultipleChoiceQuestion) question);
           break;
         case TEXT_INPUT:
-          saveTextInputQuestion((TextInputQuestionDTO) questionDTO);
+          textInputQuestionRepository.save((TextInputQuestion) question);
           break;
         default:
           return ResponseEntity.notFound().build();
       }
-
       return ResponseEntity.ok(questionDTO);
     } catch (Exception e) {
       logger.severe("An error occurred while creating question: " + e.getMessage());
@@ -173,18 +77,23 @@ public class QuestionService {
 
   public ResponseEntity<String> deleteQuestion(Long questionId, String questionType) {
     try {
-      switch (questionType) {
-        case "MULTIPLE_CHOICE":
-          deleteMultipleChoiceQuestion(questionId);
+      // Identify the question type
+      QuestionType qType = QuestionTypeIdentifier.indentifyQuestionTypeFromString(questionType);
+
+      // Get the question from the database
+      Question question = getQuestionById(questionId);
+
+      switch (qType) {
+        case MULTIPLE_CHOICE:
+          multipleChoiceQuestionRepository.delete(question);
           break;
-        case "TEXT_INPUT":
-          deleteTextInputQuestion(questionId);
+        case TEXT_INPUT:
+          textInputQuestionRepository.delete(question);
           break;
         default:
           return ResponseEntity.notFound().build();
       }
-      return ResponseEntity.ok("Question deleted successfully.");
-
+      return ResponseEntity.ok("Question with id \"" + questionId + "\" deleted successfully.");
     } catch (Exception e) {
       logger.severe("An error occurred while deleting question with id " + questionId + ": "
           + e.getMessage());
@@ -192,14 +101,14 @@ public class QuestionService {
     }
   }
 
-  public ResponseEntity<String> updateQuestion(Long questionId, QuestionDTO questionDTO) {
+  public ResponseEntity<String> updateQuestion(QuestionDTO newQuestionDTO) {
     try {
-      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
+      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(newQuestionDTO);
 
       switch (questionType) {
         case MULTIPLE_CHOICE:
-          MultipleChoiceQuestion oldMCQuestion = multipleChoiceQuestionRepository.findByQuestionId(questionId);
-          MultipleChoiceQuestion newMCQuestion = convertToMultipleChoiceQuestion((MultipleChoiceQuestionDTO) questionDTO);
+          MultipleChoiceQuestion oldMCQuestion = multipleChoiceQuestionRepository.findByQuestionId(newQuestionDTO.getQuestionId());
+          MultipleChoiceQuestion newMCQuestion = (MultipleChoiceQuestion) questionMapper.toQuestion(newQuestionDTO);
           newMCQuestion.setQuestionId(oldMCQuestion.getQuestionId());
 
           // Delete the old question and save the new one
@@ -207,8 +116,8 @@ public class QuestionService {
           multipleChoiceQuestionRepository.save(newMCQuestion);
           break;
         case TEXT_INPUT:
-          TextInputQuestion oldTIQuestion = textInputQuestionRepository.findByQuestionId(questionId);
-          TextInputQuestion newTIQuestion = convertToTextInputQuestion((TextInputQuestionDTO) questionDTO);
+          TextInputQuestion oldTIQuestion = textInputQuestionRepository.findByQuestionId(newQuestionDTO.getQuestionId());
+          TextInputQuestion newTIQuestion = (TextInputQuestion) questionMapper.toQuestion(newQuestionDTO);
           newTIQuestion.setQuestionId(oldTIQuestion.getQuestionId());
 
           // Delete the old question and save the new one
@@ -219,11 +128,16 @@ public class QuestionService {
           return ResponseEntity.notFound().build();
       }
     } catch (Exception e) {
-      logger.severe("An error occurred while updating question with id " + questionId + ": " + e.getMessage());
+      if (e instanceof DataAccessException) {
+        logger.severe("Question with id " + newQuestionDTO.getQuestionId() + " not found in database. Cannot update.");
+        return ResponseEntity.notFound().build();
+      }
+      logger.severe("An error occurred while updating question with id " + newQuestionDTO.getQuestionId() + ": " + e.getMessage());
       return ResponseEntity.status(500).build();
     }
     return ResponseEntity.ok("Question updated successfully.");
   }
+
   public  Iterable<Question> getAllQuestions(Long quizId) {
     Iterable<MultipleChoiceQuestion> multipleChoiceQuestions = multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quizId);
     Iterable<TextInputQuestion> textInputQuestions = textInputQuestionRepository.findAllByQuiz_QuizId(quizId);
@@ -234,5 +148,27 @@ public class QuestionService {
     textInputQuestions.forEach(combinedQuestions::add);
 
     return combinedQuestions;
+  }
+
+  public Question getQuestionById(Long questionId) {
+    Question question = null;
+    try {
+      question = multipleChoiceQuestionRepository.findByQuestionId(questionId);
+    } catch (Exception e) {
+     logger.info("Question with id " + questionId + " not found in multiple choice questions");
+    }
+    try {
+      question = textInputQuestionRepository.findByQuestionId(questionId);
+    } catch (Exception e) {
+      logger.info("Question with id " + questionId + " not found in text input questions");
+    }
+
+    if (question == null) {
+      logger.warning("Question with id " + questionId + " not found");
+      throw new DataAccessException("Question with id " + questionId + " not found in database") {
+      };
+    } else {
+      return question;
+    }
   }
 }

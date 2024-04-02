@@ -9,10 +9,12 @@ import edu.ntnu.model.questions.TextInputQuestion;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
+import org.springframework.stereotype.Component;
 
+@Component
 public class QuestionMapper {
-  private static final Logger logger = Logger.getLogger(QuestionMapper.class.getName());
-    public static QuestionDTO toQuestionDTO(Question question) {
+  private final Logger logger = Logger.getLogger(QuestionMapper.class.getName());
+    public QuestionDTO toQuestionDTO(Question question) {
         if (question instanceof TextInputQuestion) {
             return new TextInputQuestionDTO(
                 question.getQuestionId(),
@@ -34,7 +36,7 @@ public class QuestionMapper {
         }
     }
 
-    public static Question toQuestion(QuestionDTO questionDTO) {
+    public Question toQuestion(QuestionDTO questionDTO) {
         if (questionDTO instanceof TextInputQuestionDTO) {
             return new TextInputQuestion(
                 questionDTO.getQuestionId(),
@@ -55,7 +57,7 @@ public class QuestionMapper {
         }
     }
 
-    public static Question toQuestionWithoutId(QuestionDTO questionDTO) {
+    public Question toQuestionWithoutId(QuestionDTO questionDTO) {
         if (questionDTO instanceof TextInputQuestionDTO) {
           TextInputQuestion question = new TextInputQuestion();
           question.setQuestionText(questionDTO.getQuestionText());
@@ -76,12 +78,12 @@ public class QuestionMapper {
         }
     }
 
-  private static List<String> splitStringToList(String input) {
+  private List<String> splitStringToList(String input) {
     String[] parts = input.split("\\*");
 
     return Arrays.asList(parts);
   }
-  private static String joinListToString(List<String> list) {
+  private String joinListToString(List<String> list) {
     return String.join("*", list);
   }
 }

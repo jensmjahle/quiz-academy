@@ -1,6 +1,7 @@
 package edu.ntnu.service;
 
 import edu.ntnu.dto.UserDTO;
+import edu.ntnu.mapper.UserMapper;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,11 +19,13 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final ModelMapper modelMapper = new ModelMapper();
+  private final UserMapper userMapper;
   private final Logger logger = Logger.getLogger(UserService.class.getName());
 
   @Autowired
-  public UserService(UserRepository userRepository) {
+  public UserService(UserRepository userRepository, UserMapper userMapper) {
     this.userRepository = userRepository;
+    this.userMapper = userMapper;
   }
 
   /**
@@ -58,7 +61,7 @@ public class UserService {
   public ResponseEntity<String> createUser(UserDTO userDTO) {
     logger.info("Received request for user creation with username: " + userDTO.getUsername());
     try {
-      User user = modelMapper.map(userDTO, User.class);
+      User user = userMapper.toUser(userDTO);
       logger.info("User object created from userDTO");
 
       if (userRepository.findByUsername(user.getUsername()) != null) {
