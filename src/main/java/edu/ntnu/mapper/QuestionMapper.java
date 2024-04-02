@@ -1,89 +1,214 @@
 package edu.ntnu.mapper;
 
+import edu.ntnu.dao.questions.DragDropQuestionDAO;
+import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
+import edu.ntnu.dto.questions.DragDropQuestionDTO;
 import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.dto.questions.TextInputQuestionDTO;
+import edu.ntnu.dto.questions.TrueFalseQuestionDTO;
+import edu.ntnu.enums.QuestionType;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
 import edu.ntnu.model.questions.Question;
 import edu.ntnu.model.questions.TextInputQuestion;
+import edu.ntnu.utils.QuestionTypeIdentifier;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
 public class QuestionMapper {
   private final Logger logger = Logger.getLogger(QuestionMapper.class.getName());
-    public QuestionDTO toQuestionDTO(Question question) {
-        if (question instanceof TextInputQuestion) {
-            return new TextInputQuestionDTO(
-                question.getQuestionId(),
-                question.getQuestionText(),
-                question.getQuizId(),
-                (splitStringToList(((TextInputQuestion) question).getAnswer()))
-            );
 
-        } else if (question instanceof MultipleChoiceQuestion) {
-            return new MultipleChoiceQuestionDTO(
-                question.getQuestionId(),
-                question.getQuestionText(),
-                question.getQuizId(),
-                (splitStringToList(((MultipleChoiceQuestion) question).getAlternatives())),
-                (splitStringToList(((MultipleChoiceQuestion) question).getCorrectAlternatives()))
-            );
-        } else {
-            throw new IllegalArgumentException("Unknown question type. Cannot convert to DTO");
-        }
+  /**
+   * Maps a QuestionDAO to a QuestionDTO.
+   *
+   * @param question The QuestionDAO to map
+   *
+   * @return The QuestionDTO
+   */
+    public QuestionDTO toDTO(Question question) {
+      Long questionId = question.getQuestionId();
+      String questionText = question.getQuestionText();
+      Long quizId = question.getQuizId();
+      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionType(question);
+
+      switch (questionType) {
+        case MULTIPLE_CHOICE:
+          return new MultipleChoiceQuestionDTO(
+              questionId,
+              questionText,
+              quizId,
+              splitStringToList(((MultipleChoiceQuestion) question).getAlternatives()),
+              splitStringToList(((MultipleChoiceQuestion) question).getCorrectAlternatives())
+          );
+        case TEXT_INPUT:
+          return new TextInputQuestionDTO(
+              questionId,
+              questionText,
+              quizId,
+              splitStringToList(((TextInputQuestion) question).getAnswer())
+          );
+        case DRAG_AND_DROP:
+          return new DragDropQuestionDTO(
+              questionId,
+              questionText,
+              quizId,
+              mapStringToCategories(((DragDropQuestionDAO) question).getCategories())
+          );
+        case TRUE_FALSE:
+          return new TrueFalseQuestionDTO(
+              questionId,
+              questionText,
+              quizId,
+              ((TrueFalseQuestionDAO) question).isCorrectAnswer()
+          );
+
+        default:
+          throw new IllegalArgumentException("Unknown question type. Cannot convert to DTO");
+      }
     }
 
-    public Question toQuestion(QuestionDTO questionDTO) {
-        if (questionDTO instanceof TextInputQuestionDTO) {
-            return new TextInputQuestion(
-                questionDTO.getQuestionId(),
-                questionDTO.getQuestionText(),
-                questionDTO.getQuizId(),
-                (joinListToString(((TextInputQuestionDTO) questionDTO).getAnswers()))
-            );
-        } else if (questionDTO instanceof MultipleChoiceQuestionDTO) {
-            return new MultipleChoiceQuestion(
-                questionDTO.getQuestionId(),
-                questionDTO.getQuestionText(),
-                questionDTO.getQuizId(),
-                (joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getAlternatives())),
-                (joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getCorrectAlternatives()))
-            );
-        } else {
-            throw new IllegalArgumentException("Unknown question type. Cannot convert to model");
-        }
+  /**
+   * Maps a QuestionDTO to a QuestionDAO.
+   * Used when updating an existing question.
+   *
+   * @param questionDTO The QuestionDTO to map
+   *
+   * @return The QuestionDAO
+   */
+    public Question toDAO(QuestionDTO questionDTO) {
+      try {
+        Question question = toDAOWithoutId(questionDTO);
+        question.setQuestionId(questionDTO.getQuestionId());
+        return question;
+
+      } catch (Exception e) {
+        logger.severe(e.getMessage());
+        throw e;
+      }
+
+
     }
 
-    public Question toQuestionWithoutId(QuestionDTO questionDTO) {
-        if (questionDTO instanceof TextInputQuestionDTO) {
-          TextInputQuestion question = new TextInputQuestion();
-          question.setQuestionText(questionDTO.getQuestionText());
-          question.setQuizId(questionDTO.getQuizId());
-          question.setAnswer(joinListToString(((TextInputQuestionDTO) questionDTO).getAnswers()));
-          logger.info("Converted to text input question without id: " + question);
-          return question;
-        } else if (questionDTO instanceof MultipleChoiceQuestionDTO) {
-          MultipleChoiceQuestion question = new MultipleChoiceQuestion();
-          question.setQuestionText(questionDTO.getQuestionText());
-          question.setQuizId(questionDTO.getQuizId());
-          question.setAlternatives(joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getAlternatives()));
-          question.setCorrectAlternatives(joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getCorrectAlternatives()));
-          logger.info("Converted to multiple choice question without id: " + question);
-          return question;
-        } else {
-            throw new IllegalArgumentException("Unknown question type. Cannot convert to model");
-        }
-    }
+  /**
+   * Maps a QuestionDTO to a QuestionDAO without an ID.
+   * Used when creating a new question. ID is generated by the database.
+   *
+   * @param questionDTO The QuestionDTO to map
+   *
+   * @return The QuestionDAO without an ID
+   */
+  public Question toDAOWithoutId(QuestionDTO questionDTO) {
+      Long questionId = questionDTO.getQuestionId();
+      String questionText = questionDTO.getQuestionText();
+      Long quizId = questionDTO.getQuizId();
+      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
 
+      switch (questionType) {
+        case MULTIPLE_CHOICE:
+          return new MultipleChoiceQuestion(
+              questionId,
+              questionText,
+              quizId,
+              joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getAlternatives()),
+              joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getCorrectAlternatives())
+          );
+        case TEXT_INPUT:
+          return new TextInputQuestion(
+              questionId,
+              questionText,
+              quizId,
+              joinListToString(((TextInputQuestionDTO) questionDTO).getAnswers())
+          );
+        case DRAG_AND_DROP:
+          return new DragDropQuestionDAO(
+              questionId,
+              questionText,
+              quizId,
+              mapCategoriesToString(((DragDropQuestionDTO) questionDTO).getCategories())
+          );
+        case TRUE_FALSE:
+          return new TrueFalseQuestionDAO(
+              questionId,
+              questionText,
+              quizId,
+              ((TrueFalseQuestionDTO) questionDTO).isCorrectAnswer()
+          );
+        default:
+          throw new IllegalArgumentException("Unknown question type. Cannot convert to model");
+    }
+  }
+
+  /**
+   * Helper method that
+   * Splits a String into a List of Strings separated by "*"
+   * Example: "item1*item2*item3" -> ["item1", "item2", "item3"]
+   *
+   * @param input The String to split
+   *
+   * @return The List of Strings
+   */
   private List<String> splitStringToList(String input) {
     String[] parts = input.split("\\*");
-
     return Arrays.asList(parts);
   }
+
+  /**
+   * Helper method that
+   * Joins a List of Strings into a single String separated by "*"
+   * Example: ["item1", "item2", "item3"] -> "item1*item2*item3"
+   *
+   * @param list The List of Strings to join
+   *
+   * @return The joined String
+   */
   private String joinListToString(List<String> list) {
     return String.join("*", list);
+  }
+
+
+  /**
+   * Helper method that
+   * Maps the categories from the DTO to a String used in the DAO
+   *
+   * @param categories The categories to map. The key is the category name, and the value is a list of items in the category
+   *
+   * @return The categories as a String. The format is "categoryName<item1*item2;categoryName2<item1*item2;..."
+   */
+  private static String mapCategoriesToString(Map<String, List<String>> categories) {
+    StringBuilder sb = new StringBuilder();
+    for (Map.Entry<String, List<String>> entry : categories.entrySet()) {
+      String categoryName = entry.getKey();
+      List<String> categoryItems = entry.getValue();
+      sb.append(categoryName).append("<").append(String.join("*", categoryItems)).append(";");
+    }
+    return sb.toString();
+  }
+
+
+  /**
+   * Helper method that
+   * Maps the categories from a String used in the DAO to a Map used in the DTO
+   *
+   * @param categoriesString The categories as a String. The format is "categoryName<item1*item2;categoryName2<item1*item2;..."
+   *
+   * @return The categories as a Map. The key is the category name, and the value is a list of items in the category
+   */
+  private static Map<String, List<String>> mapStringToCategories(String categoriesString) {
+    Map<String, List<String>> categories = new HashMap<>();
+    String[] categoryEntries = categoriesString.split(";");
+    for (String entry : categoryEntries) {
+      String[] parts = entry.split("<");
+      String categoryName = parts[0];
+      String[] items = parts[1].split("\\*");
+      List<String> categoryItems = new ArrayList<>(Arrays.asList(items));
+      categories.put(categoryName, categoryItems);
+    }
+    return categories;
   }
 }

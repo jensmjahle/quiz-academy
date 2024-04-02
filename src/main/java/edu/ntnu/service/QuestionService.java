@@ -38,7 +38,7 @@ public class QuestionService {
       Question question = getQuestionById(questionId);
 
       // Convert the question to a DTO
-      QuestionDTO questionDTO = questionMapper.toQuestionDTO(question);
+      QuestionDTO questionDTO = questionMapper.toDTO(question);
 
       return ResponseEntity.ok(questionDTO);
 
@@ -55,7 +55,7 @@ public class QuestionService {
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
 
       // Convert the DTO to a model
-      Question question = questionMapper.toQuestion(questionDTO);
+      Question question = questionMapper.toDAO(questionDTO);
 
       // Save the question to the correct repository
       switch (questionType) {
@@ -108,7 +108,7 @@ public class QuestionService {
       switch (questionType) {
         case MULTIPLE_CHOICE:
           MultipleChoiceQuestion oldMCQuestion = multipleChoiceQuestionRepository.findByQuestionId(newQuestionDTO.getQuestionId());
-          MultipleChoiceQuestion newMCQuestion = (MultipleChoiceQuestion) questionMapper.toQuestion(newQuestionDTO);
+          MultipleChoiceQuestion newMCQuestion = (MultipleChoiceQuestion) questionMapper.toDAO(newQuestionDTO);
           newMCQuestion.setQuestionId(oldMCQuestion.getQuestionId());
 
           // Delete the old question and save the new one
@@ -117,7 +117,7 @@ public class QuestionService {
           break;
         case TEXT_INPUT:
           TextInputQuestion oldTIQuestion = textInputQuestionRepository.findByQuestionId(newQuestionDTO.getQuestionId());
-          TextInputQuestion newTIQuestion = (TextInputQuestion) questionMapper.toQuestion(newQuestionDTO);
+          TextInputQuestion newTIQuestion = (TextInputQuestion) questionMapper.toDAO(newQuestionDTO);
           newTIQuestion.setQuestionId(oldTIQuestion.getQuestionId());
 
           // Delete the old question and save the new one

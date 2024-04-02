@@ -50,7 +50,7 @@ public class QuizMapper {
         // Map the questions to QuestionDTO objects
         List<QuestionDTO> questionDTOs = new ArrayList<>();
         for (Question question : questions) {
-          questionDTOs.add(questionMapper.toQuestionDTO(question));
+          questionDTOs.add(questionMapper.toDTO(question));
         }
         quizDTO.setQuestions(questionDTOs);
 
