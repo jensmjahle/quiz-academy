@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import QuizList from '../components/QuizList.vue'; // Adjust the path accordingly
+import QuizList from "../components/QuizList.vue"; // Adjust the path accordingly
 </script>
 
 <style scoped>
