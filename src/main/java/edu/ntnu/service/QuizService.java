@@ -11,6 +11,8 @@ import edu.ntnu.model.Tag;
 import edu.ntnu.model.User;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
 import edu.ntnu.model.questions.TextInputQuestion;
+import edu.ntnu.repository.TagRepository;
+import edu.ntnu.repository.UserRepository;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
 import java.util.ArrayList;
@@ -30,16 +32,20 @@ public class QuizService {
   private final MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
   private final TextInputQuestionRepository textInputQuestionRepository;
   private final UserService userService;
+  private final UserRepository userRepository;
+  private final TagRepository tagRepository;
   private final ModelMapper modelMapper = new ModelMapper();
 
   private final Logger logger = Logger.getLogger(QuizService.class.getName());
 
   @Autowired
-  public QuizService(QuizRepository quizRepository, MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository, UserService userService) {
+  public QuizService(QuizRepository quizRepository, MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository, UserService userService, UserRepository userRepository, TagRepository tagRepository) {
     this.quizRepository = quizRepository;
     this.multipleChoiceQuestionRepository = multipleChoiceQuestionRepository;
     this.textInputQuestionRepository = textInputQuestionRepository;
     this.userService = userService;
+    this.userRepository = userRepository;
+    this.tagRepository = tagRepository;
   }
 
   public ResponseEntity<QuizDTO> getQuiz(Long quizId) {
@@ -154,10 +160,33 @@ public class QuizService {
   public ResponseEntity<QuizDTO> createQuiz(QuizDTO quizDTO) {
     try {
       // Map DTO to entity
-      Quiz quiz = modelMapper.map(quizDTO, Quiz.class);
+      Quiz quiz = new Quiz();
+      quiz.setQuizName(quizDTO.getQuizName());
+      quiz.setQuizDescription(quizDTO.getQuizDescription());
+      quiz.setQuizCreationDate(quizDTO.getQuizCreationDate());
+
+      // Set tags to empty list
+      quiz.setTags(new ArrayList<>());
+      if (quizDTO.getTags() == null) {
+        logger.warning("No tags found for quiz with title " + quiz.getQuizName() + ". Quiz created without tags.");
+      } else {
+        for (TagDTO tagDTO : quizDTO.getTags()) {
+           try {
+              Tag tagExist = tagRepository.findByTagId(tagDTO.getTagId());
+              if (tagExist == null) {
+                throw new Exception("Tag not found in database.");
+              }
+             Tag tag = modelMapper.map(tagDTO, Tag.class);
+             quiz.addTag(tag);
+             logger.info("Tag \"" + tagDTO.getTagName() + "\" added to quiz.");
+           } catch (Exception e) {
+              logger.warning("Something went wrong with tag \"" + tagDTO.getTagName() + "\". Not adding tag to quiz." + e.getMessage());
+           }
+        }
+      }
 
       // Retrieve and set user from database
-      User user = modelMapper.map(userService.getUserByUsername(quizDTO.getUser()).getBody(), User.class);
+      User user = userRepository.findByUsername(quizDTO.getUser());
       quiz.setUser(user);
 
       // Save quiz to database
