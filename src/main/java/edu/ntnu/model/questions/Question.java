@@ -58,6 +58,10 @@ public abstract class Question {
     this.quiz = new Quiz();
     this.quiz.setQuizId(quizId);
   }
+
+  public void setQuestionId(Long questionId) {
+    this.questionId = questionId;
+  }
 }
 
 
