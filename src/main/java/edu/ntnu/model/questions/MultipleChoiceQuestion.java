@@ -10,56 +10,39 @@ import javax.persistence.Entity;
 @Entity
 public class MultipleChoiceQuestion extends Question {
 
+  //alternatives seperated by '*': "dog*cat*milk"
   @Column(nullable = false)
-  private String alternative1;
-  private String alternative2;
-  private String alternative3;
-  private String alternative4;
+  private String alternatives;
+
+  //correct alternatives seperated by '*': "cat*feline*kitty*pussycat"
   @Column(nullable = false)
-  private String correctAlternative;
+  private String correctAlternatives;
 
   public MultipleChoiceQuestion() {
   }
 
-
-  public String getCorrectAlternative() {
-    return correctAlternative;
+  public MultipleChoiceQuestion(Long questionId, String questionText, Long quizId, String s, String s1) {
+super(questionId, questionText, quizId);
+    this.alternatives = s;
+    this.correctAlternatives = s1;
   }
 
 
-  public void setCorrectAlternative(String newCorrectAlternative) {
-    this.correctAlternative = newCorrectAlternative;
+  public String getAlternatives() {
+    return alternatives;
   }
 
-  public void setAlternative1(String s) {
-    this.alternative1 = s;
+  public void setAlternatives(String alternatives) {
+    this.alternatives = alternatives;
   }
 
-  public String getAlternative1() {
-    return alternative1;
+  public String getCorrectAlternatives() {
+    return correctAlternatives;
   }
 
-  public void setAlternative2(String s) {
-    this.alternative2 = s;
+
+  public void setCorrectAlternatives(String newCorrectAlternative) {
+    this.correctAlternatives = newCorrectAlternative;
   }
 
-  public String getAlternative2() {
-    return alternative2;
-  }
-
-  public void setAlternative3(String s) {
-    this.alternative3 = s;
-  }
-
-  public String getAlternative3() {
-    return alternative3;
-  }
-
-  public void setAlternative4(String s) {
-    this.alternative4 = s;
-  }
-
-  public String getAlternative4() {
-    return alternative4;
-  }
 }
