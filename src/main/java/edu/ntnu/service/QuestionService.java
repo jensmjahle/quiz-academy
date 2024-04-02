@@ -67,8 +67,8 @@ public class QuestionService {
       // Identify the question type
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
 
-      // Convert the DTO to a DAO
-      Question question = questionMapper.toDAO(questionDTO);
+      // Convert the DTO to a DAO. The DAO will not have an id, as it is a new question
+      Question question = questionMapper.toDAOWithoutId(questionDTO);
 
       // Save the question to the correct repository
       switch (questionType) {

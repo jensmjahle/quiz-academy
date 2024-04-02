@@ -2,10 +2,15 @@ package edu.ntnu.mapper;
 
 import edu.ntnu.dto.TagDTO;
 import edu.ntnu.model.Tag;
+import edu.ntnu.repository.TagRepository;
+import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TagMapper {
+
+
+
     public  TagDTO toTagDTO(Tag tag) {
         return new TagDTO(
             tag.getTagId(),
@@ -20,7 +25,10 @@ public class TagMapper {
     }
 
     public Tag toTagWithoutKey(TagDTO tagDTO) {
-        return new Tag(tagDTO.getTagName());
+        Tag tag = new Tag();
+        tag.setTagName(tagDTO.getTagName());
+        return tag;
     }
+
 
 }

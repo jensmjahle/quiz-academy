@@ -104,41 +104,36 @@ public class QuestionMapper {
    * @return The QuestionDAO without an ID
    */
   public Question toDAOWithoutId(QuestionDTO questionDTO) {
-      Long questionId = questionDTO.getQuestionId();
       String questionText = questionDTO.getQuestionText();
       Long quizId = questionDTO.getQuizId();
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
 
       switch (questionType) {
         case MULTIPLE_CHOICE:
-          return new MultipleChoiceQuestion(
-              questionId,
-              questionText,
-              quizId,
-              joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getAlternatives()),
-              joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getCorrectAlternatives())
-          );
+          MultipleChoiceQuestion mcq = new MultipleChoiceQuestion();
+          mcq.setQuestionText(questionText);
+          mcq.setQuizId(quizId);
+          mcq.setAlternatives(joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getAlternatives()));
+          mcq.setCorrectAlternatives(joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getCorrectAlternatives()));
+          return mcq;
         case TEXT_INPUT:
-          return new TextInputQuestion(
-              questionId,
-              questionText,
-              quizId,
-              joinListToString(((TextInputQuestionDTO) questionDTO).getAnswers())
-          );
+          TextInputQuestion tiq = new TextInputQuestion();
+          tiq.setQuestionText(questionText);
+          tiq.setQuizId(quizId);
+          tiq.setAnswer(joinListToString(((TextInputQuestionDTO) questionDTO).getAnswers()));
+          return tiq;
         case DRAG_AND_DROP:
-          return new DragDropQuestionDAO(
-              questionId,
-              questionText,
-              quizId,
-              mapCategoriesToString(((DragDropQuestionDTO) questionDTO).getCategories())
-          );
+          DragDropQuestionDAO ddq = new DragDropQuestionDAO();
+          ddq.setQuestionText(questionText);
+          ddq.setQuizId(quizId);
+          ddq.setCategories(mapCategoriesToString(((DragDropQuestionDTO) questionDTO).getCategories()));
+          return ddq;
         case TRUE_FALSE:
-          return new TrueFalseQuestionDAO(
-              questionId,
-              questionText,
-              quizId,
-              ((TrueFalseQuestionDTO) questionDTO).isCorrectAnswer()
-          );
+          TrueFalseQuestionDAO tfq = new TrueFalseQuestionDAO();
+          tfq.setQuestionText(questionText);
+          tfq.setQuizId(quizId);
+          tfq.setCorrectAnswer(((TrueFalseQuestionDTO) questionDTO).isCorrectAnswer());
+          return tfq;
         default:
           throw new IllegalArgumentException("Unknown question type. Cannot convert to model");
     }

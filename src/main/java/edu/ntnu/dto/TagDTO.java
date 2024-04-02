@@ -28,4 +28,11 @@ public class TagDTO {
     this.tagName = tagName;
   }
 
+  @Override
+  public String toString() {
+    return "TagDTO{" +
+        "tagId=" + tagId +
+        ", tagName='" + tagName + '\'' +
+        '}';
+  }
 }

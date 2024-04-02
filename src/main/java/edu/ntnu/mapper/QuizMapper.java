@@ -1,9 +1,12 @@
 package edu.ntnu.mapper;
 
 import edu.ntnu.dto.QuizDTO;
+import edu.ntnu.dto.TagDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.model.Quiz;
+import edu.ntnu.model.Tag;
 import edu.ntnu.model.questions.Question;
+import edu.ntnu.repository.TagRepository;
 import edu.ntnu.service.QuestionService;
 import edu.ntnu.service.UserService;
 import java.util.ArrayList;
@@ -19,18 +22,26 @@ public class QuizMapper {
   private final UserService userService;
   private final QuestionService questionService;
   private final QuestionMapper questionMapper;
+  private final TagRepository tagRepository;
   private final TagMapper tagMapper;
 
 
   @Autowired
-  public QuizMapper(UserService userService, TagMapper tagMapper, QuestionService questionService, QuestionMapper questionMapper) {
+  public QuizMapper(
+      UserService userService,
+      TagMapper tagMapper,
+      QuestionService questionService,
+      TagRepository tagRepository,
+      QuestionMapper questionMapper) {
     this.userService = userService;
     this.questionService = questionService;
     this.tagMapper = tagMapper;
+    this.tagRepository = tagRepository;
     this.questionMapper = questionMapper;
   }
 
     public QuizDTO toQuizDTOWithoutQuestions(Quiz quiz) {
+    try {
         QuizDTO quizDTO = new QuizDTO();
         quizDTO.setQuizId(quiz.getQuizId());
         quizDTO.setQuizName(quiz.getQuizName());
@@ -39,6 +50,10 @@ public class QuizMapper {
         quizDTO.setTags(quiz.getTags().stream().map(tagMapper::toTagDTO).collect(Collectors.toList()));
         quizDTO.setQuizCreationDate(quiz.getQuizCreationDate());
         return quizDTO;
+    } catch (Exception e) {
+        logger.warning("Failed to map quiz with id " + quiz.getQuizId() + " to QuizDTO.");
+        throw e;
+    }
     }
 
     public QuizDTO toQuizDTO(Quiz quiz) {
@@ -64,8 +79,12 @@ public class QuizMapper {
         quiz.setQuizCreationDate(quizDTO.getQuizCreationDate());
 
         // Map tagDTOs to Tag objects
-        if (quizDTO.getTags() != null) {
-            quiz.setTags(quizDTO.getTags().stream().map(tagMapper::toTag).collect(Collectors.toList()));
+      List <TagDTO> tags = quizDTO.getTags();
+        if (tags != null && !tags.isEmpty()) {
+          for (TagDTO tagDTO : tags) {
+            Tag tag = tagMapper.toTag(tagDTO);
+            quiz.addTag(tag);
+          }
         } else {
             quiz.setTags(null);
             logger.warning("No tags found for quiz with id " + quizDTO.getQuizId() + ". Setting tags to null.");

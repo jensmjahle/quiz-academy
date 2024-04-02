@@ -16,7 +16,10 @@ import edu.ntnu.repository.questions.TrueFalseQuestionDAORepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -99,19 +102,28 @@ public class QuizService {
       Quiz quiz = quizMapper.toQuizWithoutId(quizDTO);
 
       // Save quiz to database
-      Quiz savedQuiz = quizRepository.save(quiz);
+       Quiz savedQuiz = quizRepository.save(quiz);
+
 
       // Save questions associated with the quiz to the database
       List<QuestionDTO> questions = quizDTO.getQuestions();
       if (questions != null) {
         for (QuestionDTO questionDTO : questions) {
+          questionDTO.setQuizId(savedQuiz.getQuizId());
           questionService.createQuestion(questionDTO);
         }
+        logger.info("Questions to quiz " + savedQuiz.getQuizName() + " saved to database.");
       }
 
       logger.info("Quiz \"" + quiz.getQuizName() + "\" created successfully.");
-      return ResponseEntity.ok(quizMapper.toQuizDTO(savedQuiz));
+      QuizDTO savedQuizDTO = quizMapper.toQuizDTO(savedQuiz);
+      return ResponseEntity.ok(savedQuizDTO);
+    } catch (DataIntegrityViolationException e) {
+      logger.severe("Data integrity violation occurred while creating quiz: " + e.getMessage());
+      logger.severe("One or more fields in the quiz are invalid.");
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     } catch (Exception e) {
+      System.out.println(e.getClass().getSimpleName());
       logger.severe("An error occurred while creating quiz: " + e.getMessage());
       return ResponseEntity.status(500).build();
     }
