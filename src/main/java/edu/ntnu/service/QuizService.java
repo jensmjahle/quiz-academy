@@ -1,5 +1,7 @@
 package edu.ntnu.service;
 
+import edu.ntnu.dao.questions.DragDropQuestionDAO;
+import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
 import edu.ntnu.dto.QuizDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.mapper.QuizMapper;
@@ -7,8 +9,10 @@ import edu.ntnu.model.Quiz;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
 import edu.ntnu.model.questions.TextInputQuestion;
 import edu.ntnu.repository.QuizRepository;
+import edu.ntnu.repository.questions.DragDropQuestionDAORepository;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
+import edu.ntnu.repository.questions.TrueFalseQuestionDAORepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -19,8 +23,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuizService {
   private final QuizRepository quizRepository;
-  private final MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
-  private final TextInputQuestionRepository textInputQuestionRepository;
+  private final MultipleChoiceQuestionRepository multipleChoiceRepository;
+  private final TextInputQuestionRepository textInputRepository;
+  private final DragDropQuestionDAORepository dragDropRepository;
+  private final TrueFalseQuestionDAORepository trueFalseRepository;
   private final QuestionService questionService;
   private final QuizMapper quizMapper;
   private final Logger logger = Logger.getLogger(QuizService.class.getName());
@@ -28,14 +34,18 @@ public class QuizService {
   @Autowired
   public QuizService(
       QuizRepository quizRepository,
-      MultipleChoiceQuestionRepository multipleChoiceQuestionRepository,
-      TextInputQuestionRepository textInputQuestionRepository,
+      MultipleChoiceQuestionRepository multipleChoiceRepository,
+      TextInputQuestionRepository textInputRepository,
+      DragDropQuestionDAORepository dragDropRepository,
+      TrueFalseQuestionDAORepository trueFalseRepository,
       QuizMapper quizMapper,
       QuestionService questionService)
   {
     this.quizRepository = quizRepository;
-    this.multipleChoiceQuestionRepository = multipleChoiceQuestionRepository;
-    this.textInputQuestionRepository = textInputQuestionRepository;
+    this.multipleChoiceRepository = multipleChoiceRepository;
+    this.textInputRepository = textInputRepository;
+    this.dragDropRepository = dragDropRepository;
+    this.trueFalseRepository = trueFalseRepository;
     this.quizMapper = quizMapper;
     this.questionService = questionService;
   }
@@ -63,8 +73,8 @@ public class QuizService {
       // Get all quizzes from the database
       Iterable<Quiz> quizzes = quizRepository.findAllByUser_Username(username);
 
+      // Convert quizzes to DTOs
       if (quizzes != null) {
-        // Convert quizzes to DTOs
         List<QuizDTO> quizDTOs = new ArrayList<>();
         for (Quiz quiz : quizzes) {
           quizDTOs.add(quizMapper.toQuizDTO(quiz));
@@ -121,14 +131,22 @@ public class QuizService {
   public void deleteQuizFromQuizId(Long quizId) {
     try {
       // Delete questions associated with the quiz
-      List<MultipleChoiceQuestion> multipleChoiceQuestions = (List<MultipleChoiceQuestion>) multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quizId);
-      List<TextInputQuestion> textInputQuestions = (List<TextInputQuestion>) textInputQuestionRepository.findAllByQuiz_QuizId(quizId);
+      List<MultipleChoiceQuestion> multipleChoiceQuestions = (List<MultipleChoiceQuestion>) multipleChoiceRepository.findAllByQuiz_QuizId(quizId);
+      List<TextInputQuestion> textInputQuestions = (List<TextInputQuestion>) textInputRepository.findAllByQuiz_QuizId(quizId);
+      List<DragDropQuestionDAO> dragDropQuestions = (List<DragDropQuestionDAO>) dragDropRepository.findAllByQuiz_QuizId(quizId);
+      List<TrueFalseQuestionDAO> trueFalseQuestions = (List<TrueFalseQuestionDAO>) trueFalseRepository.findAllByQuiz_QuizId(quizId);
 
       if (multipleChoiceQuestions != null) {
-        multipleChoiceQuestionRepository.deleteAll(multipleChoiceQuestions);
+        multipleChoiceRepository.deleteAll(multipleChoiceQuestions);
       }
       if (textInputQuestions != null) {
-        textInputQuestionRepository.deleteAll(textInputQuestions);
+        textInputRepository.deleteAll(textInputQuestions);
+      }
+      if (dragDropQuestions != null) {
+        dragDropRepository.deleteAll(dragDropQuestions);
+      }
+      if (trueFalseQuestions != null) {
+        trueFalseRepository.deleteAll(trueFalseQuestions);
       }
 
       // Delete quiz

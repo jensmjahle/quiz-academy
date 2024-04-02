@@ -42,20 +42,4 @@ public class QuestionTypeIdentifier {
     }
   }
 
-  public static QuestionType indentifyQuestionTypeFromString(String questionType) {
-    switch (questionType) {
-      case "MULTIPLE_CHOICE":
-        return QuestionType.MULTIPLE_CHOICE;
-      case "TEXT_INPUT":
-        return QuestionType.TEXT_INPUT;
-      case "DRAG_AND_DROP":
-        return QuestionType.DRAG_AND_DROP;
-      case "TRUE_FALSE":
-        return QuestionType.TRUE_FALSE;
-      default:
-        throw new IllegalArgumentException("Unknown question type");
-    }
-  }
-
-
 }
