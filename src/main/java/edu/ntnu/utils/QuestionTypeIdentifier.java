@@ -10,7 +10,7 @@ import edu.ntnu.model.questions.TextInputQuestion;
 
 public class QuestionTypeIdentifier {
 
-  QuestionType identifyQuestionType(Question question) {
+  public static QuestionType identifyQuestionType(Question question) {
     if (question instanceof MultipleChoiceQuestion) {
       return QuestionType.MULTIPLE_CHOICE;
     } else if (question instanceof TextInputQuestion) {
@@ -30,7 +30,7 @@ public class QuestionTypeIdentifier {
     }
   }
 
-  QuestionType indentifyQuestionTypeFromString(String questionType) {
+  public static QuestionType indentifyQuestionTypeFromString(String questionType) {
     switch (questionType) {
       case "MULTIPLE_CHOICE":
         return QuestionType.MULTIPLE_CHOICE;

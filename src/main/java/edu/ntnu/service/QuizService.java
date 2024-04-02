@@ -1,59 +1,49 @@
 package edu.ntnu.service;
 
 import edu.ntnu.dto.QuizDTO;
-import edu.ntnu.dto.TagDTO;
-import edu.ntnu.dto.UserDTO;
-import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
-import edu.ntnu.dto.questions.TextInputQuestionDTO;
+import edu.ntnu.mapper.QuizMapper;
 import edu.ntnu.model.Quiz;
-import edu.ntnu.model.Tag;
-import edu.ntnu.model.User;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
 import edu.ntnu.model.questions.TextInputQuestion;
-import edu.ntnu.repository.TagRepository;
-import edu.ntnu.repository.UserRepository;
+import edu.ntnu.repository.QuizRepository;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import edu.ntnu.repository.QuizRepository;
 
 @Service
 public class QuizService {
-
   private final QuizRepository quizRepository;
   private final MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
   private final TextInputQuestionRepository textInputQuestionRepository;
-  private final UserService userService;
-  private final UserRepository userRepository;
-  private final TagRepository tagRepository;
-  private final ModelMapper modelMapper = new ModelMapper();
-
+  private final QuestionService questionService;
+  private final QuizMapper quizMapper;
   private final Logger logger = Logger.getLogger(QuizService.class.getName());
 
   @Autowired
-  public QuizService(QuizRepository quizRepository, MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository, UserService userService, UserRepository userRepository, TagRepository tagRepository) {
+  public QuizService(
+      QuizRepository quizRepository,
+      MultipleChoiceQuestionRepository multipleChoiceQuestionRepository,
+      TextInputQuestionRepository textInputQuestionRepository,
+      QuizMapper quizMapper,
+      QuestionService questionService)
+  {
     this.quizRepository = quizRepository;
     this.multipleChoiceQuestionRepository = multipleChoiceQuestionRepository;
     this.textInputQuestionRepository = textInputQuestionRepository;
-    this.userService = userService;
-    this.userRepository = userRepository;
-    this.tagRepository = tagRepository;
+    this.quizMapper = quizMapper;
+    this.questionService = questionService;
   }
 
   public ResponseEntity<QuizDTO> getQuiz(Long quizId) {
    try {
-    logger.info("Received request for quiz with id: " + quizId);
     Quiz quiz = quizRepository.findByQuizId(quizId);
-    QuizDTO quizDTO = modelMapper.map(quiz, QuizDTO.class);
-
+    QuizDTO quizDTO = quizMapper.toQuizDTO(quiz);
 
     if (quizDTO != null) {
       logger.info("Quiz with id " + quizId + " found. Returning quiz.");
@@ -70,15 +60,17 @@ public class QuizService {
 
   public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes(String username) {
     try {
-      logger.info("Received request for all quizzes from user: " + username);
-
+      // Get all quizzes from the database
       Iterable<Quiz> quizzes = quizRepository.findAllByUser_Username(username);
+
       if (quizzes != null) {
-
         // Convert quizzes to DTOs
-        Iterable<QuizDTO> quizDTOs = mapQuizzesToDTO(quizzes);
+        List<QuizDTO> quizDTOs = new ArrayList<>();
+        for (Quiz quiz : quizzes) {
+          quizDTOs.add(quizMapper.toQuizDTO(quiz));
+        }
 
-        int numQuizzes = ((List<QuizDTO>) quizDTOs).size();
+        int numQuizzes = quizDTOs.size();
         logger.info(numQuizzes + " quizzes found. Returning quizzes.");
         return ResponseEntity.ok(quizDTOs);
       } else {
@@ -91,129 +83,24 @@ public class QuizService {
     }
   }
 
-  /**
-   * Maps a Quiz object to a QuizDTO object.
-   * Includes tags and questions that are associated with the quiz.
-   * Questions and tags are retrieved from the database and added to the DTO.
-   *
-   * @param quizzes The quizzes to map to DTOs.
-   * @return A list of QuizDTOs.
-   */
-  private List<QuizDTO> mapQuizzesToDTO(Iterable<Quiz> quizzes) {
-    try {
-      List<QuizDTO> quizDTOs = new ArrayList<>();
-
-      for (Quiz quiz : quizzes) {
-        QuizDTO quizDTO = new QuizDTO(
-            quiz.getQuizId(),
-            quiz.getQuizName(),
-            quiz.getQuizDescription(),
-            quiz.getUser().getUsername(),
-            new ArrayList<>(),
-            quiz.getQuizCreationDate(),
-            new ArrayList<>()
-        );
-
-
-        // Add tags to the DTO //
-        Iterable<Tag> quizTags = quizRepository.findAllTagsByQuizId(quiz.getQuizId());
-        if (quizTags != null) {
-          List<TagDTO> tags = new ArrayList<>();
-          for (Tag tag : quizTags) {
-            TagDTO tagDTO = modelMapper.map(tag, TagDTO.class);
-            tags.add(tagDTO);
-          }
-          quizDTO.setTags(tags);
-        }
-
-
-        // Add questions to the DTO //
-        List<MultipleChoiceQuestion> multipleChoiceQuestions = (List<MultipleChoiceQuestion>) multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quiz.getQuizId());
-        List<TextInputQuestion> textInputQuestions = (List<TextInputQuestion>) textInputQuestionRepository.findAllByQuiz_QuizId(quiz.getQuizId());
-
-        // MultipleChoiceQuestion
-        if (multipleChoiceQuestions != null) {
-          for (MultipleChoiceQuestion multipleChoiceQuestion : multipleChoiceQuestions) {
-            MultipleChoiceQuestionDTO multipleChoiceQuestionDTO = QuestionService.convertToMultipleChoiceQuestionDTO(multipleChoiceQuestion);
-            quizDTO.addQuestion(multipleChoiceQuestionDTO);
-          }
-        }
-
-        // TextInputQuestion
-        if (textInputQuestions != null) {
-          for (TextInputQuestion textInputQuestion : textInputQuestions) {
-            TextInputQuestionDTO textInputQuestionDTO = QuestionService.convertToTextInputQuestionDTO(textInputQuestion);
-            quizDTO.addQuestion(textInputQuestionDTO);
-          }
-        }
-
-        quizDTOs.add(quizDTO);
-      }
-      return quizDTOs;
-    } catch (Exception e) {
-      logger.severe("An error occurred while mapping quizzes to DTOs: " + e.getMessage());
-      throw e;
-    }
-    }
-
-
   public ResponseEntity<QuizDTO> createQuiz(QuizDTO quizDTO) {
     try {
-      // Map DTO to entity
-      Quiz quiz = new Quiz();
-      quiz.setQuizName(quizDTO.getQuizName());
-      quiz.setQuizDescription(quizDTO.getQuizDescription());
-      quiz.setQuizCreationDate(quizDTO.getQuizCreationDate());
-
-      // Set tags to empty list
-      quiz.setTags(new ArrayList<>());
-      if (quizDTO.getTags() == null) {
-        logger.warning("No tags found for quiz with title " + quiz.getQuizName() + ". Quiz created without tags.");
-      } else {
-        for (TagDTO tagDTO : quizDTO.getTags()) {
-           try {
-              Tag tagExist = tagRepository.findByTagId(tagDTO.getTagId());
-              if (tagExist == null) {
-                throw new Exception("Tag not found in database.");
-              }
-             Tag tag = modelMapper.map(tagDTO, Tag.class);
-             quiz.addTag(tag);
-             logger.info("Tag \"" + tagDTO.getTagName() + "\" added to quiz.");
-           } catch (Exception e) {
-              logger.warning("Something went wrong with tag \"" + tagDTO.getTagName() + "\". Not adding tag to quiz." + e.getMessage());
-           }
-        }
-      }
-
-      // Retrieve and set user from database
-      User user = userRepository.findByUsername(quizDTO.getUser());
-      quiz.setUser(user);
+      // Map DTO to entity without ID. ID is generated by database.
+      Quiz quiz = quizMapper.toQuizWithoutId(quizDTO);
 
       // Save quiz to database
       Quiz savedQuiz = quizRepository.save(quiz);
 
-      // Save questions to database
+      // Save questions associated with the quiz to the database
       List<QuestionDTO> questions = quizDTO.getQuestions();
-      if (questions == null) {
-        logger.warning("No questions found for quiz with title " + savedQuiz.getQuizName() + ". Quiz created without questions.");
-      } else {
-        for (QuestionDTO question : questions) {
-          if (question instanceof MultipleChoiceQuestionDTO) {
-            MultipleChoiceQuestion multipleChoiceQuestion = QuestionService.convertToMultipleChoiceQuestion(
-                (MultipleChoiceQuestionDTO) question);
-            multipleChoiceQuestion.setQuizId(savedQuiz.getQuizId());
-            multipleChoiceQuestionRepository.save(multipleChoiceQuestion);
-          } else if (question instanceof TextInputQuestionDTO) {
-            TextInputQuestion textInputQuestion = QuestionService.convertToTextInputQuestion(
-                (TextInputQuestionDTO) question);
-            textInputQuestion.setQuizId(savedQuiz.getQuizId());
-            textInputQuestionRepository.save(textInputQuestion);
-          }
+      if (questions != null) {
+        for (QuestionDTO questionDTO : questions) {
+          questionService.createQuestion(questionDTO);
         }
       }
 
       logger.info("Quiz \"" + quiz.getQuizName() + "\" created successfully.");
-      return ResponseEntity.ok(modelMapper.map(savedQuiz, QuizDTO.class));
+      return ResponseEntity.ok(quizMapper.toQuizDTO(savedQuiz));
     } catch (Exception e) {
       logger.severe("An error occurred while creating quiz: " + e.getMessage());
       return ResponseEntity.status(500).build();
@@ -222,7 +109,17 @@ public class QuizService {
 
   public ResponseEntity<String> deleteQuiz(Long quizId) {
     try {
+      deleteQuizFromQuizId(quizId);
+      logger.info("Quiz with id " + quizId + " deleted successfully.");
+      return ResponseEntity.ok("Quiz deleted successfully.");
+    } catch (Exception e) {
+      logger.severe("An error occurred while deleting quiz with id " + quizId + ": " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
 
+  public void deleteQuizFromQuizId(Long quizId) {
+    try {
       // Delete questions associated with the quiz
       List<MultipleChoiceQuestion> multipleChoiceQuestions = (List<MultipleChoiceQuestion>) multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quizId);
       List<TextInputQuestion> textInputQuestions = (List<TextInputQuestion>) textInputQuestionRepository.findAllByQuiz_QuizId(quizId);
@@ -230,18 +127,15 @@ public class QuizService {
       if (multipleChoiceQuestions != null) {
         multipleChoiceQuestionRepository.deleteAll(multipleChoiceQuestions);
       }
-
       if (textInputQuestions != null) {
         textInputQuestionRepository.deleteAll(textInputQuestions);
       }
 
       // Delete quiz
       quizRepository.deleteByQuizId(quizId);
-      logger.info("Quiz with id " + quizId + " deleted successfully.");
-      return ResponseEntity.ok("Quiz deleted successfully.");
     } catch (Exception e) {
       logger.severe("An error occurred while deleting quiz with id " + quizId + ": " + e.getMessage());
-      return ResponseEntity.status(500).build();
+      throw e;
     }
   }
 }
