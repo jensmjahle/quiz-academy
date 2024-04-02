@@ -3,7 +3,6 @@ package edu.ntnu.dto.questions;
 public abstract class QuestionDTO {
   private Long questionId;
   private String questionText;
-
   private Long quizId;
 
   public QuestionDTO() {
@@ -47,4 +46,5 @@ public abstract class QuestionDTO {
         ", quizId=" + quizId +
         '}';
   }
+
 }

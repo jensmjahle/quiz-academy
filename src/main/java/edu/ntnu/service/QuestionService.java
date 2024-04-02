@@ -1,18 +1,22 @@
 package edu.ntnu.service;
 
 import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
+import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.dto.questions.TextInputQuestionDTO;
+import edu.ntnu.enums.QuestionType;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
 import edu.ntnu.model.questions.TextInputQuestion;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
 import edu.ntnu.repository.questions.QuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
+import edu.ntnu.utils.QuestionTypeIdentifier;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -31,21 +35,23 @@ public class QuestionService {
 
   public void deleteMultipleChoiceQuestion(Long questionId) {
     try {
-      logger.info("Received request to delete multiple choice question with id: " + questionId);
-      multipleChoiceQuestionRepository.deleteById(questionId);
+      MultipleChoiceQuestion multipleChoiceQuestion = multipleChoiceQuestionRepository.findByQuestionId(questionId);
+      multipleChoiceQuestionRepository.delete(multipleChoiceQuestion);
       logger.info("Multiple choice question with id " + questionId + " deleted.");
     } catch (Exception e) {
       logger.severe("An error occurred while deleting multiple choice question with id " + questionId + ": " + e.getMessage());
+      throw e;
     }
   }
 
   public void deleteTextInputQuestion(Long questionId) {
     try {
-      logger.info("Received request to delete text input question with id: " + questionId);
-      textInputQuestionRepository.deleteById(questionId);
+      TextInputQuestion textInputQuestion = textInputQuestionRepository.findByQuestionId(questionId);
+      textInputQuestionRepository.delete(textInputQuestion);
       logger.info("Text input question with id " + questionId + " deleted.");
     } catch (Exception e) {
       logger.severe("An error occurred while deleting text input question with id " + questionId + ": " + e.getMessage());
+      throw e;
     }
   }
 
@@ -124,4 +130,97 @@ public class QuestionService {
     return Arrays.asList(parts);
   }
 
+  public ResponseEntity<QuestionDTO> getQuestion(Long questionId) {
+    MultipleChoiceQuestion multipleChoiceQuestion = multipleChoiceQuestionRepository.findByQuestionId(questionId);
+    TextInputQuestion textInputQuestion = textInputQuestionRepository.findByQuestionId(questionId);
+
+    // Check if the question was found in the multipleChoiceQuestion table
+    if (multipleChoiceQuestion != null) {
+      return ResponseEntity.ok(convertToMultipleChoiceQuestionDTO(multipleChoiceQuestion));
+    }
+    // Check if the question was found in the textInputQuestion table
+    else if (textInputQuestion != null) {
+      return ResponseEntity.ok(convertToTextInputQuestionDTO(textInputQuestion));
+    }
+    else {
+      return ResponseEntity.notFound().build();
+    }
+
+  }
+
+  public ResponseEntity<QuestionDTO> createQuestion(QuestionDTO questionDTO) {
+    try {
+      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
+
+      switch (questionType) {
+        case MULTIPLE_CHOICE:
+          saveMultipleChoiceQuestion((MultipleChoiceQuestionDTO) questionDTO);
+          break;
+        case TEXT_INPUT:
+          saveTextInputQuestion((TextInputQuestionDTO) questionDTO);
+          break;
+        default:
+          return ResponseEntity.notFound().build();
+      }
+
+      return ResponseEntity.ok(questionDTO);
+    } catch (Exception e) {
+      logger.severe("An error occurred while creating question: " + e.getMessage());
+      return ResponseEntity.status(500).build();
+  }
+}
+
+  public ResponseEntity<String> deleteQuestion(Long questionId, String questionType) {
+    try {
+      switch (questionType) {
+        case "MULTIPLE_CHOICE":
+          deleteMultipleChoiceQuestion(questionId);
+          break;
+        case "TEXT_INPUT":
+          deleteTextInputQuestion(questionId);
+          break;
+        default:
+          return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.ok("Question deleted successfully.");
+
+    } catch (Exception e) {
+      logger.severe("An error occurred while deleting question with id " + questionId + ": "
+          + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
+
+  public ResponseEntity<String> updateQuestion(Long questionId, QuestionDTO questionDTO) {
+    try {
+      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
+
+      switch (questionType) {
+        case MULTIPLE_CHOICE:
+          MultipleChoiceQuestion oldMCQuestion = multipleChoiceQuestionRepository.findByQuestionId(questionId);
+          MultipleChoiceQuestion newMCQuestion = convertToMultipleChoiceQuestion((MultipleChoiceQuestionDTO) questionDTO);
+          newMCQuestion.setQuestionId(oldMCQuestion.getQuestionId());
+
+          // Delete the old question and save the new one
+          multipleChoiceQuestionRepository.delete(oldMCQuestion);
+          multipleChoiceQuestionRepository.save(newMCQuestion);
+          break;
+        case TEXT_INPUT:
+          TextInputQuestion oldTIQuestion = textInputQuestionRepository.findByQuestionId(questionId);
+          TextInputQuestion newTIQuestion = convertToTextInputQuestion((TextInputQuestionDTO) questionDTO);
+          newTIQuestion.setQuestionId(oldTIQuestion.getQuestionId());
+
+          // Delete the old question and save the new one
+          textInputQuestionRepository.delete(oldTIQuestion);
+          textInputQuestionRepository.save(newTIQuestion);
+          break;
+        default:
+          return ResponseEntity.notFound().build();
+      }
+    } catch (Exception e) {
+      logger.severe("An error occurred while updating question with id " + questionId + ": " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+    return ResponseEntity.ok("Question updated successfully.");
+  }
 }
