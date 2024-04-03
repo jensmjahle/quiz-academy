@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.SequenceGenerator;
@@ -27,6 +28,10 @@ public abstract class QuestionDAO {
   @ManyToOne
   @JoinColumn(name = "quizId")
   private QuizDAO quizDAO;
+
+  @Lob
+  @Column(name = "image", nullable = true)
+  private byte[] questionImage;
 
   public QuestionDAO() {
   }
@@ -61,6 +66,14 @@ public abstract class QuestionDAO {
 
   public void setQuestionId(Long questionId) {
     this.questionId = questionId;
+  }
+
+  public byte[] getImage() {
+    return questionImage;
+  }
+
+  public void setImage(byte[] image) {
+    this.questionImage = image;
   }
 }
 
