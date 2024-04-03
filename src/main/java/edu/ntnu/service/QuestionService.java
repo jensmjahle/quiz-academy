@@ -1,13 +1,17 @@
 package edu.ntnu.service;
 
+import edu.ntnu.dao.questions.DragDropQuestionDAO;
+import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
 import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.enums.QuestionType;
 import edu.ntnu.mapper.QuestionMapper;
 import edu.ntnu.model.questions.MultipleChoiceQuestion;
 import edu.ntnu.model.questions.Question;
 import edu.ntnu.model.questions.TextInputQuestion;
+import edu.ntnu.repository.questions.DragDropQuestionDAORepository;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionRepository;
 import edu.ntnu.repository.questions.TextInputQuestionRepository;
+import edu.ntnu.repository.questions.TrueFalseQuestionDAORepository;
 import edu.ntnu.utils.QuestionTypeIdentifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,15 +23,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class QuestionService {
-  private final MultipleChoiceQuestionRepository multipleChoiceQuestionRepository;
-  private final TextInputQuestionRepository textInputQuestionRepository;
+  private final MultipleChoiceQuestionRepository multipleChoiceRepository;
+  private final TextInputQuestionRepository textInputRepository;
+  private final DragDropQuestionDAORepository dragDropRepository;
+  private final TrueFalseQuestionDAORepository trueFalseRepository;
+
   private final QuestionMapper questionMapper;
   private final Logger logger = Logger.getLogger(QuestionService.class.getName());
 
   @Autowired
-  public QuestionService(MultipleChoiceQuestionRepository multipleChoiceQuestionRepository, TextInputQuestionRepository textInputQuestionRepository, QuestionMapper questionMapper) {
-    this.multipleChoiceQuestionRepository = multipleChoiceQuestionRepository;
-    this.textInputQuestionRepository = textInputQuestionRepository;
+  public QuestionService(
+      MultipleChoiceQuestionRepository multipleChoiceRepository,
+      TextInputQuestionRepository textInputRepository,
+      DragDropQuestionDAORepository dragDropRepository,
+      TrueFalseQuestionDAORepository trueFalseRepository,
+      QuestionMapper questionMapper)
+  {
+    this.multipleChoiceRepository = multipleChoiceRepository;
+    this.textInputRepository = textInputRepository;
+    this.dragDropRepository = dragDropRepository;
+    this.trueFalseRepository = trueFalseRepository;
     this.questionMapper = questionMapper;
   }
 
@@ -38,13 +53,11 @@ public class QuestionService {
       Question question = getQuestionById(questionId);
 
       // Convert the question to a DTO
-      QuestionDTO questionDTO = questionMapper.toQuestionDTO(question);
+      QuestionDTO questionDTO = questionMapper.toDTO(question);
 
       return ResponseEntity.ok(questionDTO);
-
     } catch (Exception e) {
       logger.severe("An error occurred while getting question with id " + questionId + ": " + e.getMessage());
-
       return ResponseEntity.status(500).build();
     }
   }
@@ -54,20 +67,27 @@ public class QuestionService {
       // Identify the question type
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
 
-      // Convert the DTO to a model
-      Question question = questionMapper.toQuestion(questionDTO);
+      // Convert the DTO to a DAO. The DAO will not have an id, as it is a new question
+      Question question = questionMapper.toDAOWithoutId(questionDTO);
 
       // Save the question to the correct repository
       switch (questionType) {
         case MULTIPLE_CHOICE:
-          multipleChoiceQuestionRepository.save((MultipleChoiceQuestion) question);
+          multipleChoiceRepository.save((MultipleChoiceQuestion) question);
           break;
         case TEXT_INPUT:
-          textInputQuestionRepository.save((TextInputQuestion) question);
+          textInputRepository.save((TextInputQuestion) question);
+          break;
+        case DRAG_AND_DROP:
+          dragDropRepository.save((DragDropQuestionDAO) question);
+          break;
+        case TRUE_FALSE:
+          trueFalseRepository.save((TrueFalseQuestionDAO) question);
           break;
         default:
           return ResponseEntity.notFound().build();
       }
+
       return ResponseEntity.ok(questionDTO);
     } catch (Exception e) {
       logger.severe("An error occurred while creating question: " + e.getMessage());
@@ -75,20 +95,27 @@ public class QuestionService {
   }
 }
 
-  public ResponseEntity<String> deleteQuestion(Long questionId, String questionType) {
+  public ResponseEntity<String> deleteQuestion(Long questionId) {
     try {
-      // Identify the question type
-      QuestionType qType = QuestionTypeIdentifier.indentifyQuestionTypeFromString(questionType);
-
       // Get the question from the database
       Question question = getQuestionById(questionId);
 
+      // Identify the question type
+      QuestionType qType = QuestionTypeIdentifier.identifyQuestionType(question);
+
+
       switch (qType) {
         case MULTIPLE_CHOICE:
-          multipleChoiceQuestionRepository.delete(question);
+          multipleChoiceRepository.delete(question);
           break;
         case TEXT_INPUT:
-          textInputQuestionRepository.delete(question);
+          textInputRepository.delete(question);
+          break;
+        case DRAG_AND_DROP:
+          dragDropRepository.delete(question);
+          break;
+        case TRUE_FALSE:
+          trueFalseRepository.delete(question);
           break;
         default:
           return ResponseEntity.notFound().build();
@@ -101,68 +128,100 @@ public class QuestionService {
     }
   }
 
-  public ResponseEntity<String> updateQuestion(QuestionDTO newQuestionDTO) {
+  public ResponseEntity<String> updateQuestion(QuestionDTO newDTO) {
     try {
-      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(newQuestionDTO);
+      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(newDTO);
 
       switch (questionType) {
         case MULTIPLE_CHOICE:
-          MultipleChoiceQuestion oldMCQuestion = multipleChoiceQuestionRepository.findByQuestionId(newQuestionDTO.getQuestionId());
-          MultipleChoiceQuestion newMCQuestion = (MultipleChoiceQuestion) questionMapper.toQuestion(newQuestionDTO);
-          newMCQuestion.setQuestionId(oldMCQuestion.getQuestionId());
+          MultipleChoiceQuestion oldMCQuestion = multipleChoiceRepository.findByQuestionId(newDTO.getQuestionId());
+          MultipleChoiceQuestion newMCQuestion = (MultipleChoiceQuestion) questionMapper.toDAO(newDTO);
 
           // Delete the old question and save the new one
-          multipleChoiceQuestionRepository.delete(oldMCQuestion);
-          multipleChoiceQuestionRepository.save(newMCQuestion);
+          multipleChoiceRepository.delete(oldMCQuestion);
+          multipleChoiceRepository.save(newMCQuestion);
           break;
         case TEXT_INPUT:
-          TextInputQuestion oldTIQuestion = textInputQuestionRepository.findByQuestionId(newQuestionDTO.getQuestionId());
-          TextInputQuestion newTIQuestion = (TextInputQuestion) questionMapper.toQuestion(newQuestionDTO);
-          newTIQuestion.setQuestionId(oldTIQuestion.getQuestionId());
+          TextInputQuestion oldTIQuestion = textInputRepository.findByQuestionId(newDTO.getQuestionId());
+          TextInputQuestion newTIQuestion = (TextInputQuestion) questionMapper.toDAO(newDTO);
 
           // Delete the old question and save the new one
-          textInputQuestionRepository.delete(oldTIQuestion);
-          textInputQuestionRepository.save(newTIQuestion);
+          textInputRepository.delete(oldTIQuestion);
+          textInputRepository.save(newTIQuestion);
+          break;
+        case DRAG_AND_DROP:
+          DragDropQuestionDAO oldDDQuestion = dragDropRepository.findByQuestionId(newDTO.getQuestionId());
+          DragDropQuestionDAO newDDQuestion = (DragDropQuestionDAO) questionMapper.toDAO(newDTO);
+
+          // Delete the old question and save the new one
+          dragDropRepository.delete(oldDDQuestion);
+          dragDropRepository.save(newDDQuestion);
+          break;
+        case TRUE_FALSE:
+          TrueFalseQuestionDAO oldTFQuestion = trueFalseRepository.findByQuestionId(newDTO.getQuestionId());
+          TrueFalseQuestionDAO newTFQuestion = (TrueFalseQuestionDAO) questionMapper.toDAO(newDTO);
+
+          // Delete the old question and save the new one
+          trueFalseRepository.delete(oldTFQuestion);
+          trueFalseRepository.save(newTFQuestion);
           break;
         default:
           return ResponseEntity.notFound().build();
       }
     } catch (Exception e) {
       if (e instanceof DataAccessException) {
-        logger.severe("Question with id " + newQuestionDTO.getQuestionId() + " not found in database. Cannot update.");
+        logger.severe("Question with id " + newDTO.getQuestionId() + " not found in database. Cannot update.");
         return ResponseEntity.notFound().build();
       }
-      logger.severe("An error occurred while updating question with id " + newQuestionDTO.getQuestionId() + ": " + e.getMessage());
+      logger.severe("An error occurred while updating question with id " + newDTO.getQuestionId() + ": " + e.getMessage());
       return ResponseEntity.status(500).build();
     }
     return ResponseEntity.ok("Question updated successfully.");
   }
 
   public  Iterable<Question> getAllQuestions(Long quizId) {
-    Iterable<MultipleChoiceQuestion> multipleChoiceQuestions = multipleChoiceQuestionRepository.findAllByQuiz_QuizId(quizId);
-    Iterable<TextInputQuestion> textInputQuestions = textInputQuestionRepository.findAllByQuiz_QuizId(quizId);
+    // Get all questions of each type
+    Iterable<MultipleChoiceQuestion> multipleChoice = multipleChoiceRepository.findAllByQuiz_QuizId(quizId);
+    Iterable<TextInputQuestion> textInput = textInputRepository.findAllByQuiz_QuizId(quizId);
+    Iterable<DragDropQuestionDAO> dragDrop = dragDropRepository.findAllByQuiz_QuizId(quizId);
+    Iterable<TrueFalseQuestionDAO> trueFalse = trueFalseRepository.findAllByQuiz_QuizId(quizId);
 
     // Combine all questions into one list
     List<Question> combinedQuestions = new ArrayList<>();
-    multipleChoiceQuestions.forEach(combinedQuestions::add);
-    textInputQuestions.forEach(combinedQuestions::add);
+    multipleChoice.forEach(combinedQuestions::add);
+    textInput.forEach(combinedQuestions::add);
+    dragDrop.forEach(combinedQuestions::add);
+    trueFalse.forEach(combinedQuestions::add);
 
     return combinedQuestions;
   }
 
   public Question getQuestionById(Long questionId) {
     Question question = null;
+
+    // Try to find the question in each repository
     try {
-      question = multipleChoiceQuestionRepository.findByQuestionId(questionId);
+      question = multipleChoiceRepository.findByQuestionId(questionId);
     } catch (Exception e) {
      logger.info("Question with id " + questionId + " not found in multiple choice questions");
     }
     try {
-      question = textInputQuestionRepository.findByQuestionId(questionId);
+      question = textInputRepository.findByQuestionId(questionId);
     } catch (Exception e) {
       logger.info("Question with id " + questionId + " not found in text input questions");
     }
+    try {
+      question = dragDropRepository.findByQuestionId(questionId);
+    } catch (Exception e) {
+      logger.info("Question with id " + questionId + " not found in drag drop questions");
+    }
+    try {
+      question = trueFalseRepository.findByQuestionId(questionId);
+    } catch (Exception e) {
+      logger.info("Question with id " + questionId + " not found in true false questions");
+    }
 
+    // If the question is still null, it was not found in any repository
     if (question == null) {
       logger.warning("Question with id " + questionId + " not found");
       throw new DataAccessException("Question with id " + questionId + " not found in database") {

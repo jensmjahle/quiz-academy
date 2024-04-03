@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.logging.Logger;
 
@@ -48,9 +47,9 @@ public class QuestionController {
 
 
   @DeleteMapping("/delete/{questionId}")
-  public ResponseEntity<String> deleteQuestion(@PathVariable Long questionId, @RequestParam String questionType) {
-    logger.info("Received request to delete question with id: " + questionId + " and type: " + questionType + ".");
-    return questionService.deleteQuestion(questionId, questionType);
+  public ResponseEntity<String> deleteQuestion(@PathVariable Long questionId) {
+    logger.info("Received request to delete question with id: " + questionId + ".");
+    return questionService.deleteQuestion(questionId);
   }
 
 }
