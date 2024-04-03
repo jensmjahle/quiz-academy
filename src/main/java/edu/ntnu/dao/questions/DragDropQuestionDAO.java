@@ -1,12 +1,10 @@
 package edu.ntnu.dao.questions;
 
-import edu.ntnu.model.questions.Question;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
-public class DragDropQuestionDAO extends Question {
+public class DragDropQuestionDAO extends QuestionDAO {
 
   //CategoryName seperated from items by '<'
   //CategoryItem seperated by '*': "cat*dog*bird"

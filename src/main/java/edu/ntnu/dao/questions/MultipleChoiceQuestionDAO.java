@@ -1,4 +1,4 @@
-package edu.ntnu.model.questions;
+package edu.ntnu.dao.questions;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import javax.persistence.Entity;
  * This is a subclass of the Question class.
  */
 @Entity
-public class MultipleChoiceQuestion extends Question {
+public class MultipleChoiceQuestionDAO extends QuestionDAO {
 
   //alternatives seperated by '*': "dog*cat*milk"
   @Column(nullable = false)
@@ -18,10 +18,10 @@ public class MultipleChoiceQuestion extends Question {
   @Column(nullable = false)
   private String correctAlternatives;
 
-  public MultipleChoiceQuestion() {
+  public MultipleChoiceQuestionDAO() {
   }
 
-  public MultipleChoiceQuestion(Long questionId, String questionText, Long quizId, String s, String s1) {
+  public MultipleChoiceQuestionDAO(Long questionId, String questionText, Long quizId, String s, String s1) {
 super(questionId, questionText, quizId);
     this.alternatives = s;
     this.correctAlternatives = s1;

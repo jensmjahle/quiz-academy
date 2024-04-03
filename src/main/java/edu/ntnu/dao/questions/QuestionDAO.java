@@ -1,6 +1,6 @@
-package edu.ntnu.model.questions;
+package edu.ntnu.dao.questions;
 
-import edu.ntnu.model.Quiz;
+import edu.ntnu.dao.QuizDAO;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +15,7 @@ import javax.persistence.SequenceGenerator;
  * This is an abstract class that is extended by different types of questions.
  */
 @MappedSuperclass
-public abstract class Question {
+public abstract class QuestionDAO {
 
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "questionIdGenerator")
@@ -26,16 +26,16 @@ public abstract class Question {
   private String questionText;
   @ManyToOne
   @JoinColumn(name = "quizId")
-  private Quiz quiz;
+  private QuizDAO quizDAO;
 
-  public Question() {
+  public QuestionDAO() {
   }
 
-  public Question(Long questionId, String questionText, Long quizId) {
+  public QuestionDAO(Long questionId, String questionText, Long quizId) {
     this.questionId = questionId;
     this.questionText = questionText;
-    this.quiz = new Quiz();
-    this.quiz.setQuizId(quizId);
+    this.quizDAO = new QuizDAO();
+    this.quizDAO.setQuizId(quizId);
   }
 
 
@@ -52,11 +52,11 @@ public abstract class Question {
   }
 
   public Long getQuizId() {
-    return quiz.getQuizId();
+    return quizDAO.getQuizId();
   }
   public void setQuizId(Long quizId) {
-    this.quiz = new Quiz();
-    this.quiz.setQuizId(quizId);
+    this.quizDAO = new QuizDAO();
+    this.quizDAO.setQuizId(quizId);
   }
 
   public void setQuestionId(Long questionId) {

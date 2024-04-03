@@ -1,6 +1,6 @@
 package edu.ntnu.repository;
 
-import edu.ntnu.model.Tag;
+import edu.ntnu.dao.TagDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -8,11 +8,11 @@ import org.springframework.stereotype.Repository;
  * Repository for the Tag entity.
  */
 @Repository
-public interface TagRepository extends JpaRepository<Tag, Long> {
+public interface TagRepository extends JpaRepository<TagDAO, Long> {
 
-  Tag findByTagId(Long tagId);
+  TagDAO findByTagId(Long tagId);
 
-  Tag findByTagName(String tagName);
+  TagDAO findByTagName(String tagName);
 
 
 }

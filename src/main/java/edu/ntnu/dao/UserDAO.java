@@ -1,4 +1,4 @@
-package edu.ntnu.model;
+package edu.ntnu.dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,7 +10,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "users")
-public class User {
+public class UserDAO {
   @Id
   @Column(nullable = false, unique = true)
   private String username;
@@ -23,9 +23,9 @@ public class User {
   /**
    * Creates a new instance of the User class.
    */
-  public User() {
+  public UserDAO() {
   }
-  public User(String username, String password, String email, String firstName, String lastName) {
+  public UserDAO(String username, String password, String email, String firstName, String lastName) {
     this.username = username;
     this.password = password;
     this.email = email;

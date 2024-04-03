@@ -1,4 +1,4 @@
-package edu.ntnu.model;
+package edu.ntnu.dao;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "tags")
-public class Tag {
+public class TagDAO {
   @Id
   @Column(nullable = false, unique = true)
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +20,13 @@ public class Tag {
   @Column(nullable = false)
   private String tagName;
 
-  public Tag() {
+  public TagDAO() {
   }
 
-  public Tag( String tagName) {
+  public TagDAO( String tagName) {
     this.tagName = tagName;
   }
-  public Tag(long tagId, String tagName) {
+  public TagDAO(long tagId, String tagName) {
     this.tagId = tagId;
     this.tagName = tagName;
   }

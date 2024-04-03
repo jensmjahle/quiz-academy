@@ -1,6 +1,7 @@
 package edu.ntnu.mapper;
 
 import edu.ntnu.dao.questions.DragDropQuestionDAO;
+import edu.ntnu.dao.questions.MultipleChoiceQuestionDAO;
 import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
 import edu.ntnu.dto.questions.DragDropQuestionDTO;
 import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
@@ -8,9 +9,8 @@ import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.dto.questions.TextInputQuestionDTO;
 import edu.ntnu.dto.questions.TrueFalseQuestionDTO;
 import edu.ntnu.enums.QuestionType;
-import edu.ntnu.model.questions.MultipleChoiceQuestion;
-import edu.ntnu.model.questions.Question;
-import edu.ntnu.model.questions.TextInputQuestion;
+import edu.ntnu.dao.questions.QuestionDAO;
+import edu.ntnu.dao.questions.TextInputQuestionDAO;
 import edu.ntnu.utils.QuestionTypeIdentifier;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,15 +27,15 @@ public class QuestionMapper {
   /**
    * Maps a QuestionDAO to a QuestionDTO.
    *
-   * @param question The QuestionDAO to map
+   * @param questionDAO The QuestionDAO to map
    *
    * @return The QuestionDTO
    */
-    public QuestionDTO toDTO(Question question) {
-      Long questionId = question.getQuestionId();
-      String questionText = question.getQuestionText();
-      Long quizId = question.getQuizId();
-      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionType(question);
+    public QuestionDTO toDTO(QuestionDAO questionDAO) {
+      Long questionId = questionDAO.getQuestionId();
+      String questionText = questionDAO.getQuestionText();
+      Long quizId = questionDAO.getQuizId();
+      QuestionType questionType = QuestionTypeIdentifier.identifyQuestionType(questionDAO);
 
       switch (questionType) {
         case MULTIPLE_CHOICE:
@@ -43,29 +43,29 @@ public class QuestionMapper {
               questionId,
               questionText,
               quizId,
-              splitStringToList(((MultipleChoiceQuestion) question).getAlternatives()),
-              splitStringToList(((MultipleChoiceQuestion) question).getCorrectAlternatives())
+              splitStringToList(((MultipleChoiceQuestionDAO) questionDAO).getAlternatives()),
+              splitStringToList(((MultipleChoiceQuestionDAO) questionDAO).getCorrectAlternatives())
           );
         case TEXT_INPUT:
           return new TextInputQuestionDTO(
               questionId,
               questionText,
               quizId,
-              splitStringToList(((TextInputQuestion) question).getAnswer())
+              splitStringToList(((TextInputQuestionDAO) questionDAO).getAnswer())
           );
         case DRAG_AND_DROP:
           return new DragDropQuestionDTO(
               questionId,
               questionText,
               quizId,
-              mapStringToCategories(((DragDropQuestionDAO) question).getCategories())
+              mapStringToCategories(((DragDropQuestionDAO) questionDAO).getCategories())
           );
         case TRUE_FALSE:
           return new TrueFalseQuestionDTO(
               questionId,
               questionText,
               quizId,
-              ((TrueFalseQuestionDAO) question).isCorrectAnswer()
+              ((TrueFalseQuestionDAO) questionDAO).isCorrectAnswer()
           );
 
         default:
@@ -81,11 +81,11 @@ public class QuestionMapper {
    *
    * @return The QuestionDAO
    */
-    public Question toDAO(QuestionDTO questionDTO) {
+    public QuestionDAO toDAO(QuestionDTO questionDTO) {
       try {
-        Question question = toDAOWithoutId(questionDTO);
-        question.setQuestionId(questionDTO.getQuestionId());
-        return question;
+        QuestionDAO questionDAO = toDAOWithoutId(questionDTO);
+        questionDAO.setQuestionId(questionDTO.getQuestionId());
+        return questionDAO;
 
       } catch (Exception e) {
         logger.severe(e.getMessage());
@@ -103,21 +103,21 @@ public class QuestionMapper {
    *
    * @return The QuestionDAO without an ID
    */
-  public Question toDAOWithoutId(QuestionDTO questionDTO) {
+  public QuestionDAO toDAOWithoutId(QuestionDTO questionDTO) {
       String questionText = questionDTO.getQuestionText();
       Long quizId = questionDTO.getQuizId();
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
 
       switch (questionType) {
         case MULTIPLE_CHOICE:
-          MultipleChoiceQuestion mcq = new MultipleChoiceQuestion();
+          MultipleChoiceQuestionDAO mcq = new MultipleChoiceQuestionDAO();
           mcq.setQuestionText(questionText);
           mcq.setQuizId(quizId);
           mcq.setAlternatives(joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getAlternatives()));
           mcq.setCorrectAlternatives(joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getCorrectAlternatives()));
           return mcq;
         case TEXT_INPUT:
-          TextInputQuestion tiq = new TextInputQuestion();
+          TextInputQuestionDAO tiq = new TextInputQuestionDAO();
           tiq.setQuestionText(questionText);
           tiq.setQuizId(quizId);
           tiq.setAnswer(joinListToString(((TextInputQuestionDTO) questionDTO).getAnswers()));

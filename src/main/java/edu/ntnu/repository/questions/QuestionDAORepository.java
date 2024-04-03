@@ -1,7 +1,6 @@
 package edu.ntnu.repository.questions;
 
-import edu.ntnu.model.questions.MultipleChoiceQuestion;
-import edu.ntnu.model.questions.Question;
+import edu.ntnu.dao.questions.QuestionDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 
@@ -9,7 +8,7 @@ import org.springframework.data.repository.NoRepositoryBean;
  * Repository for the Question entity.
  */
 @NoRepositoryBean
-public interface QuestionRepository extends JpaRepository<Question, Long> {
+public interface QuestionDAORepository extends JpaRepository<QuestionDAO, Long> {
 
 
 }

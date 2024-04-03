@@ -4,7 +4,7 @@ import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TrueFalseQuestionDAORepository extends QuestionRepository {
+public interface TrueFalseQuestionDAORepository extends QuestionDAORepository {
   Iterable<TrueFalseQuestionDAO> findAllByQuiz_QuizId(Long quizId);
 
   TrueFalseQuestionDAO findByQuestionId(Long questionId);
