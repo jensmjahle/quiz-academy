@@ -4,8 +4,8 @@ import edu.ntnu.dao.questions.DragDropQuestionDAO;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface DragDropQuestionDAORepository extends QuestionRepository {
-  Iterable<DragDropQuestionDAO> findAllByQuiz_QuizId(Long quizId);
+public interface DragDropQuestionDAORepository extends QuestionDAORepository {
+  Iterable<DragDropQuestionDAO> findAllByQuizDAO_QuizId(Long quizId);
 
   DragDropQuestionDAO findByQuestionId(Long questionId);
 

@@ -1,9 +1,7 @@
 package edu.ntnu.mapper;
 
 import edu.ntnu.dto.TagDTO;
-import edu.ntnu.model.Tag;
-import edu.ntnu.repository.TagRepository;
-import java.util.logging.Logger;
+import edu.ntnu.dao.TagDAO;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -11,23 +9,23 @@ public class TagMapper {
 
 
 
-    public  TagDTO toTagDTO(Tag tag) {
+    public  TagDTO toTagDTO(TagDAO tagDAO) {
         return new TagDTO(
-            tag.getTagId(),
-            tag.getTagName()
+            tagDAO.getTagId(),
+            tagDAO.getTagName()
         );
     }
-    public Tag toTag(TagDTO tagDTO) {
-        return new Tag(
+    public TagDAO toDAO(TagDTO tagDTO) {
+        return new TagDAO(
             tagDTO.getTagId(),
             tagDTO.getTagName()
         );
     }
 
-    public Tag toTagWithoutKey(TagDTO tagDTO) {
-        Tag tag = new Tag();
-        tag.setTagName(tagDTO.getTagName());
-        return tag;
+    public TagDAO toDAOWithoutId(TagDTO tagDTO) {
+        TagDAO tagDAO = new TagDAO();
+        tagDAO.setTagName(tagDTO.getTagName());
+        return tagDAO;
     }
 
 

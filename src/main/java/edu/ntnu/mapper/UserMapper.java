@@ -1,22 +1,22 @@
 package edu.ntnu.mapper;
 
 import edu.ntnu.dto.UserDTO;
-import edu.ntnu.model.User;
+import edu.ntnu.dao.UserDAO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserMapper {
 
-    public UserDTO toUserDTO(User user) {
+    public UserDTO toDTO(UserDAO userDAO) {
         return new UserDTO(
-            user.getUsername(),
-            user.getPassword(),
-            user.getEmail(),
-            user.getFirstName(),
-            user.getLastName());
+            userDAO.getUsername(),
+            userDAO.getPassword(),
+            userDAO.getEmail(),
+            userDAO.getFirstName(),
+            userDAO.getLastName());
     }
-  public User toUser(UserDTO userDTO) {
-    return new User(
+  public UserDAO toDAO(UserDTO userDTO) {
+    return new UserDAO(
         userDTO.getUsername(),
         userDTO.getPassword(),
         userDTO.getEmail(),

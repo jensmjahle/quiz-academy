@@ -1,5 +1,6 @@
-package edu.ntnu.model.questions;
+package edu.ntnu.dao.questions;
 
+import edu.ntnu.dao.questions.QuestionDAO;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -9,16 +10,15 @@ import javax.persistence.Table;
  * This is a subclass of the Question class.
  */
 @Entity
-@Table(name = "textInputQuestions")
-public class TextInputQuestion extends Question {
+public class TextInputQuestionDAO extends QuestionDAO {
 
   @Column(nullable = false)
   private String answer;
 
-  public TextInputQuestion() {
+  public TextInputQuestionDAO() {
   }
 
-  public TextInputQuestion(Long questionId, String questionText, Long quizId, String s) {
+  public TextInputQuestionDAO(Long questionId, String questionText, Long quizId, String s) {
     super(questionId, questionText, quizId);
     this.answer = s;
   }

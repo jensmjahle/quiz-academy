@@ -3,12 +3,12 @@ package edu.ntnu.modelTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import edu.ntnu.model.Tag;
+import edu.ntnu.dao.TagDAO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Tag Tests")
-public class TagTest {
+public class TagDAOTest {
 
   @Test
   @DisplayName("Tag is correctly instantiated")
@@ -17,24 +17,24 @@ public class TagTest {
     String tagName = "Test Tag";
 
     // Act
-    Tag tag = new Tag(tagName);
+    TagDAO tagDAO = new TagDAO(tagName);
 
     // Assert
-    assertThat(tag).isNotNull();
-    assertThat(tag.getTagName()).isEqualTo(tagName);
+    assertThat(tagDAO).isNotNull();
+    assertThat(tagDAO.getTagName()).isEqualTo(tagName);
   }
 
   @Test
   @DisplayName("Tag setters and getters work correctly")
   public void testTagSettersAndGetters() {
     // Arrange
-    Tag tag = new Tag();
+    TagDAO tagDAO = new TagDAO();
     String tagName = "Test Tag";
 
     // Act
-    tag.setTagName(tagName);
+    tagDAO.setTagName(tagName);
 
     // Assert
-    assertThat(tag.getTagName()).isEqualTo(tagName);
+    assertThat(tagDAO.getTagName()).isEqualTo(tagName);
   }
 }

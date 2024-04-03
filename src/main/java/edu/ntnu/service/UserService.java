@@ -2,12 +2,12 @@ package edu.ntnu.service;
 
 import edu.ntnu.dto.UserDTO;
 import edu.ntnu.mapper.UserMapper;
+import edu.ntnu.dao.UserDAO;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import edu.ntnu.model.User;
 import edu.ntnu.repository.UserRepository;
 import java.util.logging.Logger;
 
@@ -38,8 +38,8 @@ public class UserService {
    * @return ResponseEntity with the User object and status code.
    */
   public ResponseEntity<UserDTO> getUserByUsername(String username) {
-    User user = userRepository.findByUsername(username);
-    UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+    UserDAO userDAO = userRepository.findByUsername(username);
+    UserDTO userDTO = modelMapper.map(userDAO, UserDTO.class);
     if (userDTO != null) {
       logger.info("User with username " + username + " found. Returning user.");
       return new ResponseEntity<>(userDTO, HttpStatus.OK);
@@ -61,16 +61,16 @@ public class UserService {
   public ResponseEntity<String> createUser(UserDTO userDTO) {
     logger.info("Received request for user creation with username: " + userDTO.getUsername());
     try {
-      User user = userMapper.toUser(userDTO);
+      UserDAO userDAO = userMapper.toDAO(userDTO);
       logger.info("User object created from userDTO");
 
-      if (userRepository.findByUsername(user.getUsername()) != null) {
+      if (userRepository.findByUsername(userDAO.getUsername()) != null) {
         logger.info("No user created, username already exists");
         return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
       } else {
         try {
-          userRepository.save(user);
-          logger.info("User " + user.getUsername() + " created successfully");
+          userRepository.save(userDAO);
+          logger.info("User " + userDAO.getUsername() + " created successfully");
           return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
         } catch (Exception e) {
           logger.info("Error creating user" + e.getMessage());
@@ -83,7 +83,7 @@ public class UserService {
     }
   }
 
-  public User getUserObjectByUsername(String username) {
+  public UserDAO getUserObjectByUsername(String username) {
     return userRepository.findByUsername(username);
   }
 }

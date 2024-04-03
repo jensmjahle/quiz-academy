@@ -1,6 +1,6 @@
 package edu.ntnu.repositoryTests;
 
-import edu.ntnu.model.Tag;
+import edu.ntnu.dao.TagDAO;
 import edu.ntnu.repository.TagRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @DisplayName("Tag Repository Tests")
-public class TagRepositoryTest {
+public class TagDAORepositoryTest {
 
   @Autowired
   private TestEntityManager entityManager;
@@ -24,43 +24,43 @@ public class TagRepositoryTest {
   @DisplayName("Tag is saved to the database correctly")
   public void testSaveTag() {
     // Create a tag
-    Tag tag = new Tag("Test Tag");
+    TagDAO tagDAO = new TagDAO("Test Tag");
 
     // Save the tag to the database
-    Tag savedTag = tagRepository.save(tag);
+    TagDAO savedTagDAO = tagRepository.save(tagDAO);
 
     // Retrieve the tag from the database
-    Tag retrievedTag = entityManager.find(Tag.class, savedTag.getTagId());
+    TagDAO retrievedTagDAO = entityManager.find(TagDAO.class, savedTagDAO.getTagId());
 
     // Check that the tag was saved correctly
-    assertThat(retrievedTag.getTagName()).isEqualTo(tag.getTagName());
+    assertThat(retrievedTagDAO.getTagName()).isEqualTo(tagDAO.getTagName());
   }
 
   @Test
   @DisplayName("Tag is deleted from the database correctly")
   public void testDeleteTag() {
     // Create a tag
-    Tag tag = new Tag("Test Tag");
-    entityManager.persist(tag);
+    TagDAO tagDAO = new TagDAO("Test Tag");
+    entityManager.persist(tagDAO);
 
     // Delete the tag from the repository
-    tagRepository.delete(tag);
+    tagRepository.delete(tagDAO);
 
     // Check that the tag was deleted successfully
-    assertThat(tagRepository.findByTagName(tag.getTagName())).isNull();
+    assertThat(tagRepository.findByTagName(tagDAO.getTagName())).isNull();
   }
 
   @Test
   @DisplayName("Tag is retrieved from the database correctly")
   public void testGetTag() {
     // Create a tag
-    Tag tag = new Tag("Test Tag");
-    entityManager.persist(tag);
+    TagDAO tagDAO = new TagDAO("Test Tag");
+    entityManager.persist(tagDAO);
 
     // Retrieve the tag from the repository
-    Tag retrievedTag = tagRepository.findByTagName(tag.getTagName());
+    TagDAO retrievedTagDAO = tagRepository.findByTagName(tagDAO.getTagName());
 
     // Check that the tag was retrieved successfully
-    assertThat(retrievedTag.getTagName()).isEqualTo(tag.getTagName());
+    assertThat(retrievedTagDAO.getTagName()).isEqualTo(tagDAO.getTagName());
   }
 }

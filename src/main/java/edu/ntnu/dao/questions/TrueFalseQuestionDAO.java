@@ -1,10 +1,9 @@
 package edu.ntnu.dao.questions;
 
-import edu.ntnu.model.questions.Question;
 import javax.persistence.Entity;
 
 @Entity
-public class TrueFalseQuestionDAO extends Question {
+public class TrueFalseQuestionDAO extends QuestionDAO {
 
   private boolean correctAnswer;
 

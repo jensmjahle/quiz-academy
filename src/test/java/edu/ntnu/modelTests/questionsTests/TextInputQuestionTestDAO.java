@@ -3,11 +3,11 @@ package edu.ntnu.modelTests.questionsTests;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import edu.ntnu.model.questions.TextInputQuestion;
+import edu.ntnu.dao.questions.TextInputQuestionDAO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class TextInputQuestionTest {
+public class TextInputQuestionTestDAO {
 
   @Test
   @DisplayName("TextInputQuestion is correctly instantiated")
@@ -16,7 +16,7 @@ public class TextInputQuestionTest {
     String answer = "Test answer";
 
     // Act
-    TextInputQuestion textInputQuestion = new TextInputQuestion();
+    TextInputQuestionDAO textInputQuestion = new TextInputQuestionDAO();
     textInputQuestion.setAnswer(answer);
 
     // Assert
@@ -28,7 +28,7 @@ public class TextInputQuestionTest {
   @DisplayName("Getters and setters work correctly")
   public void testGettersAndSetters() {
     // Arrange
-    TextInputQuestion textInputQuestion = new TextInputQuestion();
+    TextInputQuestionDAO textInputQuestion = new TextInputQuestionDAO();
     String answer = "Test answer";
 
     // Act

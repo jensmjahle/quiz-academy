@@ -1,4 +1,4 @@
-package edu.ntnu.model;
+package edu.ntnu.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
@@ -15,14 +15,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 /**
  * Represents a quiz in the system. A quiz is a collection of questions that a user can answer.
  */
 @Entity
-@Table(name = "quizzes")
-public class Quiz {
+public class QuizDAO {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quizIdGenerator")
   @SequenceGenerator(name = "quizIdGenerator", sequenceName = "quiz_sequence", allocationSize = 1)
@@ -33,20 +31,20 @@ public class Quiz {
   @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "createdBy", referencedColumnName = "username")
-  private User user;
+  private UserDAO userDAO;
   @ManyToMany
   @JoinTable(
       name = "quiz_tags",
       joinColumns = @JoinColumn(name = "quizId"),
       inverseJoinColumns = @JoinColumn(name = "tagId")
   )
-  private List<Tag> tags = new ArrayList<>();
+  private List<TagDAO> tagDAOs = new ArrayList<>();
 
   @Column(nullable = false)
   private Date quizCreationDate;
 
 
-  public Quiz() {
+  public QuizDAO() {
   }
 
   public Long getQuizId() {
@@ -73,20 +71,20 @@ public class Quiz {
     this.quizDescription = quizDescription;
   }
 
-  public User getUser() {
-    return user;
+  public UserDAO getUser() {
+    return userDAO;
   }
 
-  public void setUser(User user) {
-    this.user = user;
+  public void setUser(UserDAO userDAO) {
+    this.userDAO = userDAO;
   }
 
-  public List<Tag> getTags() {
-    return tags;
+  public List<TagDAO> getTags() {
+    return tagDAOs;
   }
 
-  public void setTags(List<Tag> tags) {
-    this.tags = tags;
+  public void setTags(List<TagDAO> tagDAOS) {
+    this.tagDAOs = tagDAOS;
   }
 
   public Date getQuizCreationDate() {
@@ -97,12 +95,12 @@ public class Quiz {
     this.quizCreationDate = quizCreationDate;
   }
 
-  public void addTag(Tag tag) {
-    tags.add(tag);
+  public void addTag(TagDAO tagDAO) {
+    tagDAOs.add(tagDAO);
   }
 
-  public void removeTag(Tag tag) {
-    tags.remove(tag);
+  public void removeTag(TagDAO tagDAO) {
+    tagDAOs.remove(tagDAO);
   }
 
 
