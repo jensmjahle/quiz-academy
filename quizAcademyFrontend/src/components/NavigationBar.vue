@@ -49,8 +49,9 @@ nav {
     border-bottom-style: solid;
     border-top-style: solid;
     border-color: var(--secondary-color);
-    margin-left: 20px;
+    margin-left: 1em;
     margin-right: 20px;
+    font-size: calc(0.75em + 0.5rem);
 }
 
 .router-button:hover {
