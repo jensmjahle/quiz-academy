@@ -15,6 +15,14 @@ test:
   stage: test
   script:
     - mvn clean test
+    - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
+  artifacts:
+    when: always
+    paths:
+      - rspec.xml
+    reports:
+      junit: rspec.xml
+
 
 package:
   stage: package
