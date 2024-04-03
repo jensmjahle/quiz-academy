@@ -1,14 +1,16 @@
 package edu.ntnu.dao.questions;
 
 import edu.ntnu.dao.QuizDAO;
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.SequenceGenerator;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+
 
 /**
  * Represents a question in the system. A question is a part of a quiz that a user can answer.
@@ -27,6 +29,10 @@ public abstract class QuestionDAO {
   @ManyToOne
   @JoinColumn(name = "quizId")
   private QuizDAO quizDAO;
+
+  @Lob
+  @Column(name = "image", nullable = true)
+  private byte[] questionImage;
 
   public QuestionDAO() {
   }
@@ -61,6 +67,14 @@ public abstract class QuestionDAO {
 
   public void setQuestionId(Long questionId) {
     this.questionId = questionId;
+  }
+
+  public byte[] getImage() {
+    return questionImage;
+  }
+
+  public void setImage(byte[] image) {
+    this.questionImage = image;
   }
 }
 

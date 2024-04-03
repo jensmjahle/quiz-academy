@@ -1,10 +1,17 @@
 package edu.ntnu.dao.questions;
 
-import edu.ntnu.dao.questions.QuestionDAO;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 
+import edu.ntnu.dao.QuizDAO;
+import jakarta.persistence.Entity;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Column;
+import jakarta.persistence.Lob;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
 /**
  * Represents a question where the user can input a text answer.
  * This is a subclass of the Question class.
