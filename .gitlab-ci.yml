@@ -15,6 +15,7 @@ test:
   stage: test
   script:
     - mvn clean test
+    - bundle install
     - bundle exec rspec --format progress --format RspecJunitFormatter --out rspec.xml
   artifacts:
     when: always
