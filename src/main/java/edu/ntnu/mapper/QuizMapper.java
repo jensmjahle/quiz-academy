@@ -47,7 +47,12 @@ public class QuizMapper {
         quizDTO.setQuizName(quizDAO.getQuizName());
         quizDTO.setQuizDescription(quizDAO.getQuizDescription());
         quizDTO.setUser(quizDAO.getUser().getUsername());
-        quizDTO.setTags(quizDAO.getTags().stream().map(tagMapper::toTagDTO).collect(Collectors.toList()));
+        if (quizDAO.getTags() == null) {
+            logger.warning("No tags found for quiz with id " + quizDAO.getQuizId() + ". Setting tags to null.");
+            quizDTO.setTags(null);
+        } else {
+            quizDTO.setTags(quizDAO.getTags().stream().map(tagMapper::toTagDTO).collect(Collectors.toList()));
+        }
         quizDTO.setQuizCreationDate(quizDAO.getQuizCreationDate());
         return quizDTO;
     } catch (Exception e) {
@@ -79,7 +84,8 @@ public class QuizMapper {
         quizDAO.setQuizCreationDate(quizDTO.getQuizCreationDate());
 
         // Map tagDTOs to Tag objects
-      List <TagDTO> tags = quizDTO.getTags();
+        if (quizDTO.getTags() != null) {
+         List <TagDTO> tags = quizDTO.getTags();
         if (tags != null && !tags.isEmpty()) {
           for (TagDTO tagDTO : tags) {
             TagDAO tagDAO = tagMapper.toDAO(tagDTO);
@@ -88,6 +94,10 @@ public class QuizMapper {
         } else {
             quizDAO.setTags(null);
             logger.warning("No tags found for quiz with id " + quizDTO.getQuizId() + ". Setting tags to null.");
+        }
+    } else {
+        quizDAO.setTags(null);
+        logger.warning("No tags found in quizDTO. Setting tags to null.");
         }
 
         // Retrieve the user from the database and map it to the quiz

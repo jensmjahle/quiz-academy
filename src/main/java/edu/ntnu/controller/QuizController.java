@@ -49,7 +49,4 @@ public class QuizController {
     logger.info("Received request to create quiz with title: " + quizDTO.getQuizName() + ".");
     return quizService.createQuiz(quizDTO);
   }
-
-
-
 }

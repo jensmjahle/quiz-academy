@@ -1,16 +1,18 @@
 <script setup>
 import { ref, onMounted, provide } from 'vue';
 import { useRoute } from 'vue-router';
+import axios from 'axios';
 
 let route = useRoute();
 
 let questions = ref([]);
 
+let quizCreated = ref(false);
+
+let quizId = ref(null);
+
 provide('questions', questions);
 
-
-// This method below will be changed to do an API call once the API is ready.
-// Then it will pull all questions given the current quiz id, which also needs to be made
 onMounted(() => {
 
     if (route.params.question) {
@@ -22,6 +24,35 @@ onMounted(() => {
         ];
     }
 });
+
+const createQuiz = async () => {
+    const quizName = document.getElementById('quiz_name').value;
+    const quizDescription = 'This is a quiz';
+    const user = 'jens'; //TODO: Change this to the actual user
+    //const tags = []; //TODO: Change this to the actual tags
+    const questions = [];
+
+    const quizData = {
+        quizName: quizName,
+        quizDescription: quizDescription,
+        user: user,
+        quizCreationDate: new Date(),
+        //tags: tags,
+        questions: questions
+    };
+
+    try {
+        const response = await axios.post('http://localhost:8080/quiz/create', quizData);
+        console.log(response.data);
+        quizCreated.value = true;
+        quizId.value = response.data.quizId; // This line should now work without error
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
 </script>
 
 <template>
@@ -29,17 +60,18 @@ onMounted(() => {
         <h5>Name your quiz:</h5>
         <div id="title_and_id">
             <input type="text" id="quiz_name" placeholder="Quiz name" />
+            <button class="button" @click="createQuiz">Create Quiz</button>
         </div>
 
 
-        <div id="question_creation">
+        <div id="question_creation" v-if = "quizCreated">
             <h5>Add questions to your quiz:</h5>
-            <router-link class= "button" :to="{ name: 'multichoice'}">Add multiple choice question</router-link>
-            <router-link class= "button" :to="{ name: 'text_input'}">Add text input question</router-link>
-            <router-link class= "button" :to="{ name: 'drag_and_drop'}">Add drag and drop question</router-link>
+            <router-link class= "button" :to="{ name: 'multichoice', params: { quizId: quizId.value} }">Add multiple choice question</router-link>
+            <router-link class= "button" :to="{ name: 'text_input', params: { quizId: quizId.value} }">Add text input question</router-link>
+            <router-link class= "button" :to="{ name: 'drag_and_drop', params: { quizId: quizId.value} }">Add drag and drop question</router-link>
         </div>
     </div>
-    <div id="question_list">
+    <div id="question_list" v-if = "quizCreated">
         <h5>Questions:</h5>
         <ul>
             <li v-for="question in questions" :key="question.id">
