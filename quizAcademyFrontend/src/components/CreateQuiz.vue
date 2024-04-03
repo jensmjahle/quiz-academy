@@ -1,39 +1,38 @@
 <script setup>
-import { ref, onMounted, provide } from 'vue';
-import { useRoute } from 'vue-router';
+import {onMounted, ref} from 'vue';
+import { useStore } from '../stores/createQuizState.js';
 import axios from 'axios';
 
-let route = useRoute();
-
-let questions = ref([]);
-
 let quizCreated = ref(false);
-
 let quizId = ref(null);
+let questions = ref([]);
+let quizName = ref('');
 
-provide('questions', questions);
+const store = useStore();
 
-onMounted(() => {
 
-    if (route.params.question) {
-        questions.value.push(route.params.question);
-    } else {
-        questions.value = [
-            { id: 1, type: 'text_input', name: 'question 1', answer: 'answer 1' },
-            { id: 2, type: 'multichoice', name: 'question 2', answer: 'answer 2' }
-        ];
-    }
-});
+if (store.quizName !== null) {
+    quizName.value = store.quizName;
+} else {
+    console.log("no quiz name")
+}
 
 const createQuiz = async () => {
-    const quizName = document.getElementById('quiz_name').value;
     const quizDescription = 'This is a quiz';
     const user = 'jens'; //TODO: Change this to the actual user
     //const tags = []; //TODO: Change this to the actual tags
-    const questions = [];
+    const question1 = {
+        questionId: 21,
+        questionText: "question1",
+        quizId: 21,
+        type: "TEXT_INPUT",
+        answers: ["answer1", "answer2"]
+        //answers: answerText.value.split('*')
+    };
+    const questions = [question1];
 
     const quizData = {
-        quizName: quizName,
+        quizName: quizName.value,
         quizDescription: quizDescription,
         user: user,
         quizCreationDate: new Date(),
@@ -43,15 +42,15 @@ const createQuiz = async () => {
 
     try {
         const response = await axios.post('http://localhost:8080/quiz/create', quizData);
+        quizId.value = response.data.quizId;
         console.log(response.data);
         quizCreated.value = true;
-        quizId.value = response.data.quizId; // This line should now work without error
+        console.log('quizId: ', quizId.value);
+        store.initializeQuiz(quizId.value, quizName.value);
     } catch (error) {
         console.error(error);
     }
 }
-
-
 
 </script>
 
@@ -59,19 +58,19 @@ const createQuiz = async () => {
     <div id="title">
         <h5>Name your quiz:</h5>
         <div id="title_and_id">
-            <input type="text" id="quiz_name" placeholder="Quiz name" />
+            <input type="text" id="quiz_name" v-model="quizName" placeholder="Quiz name" />
             <button class="button" @click="createQuiz">Create Quiz</button>
         </div>
 
-
-        <div id="question_creation" v-if = "quizCreated">
+        <div id="question_creation" v-if="quizCreated">
             <h5>Add questions to your quiz:</h5>
-            <router-link class= "button" :to="{ name: 'multichoice', params: { quizId: quizId.value} }">Add multiple choice question</router-link>
-            <router-link class= "button" :to="{ name: 'text_input', params: { quizId: quizId.value} }">Add text input question</router-link>
-            <router-link class= "button" :to="{ name: 'drag_and_drop', params: { quizId: quizId.value} }">Add drag and drop question</router-link>
+            <!-- Only render the router-link if quizId is not null -->
+            <router-link v-if="quizId" class="button" :to="{ name: 'multichoice', params: { quizId: quizId.value }}">Add multiple choice question</router-link>
+            <router-link v-if="quizId" class="button" :to="{ name: 'text_input', params: { quizId: quizId.value }}">Add text input question</router-link>
+            <router-link v-if="quizId" class="button" :to="{ name: 'drag_and_drop', params: { quizId: quizId.value }}">Add drag and drop question</router-link>
         </div>
     </div>
-    <div id="question_list" v-if = "quizCreated">
+    <div id="question_list" v-if="quizCreated"> <!-- TODO: add check to list of questions -->
         <h5>Questions:</h5>
         <ul>
             <li v-for="question in questions" :key="question.id">

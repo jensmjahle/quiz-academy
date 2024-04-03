@@ -1,20 +1,15 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from '../stores/createQuizState.js';
+import axios from 'axios';
 
-let route = useRoute();
+
 let router = useRouter();
 
-let quizId = ref(0);
-
-onMounted(() => {
-    if (route.params.quizId) {
-        quizId.value = route.params.quizId;
-    }
-});
+const store = useStore();
 
 const categories = ref([{ name: '', items: '' }]);
-const storedData = ref({});
 
 const addCategory = () => {
     categories.value.push({ name: '', items: '' });
@@ -32,17 +27,37 @@ const removeCategory = (index) => {
 };
 
 const submitForm = () => {
-    const quizData = {
-        'D&D': {}
-    };
+    postDragDropQuestion();
+    router.push('/create_quiz');
+}
 
+function postDragDropQuestion() {
+    console.log(store.quizId);
+    const questionId = 1;
+    const questionText = "Drag the correct answer to the correct box.";
+
+    // Convert the categories from the input fields to the required format
+    const formattedCategories = {};
     categories.value.forEach(category => {
         const items = category.items.split('*');
-        quizData['D&D'][category.name] = items;
+        formattedCategories[category.name] = items;
     });
 
-    console.log(quizData);
-    router.push('/create_quiz');
+    const dragDropQuestion = {
+        questionId: questionId,
+        questionText: questionText,
+        quizId: store.quizId,
+        type: "DRAG_DROP",
+        categories: formattedCategories
+    };
+
+    axios.post("http://localhost:8080/question/create", dragDropQuestion)
+        .then(response => {
+            console.log("Question posted successfully:", response.data);
+        })
+        .catch(error => {
+            console.error("Error posting question:", error);
+        });
 }
 
 </script>

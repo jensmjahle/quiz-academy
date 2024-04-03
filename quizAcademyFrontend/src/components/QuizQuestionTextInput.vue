@@ -1,20 +1,35 @@
 <script setup>
-import { ref} from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+import { useStore } from '../stores/createQuizState.js';
+import axios from 'axios';
+import router from "../router/index.js";
 
-let router = useRouter();
 
 let questionText = ref('');
-let questionAnswer = ref('');
+let answerText = ref('');
 
-function submitQuestion() {
-    const questionObject = {
-        TI: 'TI',
-        question: questionText.value,
-        answer: questionAnswer.value,
+const store = useStore();
+
+const createQuestion = async () => {
+    const questionData = {
+        questionId: 21,
+        questionText: "question1",
+        quizId: 21,
+        type: "TEXT_INPUT",
+        answers: ["answer1", "answer2"]
+        //answers: answerText.value.split('*')
     };
-    console.log(questionObject);
-    router.push('/create_quiz');
+
+
+    try {
+        console.log(questionData.answers);
+        console.log(questionData);
+        const response = await axios.post(`http://localhost:8080/question/create`, questionData);
+        console.log(response.data);
+    } catch (error) {
+        console.error(error);
+    }
+    await router.push('/create_quiz');
 }
 </script>
 
@@ -22,13 +37,13 @@ function submitQuestion() {
     <div id = "full_question">
         <div id = "text_response_question">
             <input id="input" type="text" v-model="questionText" placeholder="Question" />
-            <input id="input" type="text" placeholder="Answer" />
+            <input id="input" type="text" v-model="answerText" placeholder="Answer" />
         </div>
         <div>
             <h5>Separate correct answers with: *</h5>
         </div>
         <div>
-            <button @click="submitQuestion">Submit</button>
+            <button @click="createQuestion">Submit</button>
         </div>
     </div>
 
