@@ -9,7 +9,6 @@ import javax.persistence.Table;
  * Represents a user in the system.
  */
 @Entity
-@Table(name = "users")
 public class UserDAO {
   @Id
   @Column(nullable = false, unique = true)

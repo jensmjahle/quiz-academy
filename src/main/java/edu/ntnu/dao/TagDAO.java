@@ -11,7 +11,6 @@ import javax.persistence.Table;
  * Represents a tag in the system. A tag is a category or keyword that describes a quiz.
  */
 @Entity
-@Table(name = "tags")
 public class TagDAO {
   @Id
   @Column(nullable = false, unique = true)

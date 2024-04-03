@@ -12,7 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 @DataJpaTest
 @DisplayName("TextInputQuestion Repository Tests")
-public class TextInputQuestionRepositoryTestDAO {
+public class TextInputQuestionDAORepositoryTestDAO {
 
   @Autowired
   private TestEntityManager entityManager;

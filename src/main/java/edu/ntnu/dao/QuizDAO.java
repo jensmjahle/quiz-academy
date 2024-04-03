@@ -15,13 +15,11 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
 /**
  * Represents a quiz in the system. A quiz is a collection of questions that a user can answer.
  */
 @Entity
-@Table(name = "quizzes")
 public class QuizDAO {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quizIdGenerator")
@@ -40,7 +38,7 @@ public class QuizDAO {
       joinColumns = @JoinColumn(name = "quizId"),
       inverseJoinColumns = @JoinColumn(name = "tagId")
   )
-  private List<TagDAO> tagDAOS = new ArrayList<>();
+  private List<TagDAO> tagDAOs = new ArrayList<>();
 
   @Column(nullable = false)
   private Date quizCreationDate;
@@ -82,11 +80,11 @@ public class QuizDAO {
   }
 
   public List<TagDAO> getTags() {
-    return tagDAOS;
+    return tagDAOs;
   }
 
   public void setTags(List<TagDAO> tagDAOS) {
-    this.tagDAOS = tagDAOS;
+    this.tagDAOs = tagDAOS;
   }
 
   public Date getQuizCreationDate() {
@@ -98,11 +96,11 @@ public class QuizDAO {
   }
 
   public void addTag(TagDAO tagDAO) {
-    tagDAOS.add(tagDAO);
+    tagDAOs.add(tagDAO);
   }
 
   public void removeTag(TagDAO tagDAO) {
-    tagDAOS.remove(tagDAO);
+    tagDAOs.remove(tagDAO);
   }
 
 

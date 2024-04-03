@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface MultipleChoiceQuestionDAORepository extends QuestionDAORepository {
 
-Iterable<MultipleChoiceQuestionDAO> findAllByQuiz_QuizId(Long quizId);
+Iterable<MultipleChoiceQuestionDAO> findAllByQuizDAO_QuizId(Long quizId);
 
 MultipleChoiceQuestionDAO findByQuestionId(Long questionId);
 

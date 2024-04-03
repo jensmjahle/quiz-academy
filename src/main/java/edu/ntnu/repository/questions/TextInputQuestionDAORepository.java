@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TextInputQuestionDAORepository extends QuestionDAORepository {
 
-Iterable<TextInputQuestionDAO> findAllByQuiz_QuizId(Long quizId);
+Iterable<TextInputQuestionDAO> findAllByQuizDAO_QuizId(Long quizId);
 
 TextInputQuestionDAO findByQuestionId(Long questionId);
 

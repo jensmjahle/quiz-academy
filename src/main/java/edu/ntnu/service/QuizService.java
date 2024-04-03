@@ -73,7 +73,7 @@ public class QuizService {
   public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes(String username) {
     try {
       // Get all quizzes from the database
-      Iterable<QuizDAO> quizzes = quizRepository.findAllByUser_Username(username);
+      Iterable<QuizDAO> quizzes = quizRepository.findAllByUserDAO_Username(username);
 
       // Convert quizzes to DTOs
       if (quizzes != null) {
@@ -142,10 +142,10 @@ public class QuizService {
   public void deleteQuizFromQuizId(Long quizId) {
     try {
       // Delete questions associated with the quiz
-      List<MultipleChoiceQuestionDAO> multipleChoiceQuestionDAOS = (List<MultipleChoiceQuestionDAO>) multipleChoiceRepository.findAllByQuiz_QuizId(quizId);
-      List<TextInputQuestionDAO> textInputQuestions = (List<TextInputQuestionDAO>) textInputRepository.findAllByQuiz_QuizId(quizId);
-      List<DragDropQuestionDAO> dragDropQuestions = (List<DragDropQuestionDAO>) dragDropRepository.findAllByQuiz_QuizId(quizId);
-      List<TrueFalseQuestionDAO> trueFalseQuestions = (List<TrueFalseQuestionDAO>) trueFalseRepository.findAllByQuiz_QuizId(quizId);
+      List<MultipleChoiceQuestionDAO> multipleChoiceQuestionDAOS = (List<MultipleChoiceQuestionDAO>) multipleChoiceRepository.findAllByQuizDAO_QuizId(quizId);
+      List<TextInputQuestionDAO> textInputQuestions = (List<TextInputQuestionDAO>) textInputRepository.findAllByQuizDAO_QuizId(quizId);
+      List<DragDropQuestionDAO> dragDropQuestions = (List<DragDropQuestionDAO>) dragDropRepository.findAllByQuizDAO_QuizId(quizId);
+      List<TrueFalseQuestionDAO> trueFalseQuestions = (List<TrueFalseQuestionDAO>) trueFalseRepository.findAllByQuizDAO_QuizId(quizId);
 
       if (multipleChoiceQuestionDAOS != null) {
         multipleChoiceRepository.deleteAll(multipleChoiceQuestionDAOS);

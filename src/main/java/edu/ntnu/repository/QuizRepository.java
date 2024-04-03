@@ -1,7 +1,7 @@
 package edu.ntnu.repository;
 
-import edu.ntnu.model.Quiz;
-import edu.ntnu.model.Tag;
+import edu.ntnu.dao.QuizDAO;
+import edu.ntnu.dao.TagDAO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
@@ -13,20 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
  * Repository for the Quiz entity.
  */
 @Repository
-public interface QuizRepository extends JpaRepository<Quiz, Long> {
+public interface QuizRepository extends JpaRepository<QuizDAO, Long> {
 
-  Quiz findByQuizId(Long quizId);
+  QuizDAO findByQuizId(Long quizId);
 
-  Quiz findByQuizName(String quizName);
+  QuizDAO findByQuizName(String quizName);
 
-  Iterable<Quiz> findAllByUser_Username(String username);
+  Iterable<QuizDAO> findAllByUserDAO_Username(String username);
 
-  @Query("SELECT q.tags FROM Quiz q WHERE q.quizId = :quizId")
-  Iterable<Tag> findAllTagsByQuizId(Long quizId);
+  @Query("SELECT q.tagDAOs FROM QuizDAO q WHERE q.quizId = :quizId")
+  Iterable<TagDAO> findAllTagsByQuizId(Long quizId);
 
   @Modifying
   @Transactional
-  @Query("DELETE FROM Quiz q WHERE q.quizId = :quizId")
+  @Query("DELETE FROM QuizDAO q WHERE q.quizId = :quizId")
   void deleteByQuizId(Long quizId);
 /*
   @Transactional

@@ -12,13 +12,13 @@ import edu.ntnu.repository.questions.MultipleChoiceQuestionDAORepository;
 
 @DataJpaTest
 @DisplayName("MultipleChoiceQuestion Repository Tests")
-public class MultipleChoiceQuestionDAORepositoryTestDAO {
+public class MultipleChoiceQuestionDAORepositoryTest {
 
   @Autowired
   private TestEntityManager entityManager;
 
   @Autowired
-  private MultipleChoiceQuestionDAORepository multipleChoiceQuestionRepository;
+  private MultipleChoiceQuestionDAORepository multipleChoiceQuestionDAORepository;
 
   @Test
   @DisplayName("MultipleChoiceQuestion is saved to the database correctly")
@@ -27,7 +27,7 @@ public class MultipleChoiceQuestionDAORepositoryTestDAO {
     MultipleChoiceQuestionDAO multipleChoiceQuestionDAO = getMultipleChoiceQuestion();
 
     // Save the MultipleChoiceQuestion to the database
-    MultipleChoiceQuestionDAO savedQuestion = multipleChoiceQuestionRepository.save(
+    MultipleChoiceQuestionDAO savedQuestion = multipleChoiceQuestionDAORepository.save(
         multipleChoiceQuestionDAO);
 
     // Retrieve the MultipleChoiceQuestion from the database
@@ -48,7 +48,7 @@ public class MultipleChoiceQuestionDAORepositoryTestDAO {
     MultipleChoiceQuestionDAO savedQuestion = entityManager.persist(multipleChoiceQuestionDAO);
 
     // Delete the MultipleChoiceQuestion from the database
-    multipleChoiceQuestionRepository.delete(savedQuestion);
+    multipleChoiceQuestionDAORepository.delete(savedQuestion);
 
     // Check that the MultipleChoiceQuestion was deleted correctly
     assertThat(entityManager.find(MultipleChoiceQuestionDAO.class, savedQuestion.getQuestionId())).isNull();
@@ -69,7 +69,7 @@ public class MultipleChoiceQuestionDAORepositoryTestDAO {
     savedQuestion.setAlternatives("cow*dog*cat*fish");
 
     // Save the updated MultipleChoiceQuestion to the database
-    MultipleChoiceQuestionDAO updatedQuestion = multipleChoiceQuestionRepository.save(savedQuestion);
+    MultipleChoiceQuestionDAO updatedQuestion = multipleChoiceQuestionDAORepository.save(savedQuestion);
 
     // Retrieve the updated MultipleChoiceQuestion from the database
     MultipleChoiceQuestionDAO retrievedQuestion = entityManager.find(

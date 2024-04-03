@@ -181,10 +181,11 @@ public class QuestionService {
 
   public  Iterable<QuestionDAO> getAllQuestions(Long quizId) {
     // Get all questions of each type
-    Iterable<MultipleChoiceQuestionDAO> multipleChoice = multipleChoiceRepository.findAllByQuiz_QuizId(quizId);
-    Iterable<TextInputQuestionDAO> textInput = textInputRepository.findAllByQuiz_QuizId(quizId);
-    Iterable<DragDropQuestionDAO> dragDrop = dragDropRepository.findAllByQuiz_QuizId(quizId);
-    Iterable<TrueFalseQuestionDAO> trueFalse = trueFalseRepository.findAllByQuiz_QuizId(quizId);
+
+    Iterable<MultipleChoiceQuestionDAO> multipleChoice = multipleChoiceRepository.findAllByQuizDAO_QuizId(quizId);
+    Iterable<TextInputQuestionDAO> textInput = textInputRepository.findAllByQuizDAO_QuizId(quizId);
+    Iterable<DragDropQuestionDAO> dragDrop = dragDropRepository.findAllByQuizDAO_QuizId(quizId);
+    Iterable<TrueFalseQuestionDAO> trueFalse = trueFalseRepository.findAllByQuizDAO_QuizId(quizId);
 
     // Combine all questions into one list
     List<QuestionDAO> combinedQuestionDAOS = new ArrayList<>();
@@ -194,6 +195,8 @@ public class QuestionService {
     trueFalse.forEach(combinedQuestionDAOS::add);
 
     return combinedQuestionDAOS;
+
+
   }
 
   public QuestionDAO getQuestionById(Long questionId) {

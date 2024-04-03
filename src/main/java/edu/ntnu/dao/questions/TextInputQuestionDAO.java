@@ -10,7 +10,6 @@ import javax.persistence.Table;
  * This is a subclass of the Question class.
  */
 @Entity
-@Table(name = "textInputQuestions")
 public class TextInputQuestionDAO extends QuestionDAO {
 
   @Column(nullable = false)
