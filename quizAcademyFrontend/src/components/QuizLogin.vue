@@ -82,6 +82,8 @@ window.addEventListener('beforeunload', function(event) {
   padding: 50px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 .form-group {
