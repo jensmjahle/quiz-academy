@@ -12,7 +12,7 @@ const router = useRouter();
     <nav>
       <RouterLink @click="$emit('link-clicked','Home')" to="/" class="router-button">Home</RouterLink>
       <RouterLink @click="$emit('link-clicked','My Quizzes')" to="/quizzes" class="router-button">My Quizzes</RouterLink>
-      <RouterLink @click="$emit('link-clicked','Create Quiz')" to="/create" class="router-button">Create Quiz</RouterLink>
+      <RouterLink @click="$emit('link-clicked','Create Quiz')" to="/create_quiz" class="router-button">Create Quiz</RouterLink>
       <RouterLink @click="$emit('link-clicked','Log In')" to="/login" class="router-button">Log In</RouterLink>
       <RouterLink @click="$emit('link-clicked','Sign Up')" to="/signup" class="router-button">Sign Up</RouterLink>
     </nav>
