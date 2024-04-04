@@ -34,7 +34,7 @@ public class QuestionController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<QuestionDTO> createQuestion(QuestionDTO questionDTO) {
+  public ResponseEntity<QuestionDTO> createQuestion(@RequestBody QuestionDTO questionDTO) {
     logger.info("Received request to create question: " + questionDTO.getQuestionText() + ".");
     return questionService.createQuestion(questionDTO);
   }
@@ -44,7 +44,6 @@ public class QuestionController {
     logger.info("Received request to update question with id: " + questionDTO.getQuestionId() + ".");
     return questionService.updateQuestion(questionDTO);
   }
-
 
   @DeleteMapping("/delete/{questionId}")
   public ResponseEntity<String> deleteQuestion(@PathVariable Long questionId) {

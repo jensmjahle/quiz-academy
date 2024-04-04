@@ -88,6 +88,7 @@ public class QuestionService {
           return ResponseEntity.notFound().build();
       }
 
+      logger.info("Question " + questionDTO.getQuestionText() + " created successfully.");
       return ResponseEntity.ok(questionDTO);
     } catch (Exception e) {
       logger.severe("An error occurred while creating question: " + e.getMessage());

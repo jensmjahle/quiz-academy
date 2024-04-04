@@ -11,20 +11,19 @@ let answerText = ref('');
 const store = useStore();
 
 const createQuestion = async () => {
-    const questionData = {
+
+    const question1 = {
         questionId: 21,
-        questionText: "question1",
-        quizId: 21,
+        questionText: questionText.value,
+        quizId: store.quizId,
         type: "TEXT_INPUT",
-        answers: ["answer1", "answer2"]
-        //answers: answerText.value.split('*')
+        answers: answerText.value.split('*')
     };
 
-
     try {
-        console.log(questionData.answers);
-        console.log(questionData);
-        const response = await axios.post(`http://localhost:8080/question/create`, questionData);
+        console.log(question1.answers);
+        console.log(question1);
+        const response = await axios.post(`http://localhost:8080/question/create`, question1);
         console.log(response.data);
     } catch (error) {
         console.error(error);
