@@ -40,7 +40,7 @@ public class TokenController {
     this.securityService = securityService;
   }
 
-  @PostMapping(value = "")
+  @PostMapping(value = "/new")
   @ResponseStatus(value = HttpStatus.CREATED)
   public String generateToken(final @RequestBody LoginRequest loginRequest) throws Exception {
     logger.info("Received request to generate token for user: " + loginRequest.getUsername() + ".");
@@ -54,12 +54,11 @@ public class TokenController {
     throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Access denied, wrong credentials....");
   }
 
-  public String generateToken(final String userId) {
+  private String generateToken(final String userId) {
     logger.info("Generating token for user: " + userId + ".");
     final Instant now = Instant.now();
     System.out.println(keyStr);
     final Algorithm hmac512 = Algorithm.HMAC512(keyStr);
-    final JWTVerifier verifier = JWT.require(hmac512).build();
     return JWT.create()
         .withSubject(userId)
         .withIssuer("idatt2105_token_issuer_app")

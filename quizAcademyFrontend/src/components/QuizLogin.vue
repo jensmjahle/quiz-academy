@@ -35,7 +35,7 @@ export default {
   },
   mounted() {
     // Use localStorage to load user input data
-    const storedLoginUser = JSON.parse(localStorage.getItem('loginUser'));
+    const storedLoginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     if (storedLoginUser) {
       this.username = storedLoginUser.username;
       this.password = storedLoginUser.password;
@@ -44,10 +44,10 @@ export default {
   watch: {
     // Watch for changes in username and password and update localStorage
     username(value) {
-      localStorage.setItem('loginUser', JSON.stringify({ username: value, password: this.password }));
+      sessionStorage.setItem('loginUser', JSON.stringify({ username: value, password: this.password }));
     },
     password(value) {
-      localStorage.setItem('loginUser', JSON.stringify({ username: this.username, password: value }));
+      sessionStorage.setItem('loginUser', JSON.stringify({ username: this.username, password: value }));
     }
   },
   methods: {
@@ -65,13 +65,13 @@ export default {
   },
   beforeDestroy() {
     // Clear local storage when the component is destroyed
-    localStorage.removeItem('loginUser');
+    sessionStorage.removeItem('loginUser');
   },
 };
 
 window.addEventListener('beforeunload', function(event) {
   // Remove item whenever page is refreshed
-  localStorage.removeItem('loginUser');
+  sessionStorage.removeItem('loginUser');
 });
 
 </script>

@@ -17,7 +17,7 @@ export const getJwtToken = (username, password) => {
             "Content-type": "application/json",
         },
     };
-    return axios.post("http://localhost:8080/token", JSON.stringify({ username, password }), config);
+    return axios.post("http://localhost:8080/token/new", JSON.stringify({ username, password }), config);
 }
 
 export const getUserInfo = (username, token) => {
