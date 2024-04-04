@@ -62,17 +62,29 @@ const closeDialog = () => {
     display: flex;
     flex-grow: 1;
     gap: 10px; /* Add gap between items */
-    padding: 5px;
-    width: 90%;
+    width: 80%;
+    min-width: 400px;
+
 }
 
 .quiz-list {
     display: grid;
-
-    grid-template-columns: repeat(auto-fill, minmax(20vw, 1fr)); /* Responsive grid */
     list-style-type: none; /* Remove bullet points */
     padding: 15px;
     gap: 10px;
+
+    /* Default to single column on narrow screens */
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+
+    /* Adjust grid for wider screens */
+    @media screen and (min-width: 768px) {
+        grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columns on screens 768px and wider */
+    }
+
+    @media screen and (min-width: 1024px) {
+        grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columns on screens 1024px and wider */
+    }
+
 
 }
 </style>

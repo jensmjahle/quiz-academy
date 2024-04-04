@@ -6,8 +6,16 @@ import QuizList from "../components/QuizList.vue";
     <div id="body">
         <h2>This is the homepage!!!</h2>
         <QuizList />
+        <QuizList />
 
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+</style>

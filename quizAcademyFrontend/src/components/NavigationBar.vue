@@ -29,6 +29,7 @@ const router = useRouter();
     width: 100%;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
 nav {
