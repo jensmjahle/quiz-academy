@@ -7,14 +7,19 @@
         :style="{ backgroundImage: 'url(' + imageUrl + ')' }"
     >
         <div class="quiz-content">
-            <h3 class="quiz-name">{{ quiz.quizName }}</h3>
-            <h5 class="quiz-description" v-if="hovering">{{ quiz.quizDescription }}</h5>
+            <div class="always-visible">
 
+
+            <h3 class="quiz-name">{{ quiz.quizName }}</h3>
             <h5 v-if="quiz.questions" class="number-of-questions">
-                {{ quiz.questions.length }} questions
+                {{ quiz.questions.length }} question(s)
             </h5>
             <h5 v-else class="number-of-questions">Number of questions not available</h5>
+            </div>
+
+            <h5 class="quiz-description" >{{ quiz.quizDescription }}</h5>
         </div>
+
     </li>
 </template>
 
@@ -37,9 +42,9 @@ export default {
 <style scoped>
 .quiz-item {
     display: block;
-    border: 1px solid #ccc;
+    border: 1px solid var(--secondary-color);
     padding: 10px;
-    margin: 10px; /* Add margin between items */
+    margin: 5px; /* Add margin between items */
     cursor: pointer; /* Change cursor to pointer */
     border-radius: 10px;
     font-size: calc(1vw + 1vh); /* Adjust font size based on viewport size */
@@ -52,19 +57,21 @@ export default {
     overflow-wrap: break-word; /* Break words that exceed the container width */
     word-break: break-word;
     transition: 0.3s;
+    text-overflow: ellipsis;
 
     h3 {
         color: var(--fourth-color);
     }
-
-
 }
 .quiz-content {
-    background-color: rgba(var(--base-contrast-color-rgb), 0.7);
     border-radius: 10px;
     transition: 0.3s;
 
-
+}
+.always-visible {
+    background-color: rgba(var(--base-contrast-color-rgb), 0.8);
+    transition: 0.3s;
+    border-radius: 10px;
 }
 
 .quiz-item:hover {
@@ -75,11 +82,27 @@ export default {
         transition: 0.3s;
     }
     .quiz-description {
+        overflow: hidden; /* Hide overflow */
+        text-overflow: ellipsis; /* Add ellipsis (...) if text overflows */
         transition: 0.3s;
+        opacity: 100;
     }
     .quiz-content {
         background-color: rgba(var(--base-contrast-color-rgb), 1);
         transition: 0.3s;
+        opacity: 100;
     }
 }
+
+
+.quiz-description {
+    overflow: hidden; /* Hide overflow */
+    text-overflow: ellipsis; /* Add ellipsis (...) if text overflows */
+    opacity: 0;
+
+}
+.quiz-name {
+    line-height: 1;
+}
+
 </style>

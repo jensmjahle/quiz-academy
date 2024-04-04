@@ -46,7 +46,8 @@ const props = defineProps({
     display: grid;
     list-style-type: none; /* Remove bullet points */
     padding: 15px;
-    gap: 10px;
+    column-gap: 10px;
+
 
     /* Default to single column on narrow screens */
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -54,6 +55,7 @@ const props = defineProps({
     /* Adjust grid for wider screens */
     @media screen and (min-width: 768px) {
         grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columns on screens 768px and wider */
+        column-gap: 20px;
     }
 
     @media screen and (min-width: 1024px) {
@@ -61,6 +63,7 @@ const props = defineProps({
             3,
             minmax(0, 1fr)
         ); /* 3 columns on screens 1024px and wider */
+        column-gap: 30px;
     }
 }
 </style>

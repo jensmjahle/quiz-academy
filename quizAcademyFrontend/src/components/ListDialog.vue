@@ -2,14 +2,22 @@
     <div class="dialog-overlay" v-if="selectedQuiz" @click="closeDialogOutside">
         <div class="dialog">
             <div class="dialog-header">
-                <h2>{{ selectedQuiz.quizName }}</h2>
-                <p>{{ selectedQuiz.quizDescription }}</p>
-            </div>
-            <div class="dialog-content">
-                <button @click="editQuiz">Edit</button>
-                <button @click="playQuiz">Play</button>
-                <button @click="exportCSV">Export as CSV</button>
-                <button class="cancel-button" @click="closeDialog">Cancel</button>
+                <h2 class="title">{{ selectedQuiz.quizName }}</h2>
+                <h5 class="description">{{ selectedQuiz.quizDescription }}</h5>
+
+                <div class="info">
+                    <h5>Questions:</h5>
+                    <h4>{{ selectedQuiz.questions.length }}</h4>
+                    <h5>Created by:</h5>
+                    <h4>{{ selectedQuiz.user }}</h4>
+                </div>
+
+                <div class="dialog-content">
+                    <button @click="editQuiz">Edit</button>
+                    <button @click="playQuiz">Play</button>
+                    <button @click="exportCSV">Export as CSV</button>
+                    <button class="cancel-button" @click="closeDialog">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
@@ -66,6 +74,16 @@ export default {
     max-width: 700px;
     /* rounds edges of box*/
 }
+.title {
+    background-color: rgba(var(--primary-color-rgb), 0.5);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.description {
+    background-color: rgba(var(--primary-color-rgb), 0.5);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
 
 .dialog-content {
     display: flex;
@@ -77,6 +95,18 @@ export default {
     display: flex;
     flex-direction: column;
     text-align: center;
+}
+.info {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    h5 {
+        color: var(--fourth-color);
+    }
 }
 /*
 .dialog button {
