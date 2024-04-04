@@ -24,6 +24,9 @@
 </template>
 
 <script>
+import { usePlayQuizStore } from "../stores/playQuizStore.js";
+import router from "../router/index.js";
+
 export default {
     props: {
         selectedQuiz: Object
@@ -34,6 +37,8 @@ export default {
             console.log("Edit quiz:", this.selectedQuiz);
         },
         playQuiz() {
+            usePlayQuizStore().startQuiz(this.selectedQuiz);
+            router.push("/play_quiz");
             console.log("Play quiz:", this.selectedQuiz);
         },
         exportCSV() {
