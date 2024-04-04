@@ -14,13 +14,13 @@ import router from "../router/index.js";
             try {
                 await tokenStore.getTokenAndSaveInStore(username, password);
             } catch (err) {
-                await router.push({name: "Log in"});
+                await router.push({name: "login"});
                 console.log(err)
             }
 
         }
         if (useTokenStore().getJwtToken == null) {
-            await router.push({name: "Log in"});
+            await router.push({name: "login"});
         }
         if (error.response.status === 400) {
             console.log("Bad request, trying to get new token")
@@ -30,7 +30,7 @@ import router from "../router/index.js";
             try {
                 await tokenStore.getTokenAndSaveInStore(username, password);
             } catch (err) {
-                await router.push({name: "Log in"});
+                await router.push({name: "login"});
                 console.log(err)
             }
 
@@ -40,10 +40,13 @@ import router from "../router/index.js";
             let tokenStore = useTokenStore();
             let username = tokenStore.getUsername;
             let password = tokenStore.getPassword;
+            if (username == null || password == null) {
+                await router.push({name: "login"});
+            }
             try {
                 await tokenStore.getTokenAndSaveInStore(username, password);
             } catch (err) {
-                await router.push({name: "Log in"});
+                await router.push({name: "login"});
                 console.log(err)
             }
 
