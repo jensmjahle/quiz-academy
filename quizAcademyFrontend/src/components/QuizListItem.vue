@@ -47,8 +47,10 @@ export default {
 
 .quiz-item:hover {
     background-color: var(--tertiary-color); /* Change background color on hover */
+    transition: 0.3s;
     h3 {
         font-size: calc(1vw + 1.5vh);
+        transition: 0.3s;
 
     }
     .quiz-description {
@@ -56,6 +58,7 @@ export default {
         color: var(--base-color);
         border-radius: 10px;
          padding: 2px;
+        transition: 0.3s;
 
     }
 
