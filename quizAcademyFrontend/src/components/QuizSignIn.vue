@@ -123,7 +123,7 @@ window.addEventListener('beforeunload', function(event) {
 <style scoped>
 .login-form {
   width: 50%;
-  padding: 50px;
+  padding:50px;
   border: 1px solid #ccc;
   border-radius: 5px;
 }
