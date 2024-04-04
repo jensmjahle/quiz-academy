@@ -30,12 +30,12 @@ export default {
     return {
       username: '',
       password: '',
-        loginStatus: ''
+      loginStatus: ''
     };
   },
   mounted() {
     // Use localStorage to load user input data
-    const storedLoginUser = JSON.parse(localStorage.getItem('loginUser'));
+    const storedLoginUser = JSON.parse(sessionStorage.getItem('loginUser'));
     if (storedLoginUser) {
       this.username = storedLoginUser.username;
       this.password = storedLoginUser.password;
@@ -44,18 +44,20 @@ export default {
   watch: {
     // Watch for changes in username and password and update localStorage
     username(value) {
-      localStorage.setItem('loginUser', JSON.stringify({ username: value, password: this.password }));
+      sessionStorage.setItem('loginUser', JSON.stringify({ username: value, password: this.password }));
     },
     password(value) {
-      localStorage.setItem('loginUser', JSON.stringify({ username: this.username, password: value }));
+      sessionStorage.setItem('loginUser', JSON.stringify({ username: this.username, password: value }));
     }
   },
   methods: {
       async login() {
           await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
           if(this.tokenStore.jwtToken){
-              router.push("/");
+              this.loginStatus = "Login successful!";
+              await router.push('/');
               console.log("Login successful!");
+              sessionStorage.removeItem('loginUser');
           } else {
               this.loginStatus = "Login failed!"
           }
@@ -65,13 +67,13 @@ export default {
   },
   beforeDestroy() {
     // Clear local storage when the component is destroyed
-    localStorage.removeItem('loginUser');
+    sessionStorage.removeItem('loginUser');
   },
 };
 
 window.addEventListener('beforeunload', function(event) {
   // Remove item whenever page is refreshed
-  localStorage.removeItem('loginUser');
+  sessionStorage.removeItem('loginUser');
 });
 
 </script>
@@ -82,6 +84,8 @@ window.addEventListener('beforeunload', function(event) {
   padding: 50px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
 .form-group {
