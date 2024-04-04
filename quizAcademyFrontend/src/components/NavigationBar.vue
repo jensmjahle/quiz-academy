@@ -35,7 +35,9 @@ watch(() => tokenStore.loggedInUser, () => {
       <RouterLink @click="$emit('link-clicked','Create Quiz')" to="/create_quiz" class="router-button">Create Quiz</RouterLink>
       <RouterLink v-if="!isLoggedIn" @click="$emit('link-clicked','Log In')" to="/login" class="router-button">Log in</RouterLink>
       <div v-else class="dropdown">
-        <button @click="toggleDropdown" class="router-button-loggedIn" :class="{ 'active': dropdownOpen }">{{ username }}</button>
+        <button @click="toggleDropdown" class="router-button-loggedIn" :class="{ 'active': dropdownOpen }">{{ username }}
+          <span class="arrow-icon" :class="{ 'arrow-rotate': dropdownOpen }">&#9662;</span>
+        </button>
         <div class="dropdown-content" :class="{ 'show': dropdownOpen }">
           <a @click="logout">Logout</a>
         </div>
@@ -63,6 +65,10 @@ nav {
   margin-top: 5px;
   margin-bottom: 5px;
   width: 75%;
+}
+
+.dropdown-content a {
+  color: var(--fourth-color); /* Set the color of the anchor tags within the dropdown to black */
 }
 
 .router-button {
@@ -119,6 +125,15 @@ nav {
   z-index: 1;
   top: 100%; /* Position the dropdown below the button */
   left: 0; /* Align the dropdown with the button */
+}
+
+.arrow-icon {
+  font-size: calc(1.2vw + 1.2vh);
+  margin-left: 0px;
+}
+
+.arrow-rotate {
+  transform: rotate(180deg); /* Rotate arrow when dropdown is open */
 }
 
 .dropdown-content.show {

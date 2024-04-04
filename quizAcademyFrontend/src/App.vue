@@ -1,6 +1,6 @@
 <script setup>
-import { RouterView, useRouter } from "vue-router";
-import { ref, onMounted } from 'vue';
+import { RouterView, useRoute } from "vue-router";
+import {ref, onMounted, computed} from 'vue';
 import NavigationBar from './components/NavigationBar.vue';
 
 const welcomeMessage = ref("Welcome to Quiz Academy! Here you can take quizzes, create your own quizzes and much more!");
@@ -41,6 +41,15 @@ onMounted(() => {
   headerHeight.value = document.getElementById('header').offsetHeight;
   footerHeight.value = document.getElementById('footer').offsetHeight;
 });
+
+
+const route = useRoute();
+const bodyClass = computed(() => {
+  if (route.name === 'login' || route.name === 'signup') {
+    return 'special-body';
+  }
+  return '';
+});
 </script>
 
 <template>
@@ -53,7 +62,7 @@ onMounted(() => {
 
       <navigation-bar @link-clicked="(args) => handleLinkClicked(args)" />
 
-        <div id="body">
+        <div id="body" :class="bodyClass">
             <router-view />
         </div>
         <div id="footer">
@@ -73,10 +82,10 @@ onMounted(() => {
   /* Your header styles */
 }
 
-#body {
+.special-body {
   flex-grow: 1;
   overflow: auto;
-  /* Your body styles */
+  /* Your special styles for #body when it's within QuizLoginView and QuizSigninView */
 }
 
 #footer {

@@ -30,7 +30,7 @@ export default {
     return {
       username: '',
       password: '',
-        loginStatus: ''
+      loginStatus: ''
     };
   },
   mounted() {
@@ -54,8 +54,10 @@ export default {
       async login() {
           await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
           if(this.tokenStore.jwtToken){
-              router.push("/");
+              this.loginStatus = "Login successful!";
+              await router.push('/');
               console.log("Login successful!");
+              sessionStorage.removeItem('loginUser');
           } else {
               this.loginStatus = "Login failed!"
           }

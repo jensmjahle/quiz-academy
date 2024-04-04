@@ -31,7 +31,6 @@ export const useTokenStore = defineStore("token", {
         async logout() {
             this.jwtToken = null;
             this.loggedInUser = null;
-            await router.push({name: "Log in"});
         }
     },
     getters: {
