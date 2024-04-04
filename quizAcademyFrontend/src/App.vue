@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView, useRouter } from "vue-router";
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import NavigationBar from './components/NavigationBar.vue';
 
 const welcomeMessage = ref("Welcome to Quiz Academy! Here you can take quizzes, create your own quizzes and much more!");
@@ -34,16 +34,24 @@ const handleLinkClicked = (args) => {
       headerSize.value = "calc(3vw + 3vh)";
   }
 };
+const headerHeight = ref(0);
+const footerHeight = ref(0);
+
+onMounted(() => {
+  headerHeight.value = document.getElementById('header').offsetHeight;
+  footerHeight.value = document.getElementById('footer').offsetHeight;
+});
 </script>
 
 <template>
     <div id="app">
-        <div id="header">
-            <h1 :style="{ fontSize: headerSize }">Quiz Academy</h1>
-          <h5>{{ welcomeMessage }}</h5>
-        </div>
+      <div id="header">
+        <h1 :style="{ fontSize: headerSize }">Quiz Academy</h1>
+        <h5>{{ welcomeMessage }}</h5>
 
-        <navigation-bar @link-clicked="(args) => handleLinkClicked(args)" />
+      </div>
+
+      <navigation-bar @link-clicked="(args) => handleLinkClicked(args)" />
 
         <div id="body">
             <router-view />
@@ -54,4 +62,24 @@ const handleLinkClicked = (args) => {
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 150vh;
+}
+
+#header {
+  /* Your header styles */
+}
+
+#body {
+  flex-grow: 1;
+  overflow: auto;
+  /* Your body styles */
+}
+
+#footer {
+  /* Your footer styles */
+}
+</style>
