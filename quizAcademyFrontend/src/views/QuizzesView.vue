@@ -1,14 +1,28 @@
 <template>
-    <div>
+    <div id="body">
         <h1>Quiz List</h1>
+        <QuizList :quizzes="quizzes" />
+
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { onMounted, ref } from "vue";
+import { fetchQuizzes } from "../utils/quizUtils.js";
+import QuizList from "../components/QuizList.vue";
+
+const quizzes = ref([]);
+onMounted(async () => {
+    quizzes.value = await fetchQuizzes();
+});
+
+</script>
 
 <style scoped>
-h1 {
-    text-align: center;
-    font-size: 2.7em;
+#body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
 }
 </style>

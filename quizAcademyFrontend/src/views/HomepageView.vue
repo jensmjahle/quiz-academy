@@ -1,10 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
-import axios from "axios";
-import { useTokenStore } from "../stores/token.js";
 import QuizList from "../components/QuizList.vue";
-
-let userDetails = ref(null);
+import { fetchQuizzes } from "../utils/quizUtils.js";
 
 const newQuiz = {
     quizId: 4,
@@ -94,47 +91,26 @@ const newQuiz = {
         }
     ]
 };
-const PostQuiz = async () => {
-    try {
-        const tokenStore = useTokenStore();
-        const response = await axios.get("http://localhost:8080/quiz/create", {
-            data: {
-                quiz: newQuiz
-            }
-        });
-        userDetails.value = response.data;
-        console.log(response.data);
-    } catch (error) {
-        console.error(error);
-    }
-};
 
 const quizzes = ref([]);
-const quizzesBeforeChecks = ref([
-    { id: 1, name: "Mock Quiz 1", quizDescription: "This is a mock quiz..." },
-    { id: 2, name: "Mock Quiz 2" }
-    // Other mock quizzes...
-]);
+onMounted(async () => {
+    quizzes.value = await fetchQuizzes();
+});
 
-const fetchQuizzes = async () => {
-    try {
-        const response = await axios.get("http://localhost:8080/quiz/all");
-        quizzes.value = response.data;
-        console.log(response.data);
-    } catch (error) {
-        console.error("Error fetching quizzes:", error);
-    }
-};
-
-onMounted(fetchQuizzes)
 </script>
 
 <template>
     <div id="body">
-        <h2>This is the homepage!!!</h2>
+        <h2>Our top picks!!!</h2>
         <QuizList :quizzes="quizzes" />
-        <QuizList :quizzes="quizzesBeforeChecks" />
-        <button @click="PostQuiz">Get Quizzes</button>
+        <h2>Educational</h2>
+        <QuizList :quizzes="quizzes" />
+        <h2>General Knowledge</h2>
+        <QuizList :quizzes="quizzes" />
+        <h2>Entertainment</h2>
+        <QuizList :quizzes="quizzes" />
+        <h2>Technology</h2>
+        <QuizList :quizzes="quizzes" />
     </div>
 </template>
 
