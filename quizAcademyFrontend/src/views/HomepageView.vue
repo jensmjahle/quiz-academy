@@ -25,30 +25,18 @@ const getUserName = async () => {
 
 <template>
     <div id="body">
-        <h2>Home</h2>
-        <p>
-            Welcome to Quiz Academy! Here you can take quizzes, create your own quizzes and much
-            more!
-        </p>
-        <button type="button" @click="count++">count is {{ count }}</button>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h1>Quizzes</h1>
-        <h2>skerraaa</h2>
-      <button type="button" @click="getUserName">Get User Details</button>
-      <div v-if="userDetails">
-        <h2>User Details</h2>
-        <p>Username: {{ userDetails.username }}</p>
-      </div>
+        <h2>This is the homepage!!!</h2>
+        <QuizList />
+        <QuizList />
+
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+#body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+</style>

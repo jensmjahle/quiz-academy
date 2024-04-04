@@ -1,6 +1,10 @@
 <template>
     <div class="dialog-overlay" v-if="selectedQuiz" @click="closeDialogOutside">
         <div class="dialog">
+            <div class="dialog-header">
+                <h2>{{ selectedQuiz.name }}</h2>
+                <p>{{ selectedQuiz.quizDescription }}</p>
+            </div>
             <div class="dialog-content">
                 <button @click="editQuiz">Edit</button>
                 <button @click="playQuiz">Play</button>
@@ -59,6 +63,7 @@ export default {
     border: 1px solid #ccc;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    max-width: 700px;
     /* rounds edges of box*/
 
 }
@@ -67,6 +72,12 @@ export default {
     display: flex;
     flex-direction: row; /* Align items horizontally */
     gap: 10px; /* Add gap between buttons */
+    justify-content: center; /* Center buttons */
+}
+.dialog-header {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
 /*
 .dialog button {
