@@ -10,7 +10,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EntityScan(basePackages = {"edu.ntnu.dao", "edu.ntnu.dao.questions"})
 public class SecurityConfig {
 
   // inject SecurityFilterChain and tell that all requests are authenticated

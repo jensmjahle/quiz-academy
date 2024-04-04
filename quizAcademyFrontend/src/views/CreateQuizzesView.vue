@@ -14,7 +14,7 @@ export default {
             console.log("Unauthenticated context");
         } else {
             console.log("Authenticated context");
-            let response  = await getUserInfo("ole1", this.tokenStore.jwtToken);
+            let response  = this.tokenStore.loggedInUser;
             this.user = response.data;
         }
     },

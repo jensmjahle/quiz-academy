@@ -5,8 +5,10 @@ package edu.ntnu.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import edu.ntnu.dao.MockDao;
 import edu.ntnu.service.SecurityService;
+
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -27,9 +29,10 @@ public class TokenController {
   Logger logger = Logger.getLogger(TokenController.class.getName());
   SecurityService securityService;
 
-  // keyStr is hardcoded here for testing purpose
-  // in a real scenario, it should either be stored in a database or injected from the environment
-  public static final String keyStr = "testsecrettestsecrettestsecrettestsecrettestsecret";
+  
+
+  //Will try to get secret key from environment variable, if not found, generate a random one
+  public static final String keyStr = System.getenv("SECRET_KEY") != null ? System.getenv("SECRET_KEY") :generateRandomSecretKey();
   private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(5);
 
   @Autowired
@@ -55,6 +58,7 @@ public class TokenController {
   public String generateToken(final String userId) {
     logger.info("Generating token for user: " + userId + ".");
     final Instant now = Instant.now();
+    System.out.println(keyStr);
     final Algorithm hmac512 = Algorithm.HMAC512(keyStr);
     final JWTVerifier verifier = JWT.require(hmac512).build();
     return JWT.create()
@@ -63,6 +67,14 @@ public class TokenController {
         .withIssuedAt(now)
         .withExpiresAt(now.plusMillis(JWT_TOKEN_VALIDITY.toMillis()))
         .sign(hmac512);
+  }
+
+  private static String generateRandomSecretKey() {
+    // Generate a random secret key
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[64];
+    random.nextBytes(key);
+    return Base64.getEncoder().encodeToString(key);
   }
 }
 
