@@ -1,4 +1,27 @@
-<script setup></script>
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+import {useTokenStore} from "../stores/token.js";
+import {count} from "rxjs";
+
+let userDetails = ref(null);
+
+const getUserName = async () => {
+  try {
+    const tokenStore = useTokenStore();
+    const response = await axios.get('http://localhost:8080/users/' + tokenStore.getUsername, {
+      headers: {
+        'Authorization': `Bearer ${tokenStore.getJwtToken}`
+      }
+    });
+    userDetails.value = response.data;
+    console.log(response);
+  } catch (error) {
+
+    console.error(error);
+  }
+};
+</script>
 
 <template>
     <div id="body">
@@ -20,7 +43,11 @@
         <h1>Quizzes</h1>
         <h1>Quizzes</h1>
         <h2>skerraaa</h2>
-        <button type="button" @click="count++">count is {{ count }}</button>
+      <button type="button" @click="getUserName">Get User Details</button>
+      <div v-if="userDetails">
+        <h2>User Details</h2>
+        <p>Username: {{ userDetails.username }}</p>
+      </div>
     </div>
 </template>
 

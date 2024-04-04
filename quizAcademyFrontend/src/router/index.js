@@ -21,6 +21,7 @@ export default createRouter({
         },
         {
             path: "/login",
+            name: "login",
             component: LoginView
         },
         {
@@ -49,6 +50,7 @@ export default createRouter({
         },
         {
             path: "/signup",
+            name: "signup",
             component: SigninWiew
         }
     ]
