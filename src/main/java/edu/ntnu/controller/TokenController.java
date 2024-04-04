@@ -29,17 +29,16 @@ public class TokenController {
   Logger logger = Logger.getLogger(TokenController.class.getName());
   SecurityService securityService;
 
-  
+  private static String secretKey = null;
 
   //Will try to get secret key from environment variable, if not found, generate a random one
-  public static final String keyStr = System.getenv("SECRET_KEY") != null ? System.getenv("SECRET_KEY") :generateRandomSecretKey();
+  public static final String keyStr = System.getenv("SECRET_KEY") != null ? System.getenv("SECRET_KEY") : generateRandomSecretKey();
   private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(5);
 
   @Autowired
   public TokenController(SecurityService securityService) {
     this.securityService = securityService;
   }
-
 
   @PostMapping(value = "")
   @ResponseStatus(value = HttpStatus.CREATED)
@@ -71,10 +70,13 @@ public class TokenController {
 
   private static String generateRandomSecretKey() {
     // Generate a random secret key
-    SecureRandom random = new SecureRandom();
-    byte[] key = new byte[64];
-    random.nextBytes(key);
-    return Base64.getEncoder().encodeToString(key);
+    if (TokenController.secretKey == null) {
+      SecureRandom random = new SecureRandom();
+      byte[] key = new byte[64];
+      random.nextBytes(key);
+      TokenController.secretKey = Base64.getEncoder().encodeToString(key);
+    }
+    return TokenController.secretKey;
   }
 }
 
