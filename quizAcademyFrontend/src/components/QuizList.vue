@@ -49,11 +49,7 @@ const closeDialog = () => {
 
 <style scoped>
 .quiz-list-container {
-    max-height: 400px; /* Set the max height for the container */
-    overflow-y: auto; /* Enable vertical scrolling for the container */
-    scrollbar-gutter: stable; /* Prevent scrollbar from overlapping content */
-    scrollbar-color: var(--secondary-color) var(--primary-color); /* Set scrollbar colors */
-    overflow-x: clip;
+    flex-grow: 1;
     width: 70%;
     padding-left: 15%;
 }

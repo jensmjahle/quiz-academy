@@ -1,9 +1,13 @@
 package edu.ntnu.dto.questions;
 
+import org.springframework.lang.Nullable;
+
 public abstract class QuestionDTO {
   private Long questionId;
   private String questionText;
   private Long quizId;
+  @Nullable
+  private String imageBase64;
 
   public QuestionDTO() {
   }
@@ -36,6 +40,12 @@ public abstract class QuestionDTO {
 
   public void setQuizId(Long quizId) {
     this.quizId = quizId;
+  }
+  public String getImageBase64() {
+    return imageBase64;
+  }
+  public void setImageBase64(String imageBase64) {
+    this.imageBase64 = imageBase64;
   }
 
   @Override

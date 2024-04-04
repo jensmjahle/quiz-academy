@@ -12,17 +12,24 @@ import edu.ntnu.enums.QuestionType;
 import edu.ntnu.dao.questions.QuestionDAO;
 import edu.ntnu.dao.questions.TextInputQuestionDAO;
 import edu.ntnu.utils.QuestionTypeIdentifier;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class QuestionMapper {
-  private final Logger logger = Logger.getLogger(QuestionMapper.class.getName());
+  private static final Logger logger = Logger.getLogger(QuestionMapper.class.getName());
 
   /**
    * Maps a QuestionDAO to a QuestionDTO.
@@ -36,38 +43,42 @@ public class QuestionMapper {
       String questionText = questionDAO.getQuestionText();
       Long quizId = questionDAO.getQuizId();
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionType(questionDAO);
+      String imageBase64 = convertImageToBase64(questionDAO.getImage());
 
       switch (questionType) {
         case MULTIPLE_CHOICE:
-          return new MultipleChoiceQuestionDTO(
-              questionId,
-              questionText,
-              quizId,
-              splitStringToList(((MultipleChoiceQuestionDAO) questionDAO).getAlternatives()),
-              splitStringToList(((MultipleChoiceQuestionDAO) questionDAO).getCorrectAlternatives())
-          );
+          MultipleChoiceQuestionDTO mcq = new MultipleChoiceQuestionDTO();
+          mcq.setQuestionId(questionId);
+          mcq.setQuestionText(questionText);
+          mcq.setQuizId(quizId);
+          mcq.setAlternatives(splitStringToList(((MultipleChoiceQuestionDAO) questionDAO).getAlternatives()));
+          mcq.setCorrectAlternatives(splitStringToList(((MultipleChoiceQuestionDAO) questionDAO).getCorrectAlternatives()));
+          if (imageBase64 != null) { mcq.setImageBase64(imageBase64); }
+          return mcq;
         case TEXT_INPUT:
-          return new TextInputQuestionDTO(
-              questionId,
-              questionText,
-              quizId,
-              splitStringToList(((TextInputQuestionDAO) questionDAO).getAnswer())
-          );
+          TextInputQuestionDTO tiq = new TextInputQuestionDTO();
+          tiq.setQuestionId(questionId);
+          tiq.setQuestionText(questionText);
+          tiq.setQuizId(quizId);
+          tiq.setAnswers(splitStringToList(((TextInputQuestionDAO) questionDAO).getAnswer()));
+          if (imageBase64 != null) { tiq.setImageBase64(imageBase64); }
+          return tiq;
         case DRAG_AND_DROP:
-          return new DragDropQuestionDTO(
-              questionId,
-              questionText,
-              quizId,
-              mapStringToCategories(((DragDropQuestionDAO) questionDAO).getCategories())
-          );
+          DragDropQuestionDTO ddq = new DragDropQuestionDTO();
+          ddq.setQuestionId(questionId);
+          ddq.setQuestionText(questionText);
+          ddq.setQuizId(quizId);
+          ddq.setCategories(mapStringToCategories(((DragDropQuestionDAO) questionDAO).getCategories()));
+          if (imageBase64 != null) { ddq.setImageBase64(imageBase64); }
+          return ddq;
         case TRUE_FALSE:
-          return new TrueFalseQuestionDTO(
-              questionId,
-              questionText,
-              quizId,
-              ((TrueFalseQuestionDAO) questionDAO).isCorrectAnswer()
-          );
-
+          TrueFalseQuestionDTO tfq = new TrueFalseQuestionDTO();
+          tfq.setQuestionId(questionId);
+          tfq.setQuestionText(questionText);
+          tfq.setQuizId(quizId);
+          tfq.setCorrectAnswer(((TrueFalseQuestionDAO) questionDAO).isCorrectAnswer());
+          if (imageBase64 != null) { tfq.setImageBase64(imageBase64); }
+          return tfq;
         default:
           throw new IllegalArgumentException("Unknown question type. Cannot convert to DTO");
       }
@@ -107,6 +118,7 @@ public class QuestionMapper {
       String questionText = questionDTO.getQuestionText();
       Long quizId = questionDTO.getQuizId();
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
+      byte [] image = convertBase64ToImage(questionDTO.getImageBase64());
 
       switch (questionType) {
         case MULTIPLE_CHOICE:
@@ -115,24 +127,28 @@ public class QuestionMapper {
           mcq.setQuizId(quizId);
           mcq.setAlternatives(joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getAlternatives()));
           mcq.setCorrectAlternatives(joinListToString(((MultipleChoiceQuestionDTO) questionDTO).getCorrectAlternatives()));
+          if (image != null) { mcq.setImage(image); }
           return mcq;
         case TEXT_INPUT:
           TextInputQuestionDAO tiq = new TextInputQuestionDAO();
           tiq.setQuestionText(questionText);
           tiq.setQuizId(quizId);
           tiq.setAnswer(joinListToString(((TextInputQuestionDTO) questionDTO).getAnswers()));
+          if (image != null) { tiq.setImage(image); }
           return tiq;
         case DRAG_AND_DROP:
           DragDropQuestionDAO ddq = new DragDropQuestionDAO();
           ddq.setQuestionText(questionText);
           ddq.setQuizId(quizId);
           ddq.setCategories(mapCategoriesToString(((DragDropQuestionDTO) questionDTO).getCategories()));
+          if (image != null) { ddq.setImage(image); }
           return ddq;
         case TRUE_FALSE:
           TrueFalseQuestionDAO tfq = new TrueFalseQuestionDAO();
           tfq.setQuestionText(questionText);
           tfq.setQuizId(quizId);
           tfq.setCorrectAnswer(((TrueFalseQuestionDTO) questionDTO).isCorrectAnswer());
+          if (image != null) { tfq.setImage(image); }
           return tfq;
         default:
           throw new IllegalArgumentException("Unknown question type. Cannot convert to model");
@@ -205,5 +221,19 @@ public class QuestionMapper {
       categories.put(categoryName, categoryItems);
     }
     return categories;
+  }
+
+  private static String convertImageToBase64(byte[] image) {
+    if (image != null) {
+      return Base64.getEncoder().encodeToString(image);
+    }
+    return null;
+  }
+
+  private static byte[] convertBase64ToImage(String base64String) {
+    if (base64String != null) {
+      return Base64.getDecoder().decode(base64String);
+    }
+    return null;
   }
 }

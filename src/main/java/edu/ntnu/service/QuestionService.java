@@ -106,16 +106,16 @@ public class QuestionService {
 
       switch (qType) {
         case MULTIPLE_CHOICE:
-          multipleChoiceRepository.delete(questionDAO);
+          multipleChoiceRepository.delete((MultipleChoiceQuestionDAO) questionDAO);
           break;
         case TEXT_INPUT:
-          textInputRepository.delete(questionDAO);
+          textInputRepository.delete((TextInputQuestionDAO) questionDAO);
           break;
         case DRAG_AND_DROP:
-          dragDropRepository.delete(questionDAO);
+          dragDropRepository.delete((DragDropQuestionDAO) questionDAO);
           break;
         case TRUE_FALSE:
-          trueFalseRepository.delete(questionDAO);
+          trueFalseRepository.delete((TrueFalseQuestionDAO) questionDAO);
           break;
         default:
           return ResponseEntity.notFound().build();
