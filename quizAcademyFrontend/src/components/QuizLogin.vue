@@ -17,11 +17,20 @@
 
 <script>
 
+import axios from "axios";
+import { useTokenStore } from "../stores/token.js";
+import router from "../router/index.js";
+
 export default {
+    setup() {
+        const tokenStore = useTokenStore();
+        return { tokenStore };
+    },
   data() {
     return {
       username: '',
-      password: ''
+      password: '',
+        loginStatus: ''
     };
   },
   mounted() {
@@ -42,18 +51,17 @@ export default {
     }
   },
   methods: {
-    login() {
-      // Here you can implement your login logic
-      // For simplicity, let's just log the username and password for now
-      console.log('Username:', this.username);
-      console.log('Password:', this.password);
+      async login() {
+          await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
+          if(this.tokenStore.jwtToken){
+              router.push("/");
+              console.log("Login successful!");
+          } else {
+              this.loginStatus = "Login failed!"
+          }
 
-      //delete local storage after login
-      localStorage.removeItem('loginUser');
 
-      // After successful login, you can redirect the user to another page
-      // For example, using Vue Router: this.$router.push('/dashboard');
-    }
+        }
   },
   beforeDestroy() {
     // Clear local storage when the component is destroyed
