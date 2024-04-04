@@ -6,7 +6,9 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import edu.ntnu.dao.MockDao;
+import edu.ntnu.service.SecurityService;
 import java.util.logging.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +25,17 @@ import java.time.Instant;
 
 public class TokenController {
   Logger logger = Logger.getLogger(TokenController.class.getName());
+  SecurityService securityService;
 
   // keyStr is hardcoded here for testing purpose
   // in a real scenario, it should either be stored in a database or injected from the environment
   public static final String keyStr = "testsecrettestsecrettestsecrettestsecrettestsecret";
   private static final Duration JWT_TOKEN_VALIDITY = Duration.ofMinutes(5);
+
+  @Autowired
+  public TokenController(SecurityService securityService) {
+    this.securityService = securityService;
+  }
 
 
   @PostMapping(value = "")
@@ -36,7 +44,7 @@ public class TokenController {
     logger.info("Received request to generate token for user: " + loginRequest.getUsername() + ".");
     // if username and password are valid, issue an access token
     // note that subsequent requests need this token
-    if (MockDao.checkUserCredentials(loginRequest.getUsername(), loginRequest.getPassword())) {
+    if (securityService.correctPassword(loginRequest.getUsername(), loginRequest.getPassword())) {
       return generateToken(loginRequest.getUsername());
     }
     logger.warning("Access denied, wrong credentials....");

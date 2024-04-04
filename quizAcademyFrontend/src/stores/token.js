@@ -21,7 +21,7 @@ export const useTokenStore = defineStore("token", {
                 console.log(data)
                 if(data != null && data != '' && data != undefined){
                     this.jwtToken = data;
-                    this.loggedInUser = username
+                    this.loggedInUser = user
                 }
             } catch (err){
                 console.log(err)
