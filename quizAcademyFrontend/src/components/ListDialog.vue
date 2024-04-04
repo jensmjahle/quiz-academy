@@ -2,7 +2,7 @@
     <div class="dialog-overlay" v-if="selectedQuiz" @click="closeDialogOutside">
         <div class="dialog">
             <div class="dialog-header">
-                <h2>{{ selectedQuiz.name }}</h2>
+                <h2>{{ selectedQuiz.quizName }}</h2>
                 <p>{{ selectedQuiz.quizDescription }}</p>
             </div>
             <div class="dialog-content">
@@ -23,20 +23,20 @@ export default {
     methods: {
         // placeholders for all methods on click
         editQuiz() {
-            console.log('Edit quiz:', this.selectedQuiz);
+            console.log("Edit quiz:", this.selectedQuiz);
         },
         playQuiz() {
-            console.log('Play quiz:', this.selectedQuiz);
+            console.log("Play quiz:", this.selectedQuiz);
         },
         exportCSV() {
-            console.log('Export as CSV:', this.selectedQuiz);
+            console.log("Export as CSV:", this.selectedQuiz);
         },
         closeDialog() {
-            this.$emit('close');
+            this.$emit("close");
         },
         closeDialogOutside(event) {
             // Check if the clicked element is outside of the dialog
-            if (!event.target.closest('.dialog')) {
+            if (!event.target.closest(".dialog")) {
                 this.closeDialog();
             }
         }
@@ -65,7 +65,6 @@ export default {
     border-radius: 10px;
     max-width: 700px;
     /* rounds edges of box*/
-
 }
 
 .dialog-content {
@@ -87,7 +86,6 @@ export default {
     height: 65px;
 
 }*/
-
 
 .cancel-button {
     align-self: flex-end; /* Align to the right */

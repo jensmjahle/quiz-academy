@@ -1,11 +1,5 @@
 <template>
-
-    <div
-        class="drop-zone"
-        @drop="onDrop($event, 1)"
-        @dragover.prevent
-        @dragenter.prevent
-    >
+    <div class="drop-zone" @drop="onDrop($event, 1)" @dragover.prevent @dragenter.prevent>
         <div
             v-for="item in getList(1)"
             :key="item.id"
@@ -16,12 +10,7 @@
             {{ item.title }}
         </div>
     </div>
-    <div
-        class="drop-zone"
-        @drop="onDrop($event, 2)"
-        @dragover.prevent
-        @dragenter.prevent
-    >
+    <div class="drop-zone" @drop="onDrop($event, 2)" @dragover.prevent @dragenter.prevent>
         <div
             v-for="item in getList(2)"
             :key="item.id"
@@ -32,55 +21,53 @@
             {{ item.title }}
         </div>
     </div>
-
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 export default {
     setup() {
         const items = ref([
-            {id: 0, title: "item a", list: 1},
-            {id: 1, title: "item b", list: 1},
-            {id: 2, title: "item c", list: 2},
-            {id: 3, title: "item d", list: 2},
-            {id: 4, title: "item e", list: 3},
-            {id: 5, title: "item f", list: 4},
+            { id: 0, title: "item a", list: 1 },
+            { id: 1, title: "item b", list: 1 },
+            { id: 2, title: "item c", list: 2 },
+            { id: 3, title: "item d", list: 2 },
+            { id: 4, title: "item e", list: 3 },
+            { id: 5, title: "item f", list: 4 }
         ]);
 
         const getList = (list) => {
-            return items.value.filter(item => item.list === list);
-        }
+            return items.value.filter((item) => item.list === list);
+        };
 
         const dragStart = (event, item) => {
             console.log(item);
-            event.dataTransfer.dropEffect = 'move';
-            event.dataTransfer.effectAllowed = 'move';
-            event.dataTransfer.setData('itemID', item.id);
-        }
+            event.dataTransfer.dropEffect = "move";
+            event.dataTransfer.effectAllowed = "move";
+            event.dataTransfer.setData("itemID", item.id);
+        };
 
         const onDrop = (event, list) => {
-            const itemID = parseInt(event.dataTransfer.getData('itemID'));
-            const item = items.value.find(item => item.id === itemID);
+            const itemID = parseInt(event.dataTransfer.getData("itemID"));
+            const item = items.value.find((item) => item.id === itemID);
             if (item) {
                 item.list = list;
                 console.log(itemID);
             } else {
                 console.error(`Item with ID ${itemID} not found.`);
             }
-        }
+        };
 
         return {
             getList,
             dragStart,
             onDrop
-        }
+        };
     }
-}
+};
 </script>
 
 <style scoped>
-
 .drop-zone {
     display: flex;
     justify-content: space-between;
@@ -95,5 +82,4 @@ export default {
     border-radius: 5px;
     cursor: pointer;
 }
-
 </style>

@@ -167,4 +167,29 @@ public class QuizService {
       throw e;
     }
   }
+
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzes() {
+    try {
+      // Get all public quizzes from the database
+      Iterable<QuizDAO> quizzes = quizRepository.findAll();
+
+      // Convert quizzes to DTOs
+      if (quizzes != null) {
+        List<QuizDTO> quizDTOs = new ArrayList<>();
+        for (QuizDAO quizDAO : quizzes) {
+          quizDTOs.add(quizMapper.toQuizDTO(quizDAO));
+        }
+
+        int numQuizzes = quizDTOs.size();
+        logger.info(numQuizzes + " public quizzes found. Returning quizzes.");
+        return ResponseEntity.ok(quizDTOs);
+      } else {
+        logger.info("No public quizzes found.");
+        return ResponseEntity.notFound().build();
+      }
+    } catch (Exception e) {
+      logger.severe("An error occurred while getting all public quizzes: " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
 }
