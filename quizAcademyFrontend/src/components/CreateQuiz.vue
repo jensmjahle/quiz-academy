@@ -1,13 +1,20 @@
 <script setup>
-import {onMounted, ref} from 'vue';
+import { ref } from 'vue';
 import { useStore } from '../stores/createQuizState.js';
 import axios from 'axios';
+import { useRouter } from 'vue-router'
 
-let quizCreated = ref(false);
+let quizCreated = ref(true);
 let quizId = ref(null);
 let questions = ref([]);
 let quizName = ref('');
+let showSavedMessage = ref(false);
 
+let quizDescription = ref('');
+
+const user = 'jens'; //TODO: Change this to the actual user
+
+const router = useRouter();
 const store = useStore();
 
 
@@ -18,37 +25,52 @@ if (store.quizName !== null) {
 }
 
 const createQuiz = async () => {
-    const quizDescription = 'This is a quiz';
-    const user = 'jens'; //TODO: Change this to the actual user
     //const tags = []; //TODO: Change this to the actual tags
-    const question1 = {
-        questionId: 21,
-        questionText: "question1",
-        quizId: 21,
-        type: "TEXT_INPUT",
-        answers: ["answer1", "answer2"]
-        //answers: answerText.value.split('*')
-    };
-    const questions = [question1];
 
-    const quizData = {
+    /*const quizData = {
         quizName: quizName.value,
-        quizDescription: quizDescription,
+        quizDescription: quizDescription.value,
         user: user,
         quizCreationDate: new Date(),
-        //tags: tags,
-        questions: questions
-    };
+    };*/
 
     try {
         const response = await axios.post('http://localhost:8080/quiz/create', quizData);
         quizId.value = response.data.quizId;
-        console.log(response.data);
+        quizDescription = response.data.quizDescription;
         quizCreated.value = true;
-        console.log('quizId: ', quizId.value);
-        store.initializeQuiz(quizId.value, quizName.value);
+        store.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription);
     } catch (error) {
         console.error(error);
+    }
+}
+
+const updateQuiz = async () => {
+
+    const quizData = {
+        quizName: quizName.value,
+        quizDescription: quizDescription.value,
+        user: user,
+        quizCreationDate: new Date(),
+    };
+
+    try {
+        const response = await axios.post('http://localhost:8080/quiz/update', quizData);
+        console.log(response.data);
+
+        showSavedMessage.value = true;
+        setTimeout(() => {
+            showSavedMessage.value = false;
+        }, 5000);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+const resetWithConfirm = () => {
+    if (confirm('Are you sure you want to reset the quiz?')) {
+        store.resetQuiz();
+        router.push('/quizzes');
     }
 }
 
@@ -61,8 +83,11 @@ const createQuiz = async () => {
             <input type="text" id="quiz_name" v-model="quizName" placeholder="Quiz name" />
             <button class="button" @click="createQuiz">Create Quiz</button>
         </div>
+        <div id="quiz_description">
+            <input type = "text" id="quiz_description" v-model="quizDescription" placeholder="give a short description for your quiz">
+        </div>
 
-        <div id="question_creation" v-if="quizCreated">
+        <div id="question_creation" >
             <h5>Add questions to your quiz:</h5>
             <!-- Only render the router-link if quizId is not null -->
             <router-link v-if="quizId" class="button" :to="{ name: 'multichoice', params: { quizId: quizId.value }}">Add multiple choice question</router-link>
@@ -70,13 +95,18 @@ const createQuiz = async () => {
             <router-link v-if="quizId" class="button" :to="{ name: 'drag_and_drop', params: { quizId: quizId.value }}">Add drag and drop question</router-link>
         </div>
     </div>
-    <div id="question_list" v-if="quizCreated"> <!-- TODO: add check to list of questions -->
+    <div id="question_list" v-if="quizCreated">
         <h5>Questions:</h5>
         <ul>
             <li v-for="question in questions" :key="question.id">
                 {{ question.type }}: {{ question.name }}
             </li>
         </ul>
+    </div>
+    <div>
+        <h5 v-if="showSavedMessage">Quiz saved!</h5>
+        <button class="button" @click="updateQuiz">Save quiz</button>
+        <button class="button" @click="resetWithConfirm">Exit without saving</button>
     </div>
 </template>
 
@@ -98,6 +128,18 @@ const createQuiz = async () => {
 }
 
 #quiz_name  {
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 30px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    background-color: var(--fifth-color);
+    border-radius: 5px;
+    width: 25vw;
+}
+
+#quiz_description {
     margin-top: 15px;
     margin-bottom: 10px;
     font-size: 30px;

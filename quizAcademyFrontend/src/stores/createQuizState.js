@@ -5,7 +5,9 @@ export const useStore = defineStore({
     id: 'main',
     state: () => ({
         quizId: null,
-        quizName: null
+        quizName: null,
+        quizQuestions: [],
+        quizDescription: null,
     }),
     actions: {
         setQuizId(id) {
@@ -17,9 +19,32 @@ export const useStore = defineStore({
         setQuizName(name) {
             this.quizName = name;
         },
-        initializeQuiz(quizId, quizName) {
+        resetQuizName() {
+            this.quizName = null;
+        },
+        setQuizQuestions(questions) {
+            this.quizQuestions = questions;
+        },
+        resetQuizQuestions() {
+            this.quizQuestions = [];
+        },
+        setQuizDescription(description) {
+            this.quizDescription = description;
+        },
+        resetQuizDescription() {
+            this.quizDescription = null;
+        },
+        initializeQuiz(quizId, quizName, questions, quizDescription) {
             this.setQuizId(quizId);
             this.setQuizName(quizName);
+            this.setQuizQuestions(questions);
+            this.setQuizDescription(quizDescription);
+        },
+        resetQuiz() {
+            this.resetQuizId();
+            this.resetQuizName();
+            this.resetQuizQuestions();
+            this.resetQuizDescription();
         }
     }
 });

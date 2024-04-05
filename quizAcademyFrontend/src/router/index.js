@@ -17,6 +17,7 @@ export default createRouter({
         },
         {
             path: "/quizzes",
+            name: "quizzes",
             component: QuizzesView
         },
         {
