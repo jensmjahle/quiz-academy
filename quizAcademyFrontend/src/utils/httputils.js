@@ -21,7 +21,10 @@ export const getJwtToken = (username, password) => {
         "http://localhost:8080/token/new",
         JSON.stringify({ username, password }),
         config
-    );
+    ).catch((error) => {
+        console.log("An error occurred during sign up:", error);
+        throw error;
+    });
 };
 
 export const signUpUser = (firstName, lastName, username, password, email) => {
