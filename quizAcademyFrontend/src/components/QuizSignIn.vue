@@ -198,7 +198,7 @@ export default {
           }
         } catch (error) {
           console.log(error)
-          if (error.status === 409) {
+          if (error.response && error.response.status === 409) {
             this.userNameExists = true;
           }
         }
