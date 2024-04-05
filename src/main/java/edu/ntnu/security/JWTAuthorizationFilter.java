@@ -20,6 +20,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * Filter for JWT authorization.
+ */
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
   private static final Logger LOGGER = LogManager.getLogger(JWTAuthorizationFilter.class);
@@ -27,6 +30,14 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
   public static final String USER = "USER";
   public static final String ROLE_USER = "ROLE_" + USER;
 
+  /**
+   * Filter method for JWT authorization.
+   * @param request the HTTP request
+   * @param response the HTTP response
+   * @param filterChain the filter chain
+   * @throws ServletException if an error occurs
+   * @throws IOException if an error occurs
+   */
   @Override
   protected void doFilterInternal(
       HttpServletRequest request,
@@ -52,8 +63,6 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     }
 
     // if token is valid, add user details to the authentication context
-    // Note that user details should be fetched from the database in real scenarios
-    // this is case we will retrieve use details from mock
     UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
         username,
         null,
@@ -64,14 +73,23 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     filterChain.doFilter(request, response);
   }
 
+
+  /**
+   * Validate the token and extract the userId from it.
+   * @param token the token to validate
+   * @return the userId extracted from the token
+   */
   public String validateTokenAndGetUserId(final String token) {
+    // remove quotes from token as it breaks the verification
+    String tokenWithoutQuotes = token.replace("\"", "");
     try {
-      final Algorithm hmac512 = Algorithm.HMAC512(TokenController.keyStr);
+      final Algorithm hmac512 = Algorithm.HMAC512(TokenController.getSecretKey());
       final JWTVerifier verifier = JWT.require(hmac512).build();
-      return verifier.verify(token).getSubject();
+      return verifier.verify(tokenWithoutQuotes).getSubject();
     } catch (final JWTVerificationException verificationEx) {
       LOGGER.warn("token is invalid: {}", verificationEx.getMessage());
       return null;
     }
   }
+
 }
