@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useStore } from '../stores/createQuizState.js';
+import { useStore } from '../stores/QuizState.js';
 import axios from 'axios';
 import { useRouter } from 'vue-router'
 
@@ -79,6 +79,12 @@ const updateQuiz = async () => {
     }
 }
 
+const exitAndSave = () => {
+    updateQuiz();
+    store.resetQuiz();
+    router.push('/quizzes');
+}
+
 const resetWithConfirm = () => {
     if (confirm('Are you sure you want to reset the quiz?')) {
         store.resetQuiz();
@@ -118,6 +124,7 @@ const resetWithConfirm = () => {
     <div v-if="quizCreated">
         <h5 v-if="showSavedMessage">Quiz saved!</h5>
         <button class="button" @click="updateQuiz">Save quiz</button>
+        <button class="button" @click="exitAndSave">Exit and save</button>
         <button class="button" @click="resetWithConfirm">Exit without saving</button>
     </div>
 </template>

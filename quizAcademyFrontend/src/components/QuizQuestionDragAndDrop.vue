@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useStore } from '../stores/createQuizState.js';
+import { useStore } from '../stores/QuizState.js';
 
 
 let router = useRouter();
