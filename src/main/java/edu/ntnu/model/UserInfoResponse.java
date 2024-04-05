@@ -12,7 +12,7 @@ public class UserInfoResponse {
 
   final private String firstName;
   final private String lastName;
-  final private String gender;
+  final private String email;
 
   @JsonIgnore
   private String username;
@@ -21,21 +21,21 @@ public class UserInfoResponse {
 
   public UserInfoResponse(@JsonProperty("firstName") String firstName,
       @JsonProperty("lastName") String lastName,
-      @JsonProperty("gender") String gender) {
+      @JsonProperty("email") String email) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.gender = gender;
+    this.email = email;
   }
 
   public UserInfoResponse(@JsonProperty("firstName") String firstName,
       @JsonProperty("lastName") String lastName,
-      @JsonProperty("gender") String gender,
+      @JsonProperty("email") String email,
       final String username,
       final String password
   ) {
     this.firstName = firstName;
     this.lastName = lastName;
-    this.gender = gender;
+    this.email = email;
     this.username = username;
     this.password = password;
   }
@@ -50,9 +50,9 @@ public class UserInfoResponse {
     return lastName;
   }
 
-  @JsonProperty("gender")
-  public String getGender() {
-    return gender;
+  @JsonProperty("email")
+  public String getEmail() {
+    return email;
   }
 
   public String getUsername() {return username;}

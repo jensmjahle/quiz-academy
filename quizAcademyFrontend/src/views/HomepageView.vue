@@ -2,19 +2,20 @@
 import { ref } from 'vue';
 import axios from 'axios';
 import {useTokenStore} from "../stores/token.js";
-import {count} from "rxjs";
 import { handleErrors } from "../utils/badRequests.js";
+import { getUserInfo } from "../utils/httputils.js";
 
 let userDetails = ref(null);
 
 const getUserName = async () => {
   try {
-    const tokenStore = useTokenStore();
-    const response = await axios.get('http://localhost:8080/users/' + useTokenStore().getUsername, {
-      headers: {
-        'Authorization': `Bearer ${tokenStore.getJwtToken}`
-      }
-    });
+    console.log("hallo");
+    await useTokenStore().refreshToken();
+    console.log("hallo");
+    console.log(useTokenStore().getUsername);
+    console.log(useTokenStore().getJwtToken);
+    const response = await getUserInfo(useTokenStore().getUsername, useTokenStore().getJwtToken);
+    console.log("hei");
     userDetails.value = response.data;
     console.log(response);
   } catch (error) {

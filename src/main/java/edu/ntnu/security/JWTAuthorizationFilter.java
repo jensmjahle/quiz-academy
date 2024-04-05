@@ -16,6 +16,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import java.security.Key;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -72,6 +77,28 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
     } catch (final JWTVerificationException verificationEx) {
       LOGGER.warn("token is invalid: {}", verificationEx.getMessage());
       return null;
+    }
+  }
+
+  public static void validateTokenAndGetUserIdStatic(final String token, final String secret) {
+    try {
+      System.out.println("hallo2");
+      Key key = Keys.hmacShaKeyFor(secret.getBytes());
+      System.out.println("Key: " + key);
+
+
+      Jws<Claims> claimsJws = Jwts.parserBuilder()
+              .setSigningKey(key)
+              .build()
+              .parseClaimsJws(token);
+
+      Claims claims = claimsJws.getBody();
+
+      System.out.println("Subject: " + claims.getSubject());
+      System.out.println("Expiration: " + claims.getExpiration());
+      System.out.println("Issued At: " + claims.getIssuedAt());
+    } catch (final JWTVerificationException verificationEx) {
+      LOGGER.warn("token is invalid: {}", verificationEx.getMessage());
     }
   }
 }

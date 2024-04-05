@@ -26,6 +26,7 @@ public class UserController {
 
   @GetMapping("/{username}")
   public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
+    System.out.println("hallo");
     return userService.getUserByUsername(username);
   }
 

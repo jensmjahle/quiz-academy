@@ -19,10 +19,13 @@
     "axios": "^1.6.7",
     "cypress": "^13.7.1",
     "jsdom": "^24.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "jsrsasign": "^11.1.0",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "start-server-and-test": "^2.0.3",
     "vue": "^3.4.21",
+    "vue-auth-jwt": "^0.4.5",
     "vue-router": "^4.3.0",
     "vuex": "^4.1.0"
   },

@@ -1,6 +1,6 @@
 
 import { defineStore } from "pinia";
-import {getJwtToken, getUserInfo} from "../utils/httputils.js"
+import {getJwtToken, getUserInfo, refreshJwtToken, deleteToken} from "../utils/httputils.js"
 import router from "../router/index.js";
 
 export const useTokenStore = defineStore("token", {
@@ -19,10 +19,11 @@ export const useTokenStore = defineStore("token", {
                 console.log("Getting token for user: " + username)
                 let response = await getJwtToken(username, password);
                 let data = response.data;
-                console.log(data)
-                if(data != null && data !== '' && data !== undefined){
+                console.log(data) // log the actual data
+                if(data !== '' && data !== undefined){
                     this.jwtToken = data;
                     this.loggedInUser = await getUserInfo(username, this.jwtToken);
+                    console.log(this.loggedInUser.data) // log the actual data
                 }
             } catch (err){
                 console.log(err)
@@ -31,6 +32,25 @@ export const useTokenStore = defineStore("token", {
         async logout() {
             this.jwtToken = null;
             this.loggedInUser = null;
+            await deleteToken();
+        },
+        async refreshToken() {
+            if (!this.loggedInUser || !this.jwtToken) {
+                console.error('loggedInUser or jwtToken is undefined or null');
+                return;
+            }
+            try{
+                console.log("Refreshing token")
+                let response = await refreshJwtToken(this.jwtToken);
+                let data = response.data;
+                console.log(data)
+                if(data != null && data !== '' && data !== undefined){
+                    this.jwtToken = data;
+                }
+            } catch (err){
+                await router.push({name: "Login"})
+                console.log(err)
+            }
         }
     },
     getters: {
