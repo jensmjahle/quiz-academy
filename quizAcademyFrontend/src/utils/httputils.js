@@ -2,26 +2,32 @@ import axios from "axios";
 import router from "../router/index.js";
 import {useTokenStore} from "../stores/token.js";
 
-const baseurl = "http://localhost:3000";
-
-export const loginRequest = (user) => {
+/**
+ * Get the JWT token for the user
+ * @param username
+ * @param password
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
+export const getJwtToken = async (username, password) => {
     const config = {
         headers: {
             "Content-type": "application/json",
         },
     };
-    return axios.get(baseurl + "/login", config);
+    try {
+        await axios.post("http://localhost:8080/token/new", JSON.stringify({username, password}), config);
+    }
+    catch (error) {
+        await useTokenStore().logout();
+        await router.push("/login");
+    }
 }
 
-export const getJwtToken = (username, password) => {
-    const config = {
-        headers: {
-            "Content-type": "application/json",
-        },
-    };
-    return axios.post("http://localhost:8080/token/new", JSON.stringify({ username, password }), config);
-}
-
+/**
+ * Refresh the JWT token for the user
+ * @param token
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
 export const refreshJwtToken = async (token) => {
     const config = {
         headers: {
@@ -30,24 +36,43 @@ export const refreshJwtToken = async (token) => {
         },
     };
     try {
-        return axios.post("http://localhost:8080/token/refresh", token, config);
-    } catch (err) {
-        await router.push({name: "login"});
-        console.log(err)
+
+        await axios.post("http://localhost:8080/token/refresh", token, config)
+    }
+    catch (error) {
+        await useTokenStore().logout();
+        await router.push("/login");
     }
 }
 
-export const getUserInfo = (username, token) => {
+/**
+ * Get the user information for the user
+ * @param username
+ * @param token
+ * @returns {Promise<void>}
+ */
+export const getUserInfo = async (username, token) => {
     const config = {
         headers: {
             "Content-type": "application/json",
-            "Authorization" : "Bearer " + token
+            "Authorization": "Bearer " + token
         },
     };
-    return axios.get("http://localhost:8080/users/" + username, config);
+    try {
+        await axios.get("http://localhost:8080/users/" + username, config);
+    }
+    catch (error) {
+        await useTokenStore().logout();
+        await router.push("/login");
+    }
 }
 
+/**
+ * Delete the JWT token for the user
+ * @returns {Promise<axios.AxiosResponse<any>>}
+ */
 export const deleteToken = () => {
+    console.log()
     const config = {
         headers: {
             "Content-type": "application/json",

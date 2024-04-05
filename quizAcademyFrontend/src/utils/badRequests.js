@@ -1,6 +1,11 @@
 import { useTokenStore } from "../stores/token.js";
 import router from "../router/index.js";
 
+/**
+ * Handle errors
+ * @param error
+ * @returns {Promise<void>}
+ */
 export async function handleErrors(error) {
     if (error.response && error.response.status === 401) {
         console.log("Bad request, trying to get new token")

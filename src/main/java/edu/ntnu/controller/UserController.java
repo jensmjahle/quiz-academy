@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling user requests.
+ */
 @RestController
 @RequestMapping("/users")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -24,12 +27,23 @@ public class UserController {
     this.userService = userService;
   }
 
+  /**
+   * Get a user by username.
+   *
+   * @param username the username of the user
+   * @return the user with the given username
+   */
   @GetMapping("/{username}")
   public ResponseEntity<UserDTO> getUserByUsername(@PathVariable String username) {
-    System.out.println("hallo");
     return userService.getUserByUsername(username);
   }
 
+  /**
+   * Create a new user.
+   *
+   * @param userDTO the user to create
+   * @return the response entity
+   */
   @PostMapping()
   public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
     return userService.createUser(userDTO);

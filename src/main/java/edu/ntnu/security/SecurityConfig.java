@@ -7,17 +7,26 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configuration class for the security settings.
+ */
 @Configuration
 public class SecurityConfig {
 
-  // inject SecurityFilterChain and tell that all requests are authenticated
+  /**
+   * Configures the security filter chain.
+   *
+   * @param http the HttpSecurity object to configure
+   * @return the SecurityFilterChain object
+   * @throws Exception if an error occurs
+   */
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
         .csrf().disable()
         .cors().and()
         .authorizeHttpRequests()
-        .requestMatchers("/token/new").permitAll()
+        .requestMatchers("/token/new", "/token/delete").permitAll()
         .anyRequest().authenticated().and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

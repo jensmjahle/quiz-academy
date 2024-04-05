@@ -1,8 +1,16 @@
-
 import { defineStore } from "pinia";
 import {getJwtToken, getUserInfo, refreshJwtToken, deleteToken} from "../utils/httputils.js"
 import router from "../router/index.js";
 
+/**
+ * Store for the token
+ * @type {StoreDefinition<"token", {jwtToken: null, loggedInUser: null},
+ * {getPassword: ((function(*): (*|null))|*), getRole: ((function(*): (*|null))|*),
+ * getLoggedInUser: (function(*): null|void|*), getJwtToken: (function(*): null|*),
+ * getUsername: ((function(*): (*|null))|*)},
+ * {getTokenAndSaveInStore(*, *): Promise<void>, logout(): Promise<void>,
+ * refreshToken(): Promise<void>}>}
+ */
 export const useTokenStore = defineStore("token", {
     state: () => ({
         jwtToken: null,
@@ -19,20 +27,21 @@ export const useTokenStore = defineStore("token", {
                 console.log("Getting token for user: " + username)
                 let response = await getJwtToken(username, password);
                 let data = response.data;
-                console.log(data) // log the actual data
+                console.log(data)
                 if(data !== '' && data !== undefined){
                     this.jwtToken = data;
                     this.loggedInUser = await getUserInfo(username, this.jwtToken);
-                    console.log(this.loggedInUser.data) // log the actual data
+                    console.log(this.loggedInUser.data)
                 }
             } catch (err){
                 console.log(err)
             }
         },
         async logout() {
+            await deleteToken();
             this.jwtToken = null;
             this.loggedInUser = null;
-            await deleteToken();
+            sessionStorage.clear();
         },
         async refreshToken() {
             if (!this.loggedInUser || !this.jwtToken) {
@@ -40,7 +49,7 @@ export const useTokenStore = defineStore("token", {
                 return;
             }
             try{
-                console.log("Refreshing token")
+                //console.log("Refreshing token")
                 let response = await refreshJwtToken(this.jwtToken);
                 let data = response.data;
                 console.log(data)
