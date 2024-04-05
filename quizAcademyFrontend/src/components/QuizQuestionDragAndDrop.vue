@@ -26,9 +26,9 @@ const removeCategory = (index) => {
     }
 };
 
-const submitForm = () => {
+const submitForm = async () => {
     postDragDropQuestion();
-    router.push('/create_quiz');
+    await router.push('/create_quiz');
 }
 
 function postDragDropQuestion() {
@@ -47,9 +47,11 @@ function postDragDropQuestion() {
         questionId: questionId,
         questionText: questionText,
         quizId: store.quizId,
-        type: "DRAG_DROP",
+        type: "DRAG_AND_DROP",
         categories: formattedCategories
     };
+
+    console.log(dragDropQuestion);
 
     axios.post("http://localhost:8080/question/create", dragDropQuestion)
         .then(response => {
@@ -58,6 +60,7 @@ function postDragDropQuestion() {
         .catch(error => {
             console.error("Error posting question:", error);
         });
+    store.addQuestion(dragDropQuestion);
 }
 
 </script>

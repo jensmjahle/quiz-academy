@@ -4,22 +4,29 @@ import { useStore } from '../stores/createQuizState.js';
 import axios from 'axios';
 import { useRouter } from 'vue-router'
 
-let quizCreated = ref(true);
-let quizId = ref(null);
-let questions = ref([]);
-let quizName = ref('');
-let showSavedMessage = ref(false);
-
-let quizDescription = ref('');
-
-const user = 'jens'; //TODO: Change this to the actual user
 
 const router = useRouter();
 const store = useStore();
 
+let quizCreated = ref(false);
+let quizId = ref(null);
+
+let questions = ref([]);
+let quizName = ref('');
+let showSavedMessage = ref(false);
+let quizDescription = ref('');
+
+const user = 'jens'; //TODO: Change this to the actual user
 
 if (store.quizName !== null) {
     quizName.value = store.quizName;
+    quizDescription.value = store.quizDescription;
+    quizCreated.value = true;
+    if (Array.isArray(store.quizQuestions)) {
+        questions.value = store.quizQuestions;
+    } else {
+        console.log("no questions in store or not an array");
+    }
 } else {
     console.log("no quiz name")
 }
@@ -27,19 +34,22 @@ if (store.quizName !== null) {
 const createQuiz = async () => {
     //const tags = []; //TODO: Change this to the actual tags
 
-    /*const quizData = {
+    const quizData = {
         quizName: quizName.value,
         quizDescription: quizDescription.value,
         user: user,
-        quizCreationDate: new Date(),
-    };*/
+        quizCreationDate: new Date()
+    };
 
     try {
+        console.log(quizData);
         const response = await axios.post('http://localhost:8080/quiz/create', quizData);
+        console.log(response.data);
         quizId.value = response.data.quizId;
-        quizDescription = response.data.quizDescription;
+        quizDescription.value = response.data.quizDescription;
         quizCreated.value = true;
-        store.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription);
+        store.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription.value);
+        console.log(quizDescription.value);
     } catch (error) {
         console.error(error);
     }
@@ -48,6 +58,7 @@ const createQuiz = async () => {
 const updateQuiz = async () => {
 
     const quizData = {
+        quizId: quizId.value,
         quizName: quizName.value,
         quizDescription: quizDescription.value,
         user: user,
@@ -81,13 +92,13 @@ const resetWithConfirm = () => {
         <h5>Name your quiz:</h5>
         <div id="title_and_id">
             <input type="text" id="quiz_name" v-model="quizName" placeholder="Quiz name" />
-            <button class="button" @click="createQuiz">Create Quiz</button>
+            <button class="button" @click="createQuiz" v-if="!quizCreated">Create Quiz</button>
         </div>
         <div id="quiz_description">
             <input type = "text" id="quiz_description" v-model="quizDescription" placeholder="give a short description for your quiz">
         </div>
 
-        <div id="question_creation" >
+        <div id="question_creation" v-if="quizCreated">
             <h5>Add questions to your quiz:</h5>
             <!-- Only render the router-link if quizId is not null -->
             <router-link v-if="quizId" class="button" :to="{ name: 'multichoice', params: { quizId: quizId.value }}">Add multiple choice question</router-link>
@@ -103,7 +114,7 @@ const resetWithConfirm = () => {
             </li>
         </ul>
     </div>
-    <div>
+    <div v-if="quizCreated">
         <h5 v-if="showSavedMessage">Quiz saved!</h5>
         <button class="button" @click="updateQuiz">Save quiz</button>
         <button class="button" @click="resetWithConfirm">Exit without saving</button>

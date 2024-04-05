@@ -6,10 +6,10 @@ export const useStore = defineStore({
     state: () => ({
         quizId: null,
         quizName: null,
-        quizQuestions: [],
         quizDescription: null,
     }),
     actions: {
+        quizQuestions: [],
         setQuizId(id) {
             this.quizId = id;
         },
@@ -23,7 +23,19 @@ export const useStore = defineStore({
             this.quizName = null;
         },
         setQuizQuestions(questions) {
-            this.quizQuestions = questions;
+            if(Array.isArray(questions)){
+                this.quizQuestions = questions;
+            } else {
+                console.log("setQuizQuestions was called when questions was not an array. Value of questions: ", questions);
+            }
+        },
+        addQuestion(question) {
+            if(Array.isArray(this.quizQuestions)) {
+            this.quizQuestions.push(question);
+            } else {
+                console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestions);
+                this.quizQuestions = [question];
+            }
         },
         resetQuizQuestions() {
             this.quizQuestions = [];
@@ -37,8 +49,8 @@ export const useStore = defineStore({
         initializeQuiz(quizId, quizName, questions, quizDescription) {
             this.setQuizId(quizId);
             this.setQuizName(quizName);
-            this.setQuizQuestions(questions);
             this.setQuizDescription(quizDescription);
+            this.setQuizQuestions(questions);
         },
         resetQuiz() {
             this.resetQuizId();
