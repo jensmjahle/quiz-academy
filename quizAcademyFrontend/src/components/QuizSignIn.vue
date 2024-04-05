@@ -171,29 +171,33 @@ export default {
         }
     },
     methods: {
-        async signup() {
-            const response = await signUpUser(
-                this.firstName,
-                this.lastName,
-                this.username,
-                this.password,
-                this.email
-            );
-            if (response.status === 201) {
-              await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
-              if (this.tokenStore.jwtToken) {
-                this.loginStatus = "Login successful!";
-                await router.push("/");
-                console.log("Login successful!");
-                sessionStorage.removeItem("signUpUser");
-              } else {
-                this.loginStatus = "Login failed!";
-              }
+      async signup() {
+        try {
+          const response = await signUpUser(
+              this.firstName,
+              this.lastName,
+              this.username,
+              this.password,
+              this.email
+          );
+          if (response.status === 201) {
+            await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
+            if (this.tokenStore.jwtToken) {
+              this.loginStatus = "Login successful!";
+              await router.push("/");
+              console.log("Login successful!");
+              sessionStorage.removeItem("signUpUser");
+            } else {
+              this.loginStatus = "Login failed!";
             }
-            else {
-                console.log("Sign up failed!");
-            }
+          }
+        } catch (error) {
+          if (error.response.status === 409) {
+            this.userNameExists = true;
+
+          }
         }
+      }
     },
     beforeDestroy() {
         // Clear local storage when the component is destroyed
