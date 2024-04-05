@@ -167,4 +167,16 @@ public class QuizService {
       throw e;
     }
   }
+
+  public ResponseEntity<QuizDTO> updateQuiz(QuizDTO quizDTO) {
+    try {
+      deleteQuizFromQuizId(quizDTO.getQuizId());
+      createQuiz(quizMapper.toQuizDTO(quizRepository.findByQuizId(quizDTO.getQuizId())));
+      logger.info("Quiz with name " + quizDTO.getQuizName() + " updated successfully.");
+      return ResponseEntity.ok(quizDTO);
+    } catch (Exception e) {
+      logger.severe("An error occurred while updating quiz with name " + quizDTO.getQuizName() + ": " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
 }

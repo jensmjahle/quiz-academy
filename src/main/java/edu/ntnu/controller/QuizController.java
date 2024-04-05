@@ -49,4 +49,10 @@ public class QuizController {
     logger.info("Received request to create quiz with title: " + quizDTO.getQuizName() + ".");
     return quizService.createQuiz(quizDTO);
   }
+
+  @PostMapping("/update")
+  public ResponseEntity<QuizDTO> updateQuiz(@RequestBody QuizDTO quizDTO) {
+    logger.info("Received request to update quiz with id: " + quizDTO.getQuizId() + ".");
+    return quizService.updateQuiz(quizDTO);
+    }
 }
