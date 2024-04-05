@@ -1,7 +1,7 @@
 <template>
     <div class="login-form">
         <h2>Sign up</h2>
-        <form @submit.prevent="login">
+        <form @submit.prevent="signup">
             <div class="form-group">
                 <div class="first-name-lastname">
                     <div class="half-width">
@@ -30,6 +30,7 @@
                 <label for="confirm_password">Confirm Password:</label>
                 <input type="password" id="repeatPassword" v-model="repeatPassword" required />
                 <div v-if="!isPasswordValid" class="password-mismatch">Passwords do not match</div>
+                <div v-if="userNameExists" class="password-mismatch">Username already exists</div>
                 <button
                     type="submit"
                     :disabled="isFormIncomplete || !isPasswordValid"
@@ -46,6 +47,9 @@
 </template>
 
 <script>
+import {signUpUser} from "../utils/httputils.js";
+import router from "../router/index.js";
+
 export default {
     data() {
         return {
@@ -54,7 +58,8 @@ export default {
             email: "",
             username: "",
             password: "",
-            repeatPassword: ""
+            repeatPassword: "",
+            userNameExists: false
         };
     },
     computed: {
@@ -166,17 +171,28 @@ export default {
         }
     },
     methods: {
-        login() {
-            // Here you can implement your login logic
-            // For simplicity, let's just log the username and password for now
-            console.log("Username:", this.username);
-            console.log("Password:", this.password);
-
-            // Delete local storage after sign up
-            localStorage.removeItem("signUpUser");
-
-            // After successful login, you can redirect the user to another page
-            // For example, using Vue Router: this.$router.push('/dashboard');
+        async signup() {
+            const response = await signUpUser(
+                this.firstName,
+                this.lastName,
+                this.username,
+                this.password,
+                this.email
+            );
+            if (response.status === 201) {
+              await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
+              if (this.tokenStore.jwtToken) {
+                this.loginStatus = "Login successful!";
+                await router.push("/");
+                console.log("Login successful!");
+                sessionStorage.removeItem("signUpUser");
+              } else {
+                this.loginStatus = "Login failed!";
+              }
+            }
+            else {
+                console.log("Sign up failed!");
+            }
         }
     },
     beforeDestroy() {

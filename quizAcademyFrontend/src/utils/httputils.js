@@ -24,6 +24,19 @@ export const getJwtToken = (username, password) => {
     );
 };
 
+export const signUpUser = (firstName, lastName, username, password, email) => {
+    const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+    };
+    return axios.post(
+        "http://localhost:8080/users/create",
+        JSON.stringify({username, password, email, firstName, lastName }),
+        config
+    )
+}
+
 export const getUserInfo = (username, token) => {
     const config = {
         headers: {
