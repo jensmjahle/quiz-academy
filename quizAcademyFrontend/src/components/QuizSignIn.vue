@@ -49,8 +49,13 @@
 <script>
 import {signUpUser} from "../utils/httputils.js";
 import router from "../router/index.js";
+import { useTokenStore } from "../stores/token.js";
 
 export default {
+  setup() {
+    const tokenStore = useTokenStore();
+    return { tokenStore };
+  },
     data() {
         return {
             firstName: "",
@@ -192,9 +197,9 @@ export default {
             }
           }
         } catch (error) {
-          if (error.response.status === 409) {
+          console.log(error)
+          if (error.status === 409) {
             this.userNameExists = true;
-
           }
         }
       }
