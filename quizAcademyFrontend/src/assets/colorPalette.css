@@ -7,6 +7,11 @@
     --fourth-color: #00a5cf;
     --fifth-color: #004e64;
 
+    --correct-answer-color: #7ae582;
+    --correct-answer-border-color: #00ff00;
+    --wrong-answer-border-color: #ff0000;
+    --wrong-answer-color: #ff9999;
+
     /* Color Palette RGB */
     --primary-color-rgb: 37, 161, 142;
     --secondary-color-rgb: 122, 229, 130;
