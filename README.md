@@ -12,5 +12,7 @@ If Auto DevOps is not already enabled for this project, you can [turn it on](htt
 
 ### Running the backend through docker:
 Run these two commands:
+
 docker build -t quizacademyapplication .
+
 docker run -p 8080:8080 quizacademyapplication
