@@ -10,7 +10,7 @@ This template is compatible with [Auto DevOps](https://docs.gitlab.com/ee/topics
 
 If Auto DevOps is not already enabled for this project, you can [turn it on](https://docs.gitlab.com/ee/topics/autodevops/#enabling-auto-devops) in the project settings.
 
-###Running the backend through docker:
+### Running the backend through docker:
 Run these two commands:
 docker build -t quizacademyapplication .
 docker run -p 8080:8080 quizacademyapplication
