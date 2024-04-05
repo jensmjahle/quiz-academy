@@ -1,6 +1,7 @@
 <script>
 import MultipleChoiceAnswers from '../components/questionComponents/MultipleChoiceAnswers.vue';
 import logo from "../assets/logo.png";
+import TextInputAnswers from "./questionComponents/TextInputAnswers.vue";
 
 export default {
     props: {
@@ -23,7 +24,7 @@ export default {
                 case 'MULTIPLE_CHOICE':
                     return MultipleChoiceAnswers
                 case 'TEXT_INPUT':
-                    return 'BaseInputEmail'
+                    return TextInputAnswers
                 case 'DRAG_AND_DROP':
                     return 'BaseInputNumber'
                 case 'TRUE_FALSE':
