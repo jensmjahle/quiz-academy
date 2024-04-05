@@ -171,9 +171,9 @@ public class QuizService {
   public ResponseEntity<QuizDTO> updateQuiz(QuizDTO quizDTO) {
     try {
       deleteQuizFromQuizId(quizDTO.getQuizId());
-      createQuiz(quizMapper.toQuizDTO(quizRepository.findByQuizId(quizDTO.getQuizId())));
-      logger.info("Quiz with name " + quizDTO.getQuizName() + " updated successfully.");
-      return ResponseEntity.ok(quizDTO);
+      ResponseEntity<QuizDTO> response = createQuiz(quizDTO);
+      logger.info("Quiz with id " + quizDTO.getQuizId() + " updated successfully.");
+      return response;
     } catch (Exception e) {
       logger.severe("An error occurred while updating quiz with name " + quizDTO.getQuizName() + ": " + e.getMessage());
       return ResponseEntity.status(500).build();

@@ -10,6 +10,7 @@ import edu.ntnu.repository.TagRepository;
 import edu.ntnu.service.QuestionService;
 import edu.ntnu.service.UserService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -81,7 +82,12 @@ public class QuizMapper {
         QuizDAO quizDAO = new QuizDAO();
         quizDAO.setQuizName(quizDTO.getQuizName());
         quizDAO.setQuizDescription(quizDTO.getQuizDescription());
-        quizDAO.setQuizCreationDate(quizDTO.getQuizCreationDate());
+        if (quizDTO.getQuizCreationDate() == null) {
+            logger.warning("No creation date found for quiz with id " + quizDTO.getQuizId() + ". Setting creation date to current date.");
+            quizDAO.setQuizCreationDate(new Date());
+        } else {
+            quizDAO.setQuizCreationDate(quizDTO.getQuizCreationDate());
+        }
 
         // Map tagDTOs to Tag objects
         if (quizDTO.getTags() != null) {

@@ -12,6 +12,7 @@ public class QuizDTO {
   private String user;
   @Nullable
   private List<TagDTO> tags;
+  @Nullable
   private Date quizCreationDate;
   @Nullable
   private List<QuestionDTO> questions;

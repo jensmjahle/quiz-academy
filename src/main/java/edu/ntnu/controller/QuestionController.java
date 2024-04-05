@@ -34,7 +34,7 @@ public class QuestionController {
   }
 
   @PostMapping("/create")
-  public ResponseEntity<QuestionDTO> createQuestion(QuestionDTO questionDTO) {
+  public ResponseEntity<QuestionDTO> createQuestion(@RequestBody QuestionDTO questionDTO) {
     logger.info("Received request to create question: " + questionDTO.getQuestionText() + ".");
     return questionService.createQuestion(questionDTO);
   }
