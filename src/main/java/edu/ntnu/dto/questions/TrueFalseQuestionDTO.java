@@ -6,8 +6,8 @@ public class TrueFalseQuestionDTO extends QuestionDTO {
   public TrueFalseQuestionDTO() {
   }
 
-  public TrueFalseQuestionDTO(Long questionId, String questionText, Long quizId, boolean correctAnswer) {
-    super(questionId, questionText, quizId);
+  public TrueFalseQuestionDTO(Long questionId, String questionText, Long quizId, String type, boolean correctAnswer) {
+    super(questionId, questionText, quizId, type);
     this.correctAnswer = correctAnswer;
   }
 

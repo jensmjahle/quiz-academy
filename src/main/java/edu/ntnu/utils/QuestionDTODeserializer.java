@@ -35,9 +35,13 @@ public class QuestionDTODeserializer extends StdDeserializer<QuestionDTO> {
     JsonNode node = jp.getCodec().readTree(jp);
     String type = node.get("type").asText();
 
+
     // Remove the type field before deserializing the object
     JsonNode tempNode = node.deepCopy();
+    /*
     ((ObjectNode) tempNode).remove("type");
+
+     */
 
     if ("MULTIPLE_CHOICE".equals(type)) {
       return jp.getCodec().treeToValue(tempNode, MultipleChoiceQuestionDTO.class);
