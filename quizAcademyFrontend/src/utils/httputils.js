@@ -21,8 +21,32 @@ export const getJwtToken = (username, password) => {
         "http://localhost:8080/token/new",
         JSON.stringify({ username, password }),
         config
-    );
+    ).catch((error) => {
+        console.log("An error occurred during sign up:", error);
+        throw error;
+    });
 };
+
+export const signUpUser = (firstName, lastName, username, password, email) => {
+    const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+    };
+    return axios.post(
+        "http://localhost:8080/users/create",
+        JSON.stringify({username, password, email, firstName, lastName }),
+        config
+    ).then((response) => {
+        if (response.status === 409) {
+            console.log("User already exists");
+        }
+        return response;
+    }).catch((error) => {
+        console.log("An error occurred during sign up:", error);
+        throw error;
+    });
+}
 
 export const getUserInfo = (username, token) => {
     const config = {

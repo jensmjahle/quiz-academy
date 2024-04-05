@@ -10,7 +10,8 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" v-model="password" required />
             </div>
-            <button type="submit">Login</button>
+            <p v-if="loginError" class="error-message">Username and password is incorrect</p>
+          <button type="submit">Login</button>
         </form>
     </div>
 </template>
@@ -29,7 +30,8 @@ export default {
         return {
             username: "",
             password: "",
-            loginStatus: ""
+            loginStatus: "",
+            loginError: false
         };
     },
     mounted() {
@@ -65,6 +67,7 @@ export default {
                 sessionStorage.removeItem("loginUser");
             } else {
                 this.loginStatus = "Login failed!";
+                this.loginError = true;
             }
         }
     },
@@ -115,5 +118,10 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
 }
 </style>

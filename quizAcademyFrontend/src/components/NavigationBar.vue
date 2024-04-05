@@ -70,9 +70,12 @@ watch(
                     <a @click="logout">Logout</a>
                 </div>
             </div>
-            <RouterLink @click="$emit('link-clicked', 'Sign Up')" to="/signup" class="router-button"
-                >Sign Up</RouterLink
-            >
+          <RouterLink
+              v-if="!isLoggedIn"
+              @click="$emit('link-clicked', 'Sign Up')"
+              to="/signup"
+              class="router-button"
+          >Sign Up</RouterLink>
         </nav>
     </div>
 </template>
