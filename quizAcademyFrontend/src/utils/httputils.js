@@ -15,7 +15,7 @@ export const getJwtToken = async (username, password) => {
         }
     };
     try {
-        await axios.post("http://localhost:8080/token/new", JSON.stringify({username, password}), config);
+        return axios.post("http://localhost:8080/token/new", JSON.stringify({username, password}), config);
     }
     catch (error) {
         await useTokenStore().logout();
@@ -37,7 +37,7 @@ export const refreshJwtToken = async (token) => {
     };
     try {
 
-        await axios.post("http://localhost:8080/token/refresh", token, config)
+        return axios.post("http://localhost:8080/token/refresh", token, config)
     }
     catch (error) {
         await useTokenStore().logout();
@@ -59,7 +59,7 @@ export const getUserInfo = async (username, token) => {
         },
     };
     try {
-        await axios.get("http://localhost:8080/users/" + username, config);
+        return axios.get("http://localhost:8080/users/" + username, config);
     }
     catch (error) {
         await useTokenStore().logout();
@@ -80,4 +80,27 @@ export const deleteToken = () => {
         },
     };
     return axios.post("http://localhost:8080/token/delete", {  }, config);
+}
+
+
+
+export const signUpUser = (firstName, lastName, username, password, email) => {
+    const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+    };
+    return axios.post(
+        "http://localhost:8080/users/create",
+        JSON.stringify({username, password, email, firstName, lastName }),
+        config
+    ).then((response) => {
+        if (response.status === 409) {
+            console.log("User already exists");
+        }
+        return response;
+    }).catch((error) => {
+        console.log("An error occurred during sign up:", error);
+        throw error;
+    });
 }
