@@ -1,23 +1,23 @@
 <template>
-  <div class="quiz-view">
-    <QuizComponent />
-  </div>
+    <div class="quiz-view">
+        <QuizComponent />
+    </div>
 </template>
 
 <script>
-import QuizComponent from '../components/QuizLogin.vue';
+import QuizComponent from "../components/QuizLogin.vue";
 
 export default {
-  components: {
-    QuizComponent
-  }
+    components: {
+        QuizComponent
+    }
 };
 </script>
 
 <style>
 .quiz-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>

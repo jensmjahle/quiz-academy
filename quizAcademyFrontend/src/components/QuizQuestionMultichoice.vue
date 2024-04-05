@@ -2,11 +2,21 @@
     <div id="QuizQuestionMultichoice">
         <div id="question">
             <h5 id="quiz_question">Q.1</h5>
-            <input id="input" v-model="question" type="text" placeholder="Enter your question here" />
+            <input
+                id="input"
+                v-model="question"
+                type="text"
+                placeholder="Enter your question here"
+            />
         </div>
         <div id="alternatives">
             <div v-for="(alternative, index) in alternatives" :key="index">
-                <input id="input" v-model="alternative.text" type="text" :placeholder="'alternative ' + (index + 1)"/>
+                <input
+                    id="input"
+                    v-model="alternative.text"
+                    type="text"
+                    :placeholder="'alternative ' + (index + 1)"
+                />
                 <input id="checkbox" v-model="alternative.correct" type="checkbox" />
             </div>
         </div>
@@ -17,36 +27,37 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
-const question = ref('');
+const question = ref("");
 const alternatives = ref([
-    { text: '', correct: false },
-    { text: '', correct: false },
-    { text: '', correct: false },
-    { text: '', correct: false }
+    { text: "", correct: false },
+    { text: "", correct: false },
+    { text: "", correct: false },
+    { text: "", correct: false }
 ]);
 
 const submitForm = () => {
     const formData = {
-        type: 'MC',
+        type: "MC",
         question: question.value,
-        alternatives: alternatives.value.map(alternative => ({
+        alternatives: alternatives.value.map((alternative) => ({
             text: alternative.text,
             correct: !!alternative.correct
         }))
     };
     console.log(formData);
-    router.push('/create_quiz');
-}
+    router.push("/create_quiz");
+};
 </script>
 
 <style scoped>
 @media only screen and (max-width: 600px) {
-    #question, #alternatives {
+    #question,
+    #alternatives {
         flex: 1;
         flex-direction: column;
     }
@@ -95,7 +106,6 @@ const submitForm = () => {
     border-radius: 50%;
     background-color: var(--secondary-color);
     padding: 5px 7px;
-
 }
 
 #input {
@@ -131,5 +141,4 @@ const submitForm = () => {
     border-radius: 50%; /* This will make the circle completely round */
     margin: 5px; /* Adjust the value as per your needs */
 }
-
 </style>

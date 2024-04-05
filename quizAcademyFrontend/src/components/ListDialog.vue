@@ -2,20 +2,31 @@
     <div class="dialog-overlay" v-if="selectedQuiz" @click="closeDialogOutside">
         <div class="dialog">
             <div class="dialog-header">
-                <h2>{{ selectedQuiz.name }}</h2>
-                <p>{{ selectedQuiz.quizDescription }}</p>
-            </div>
-            <div class="dialog-content">
-                <button @click="editQuiz">Edit</button>
-                <button @click="playQuiz">Play</button>
-                <button @click="exportCSV">Export as CSV</button>
-                <button class="cancel-button" @click="closeDialog">Cancel</button>
+                <h2 class="title">{{ selectedQuiz.quizName }}</h2>
+                <h5 class="description">{{ selectedQuiz.quizDescription }}</h5>
+
+                <div class="info">
+                    <h5>Questions:</h5>
+                    <h4>{{ selectedQuiz.questions.length }}</h4>
+                    <h5>Created by:</h5>
+                    <h4>{{ selectedQuiz.user }}</h4>
+                </div>
+
+                <div class="dialog-content">
+                    <button @click="editQuiz">Edit</button>
+                    <button @click="playQuiz">Play</button>
+                    <button @click="exportCSV">Export as CSV</button>
+                    <button class="cancel-button" @click="closeDialog">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { usePlayQuizStore } from "../stores/playQuizStore.js";
+import router from "../router/index.js";
+
 export default {
     props: {
         selectedQuiz: Object
@@ -23,20 +34,22 @@ export default {
     methods: {
         // placeholders for all methods on click
         editQuiz() {
-            console.log('Edit quiz:', this.selectedQuiz);
+            console.log("Edit quiz:", this.selectedQuiz);
         },
         playQuiz() {
-            console.log('Play quiz:', this.selectedQuiz);
+            usePlayQuizStore().startQuiz(this.selectedQuiz);
+            router.push("/play_quiz");
+            console.log("Play quiz:", this.selectedQuiz);
         },
         exportCSV() {
-            console.log('Export as CSV:', this.selectedQuiz);
+            console.log("Export as CSV:", this.selectedQuiz);
         },
         closeDialog() {
-            this.$emit('close');
+            this.$emit("close");
         },
         closeDialogOutside(event) {
             // Check if the clicked element is outside of the dialog
-            if (!event.target.closest('.dialog')) {
+            if (!event.target.closest(".dialog")) {
                 this.closeDialog();
             }
         }
@@ -65,7 +78,16 @@ export default {
     border-radius: 10px;
     max-width: 700px;
     /* rounds edges of box*/
-
+}
+.title {
+    background-color: rgba(var(--primary-color-rgb), 0.5);
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.description {
+    background-color: rgba(var(--primary-color-rgb), 0.5);
+    border-radius: 10px;
+    margin-bottom: 10px;
 }
 
 .dialog-content {
@@ -79,6 +101,18 @@ export default {
     flex-direction: column;
     text-align: center;
 }
+.info {
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+
+    h5 {
+        color: var(--fourth-color);
+    }
+}
 /*
 .dialog button {
     padding: 10px 20px;
@@ -87,7 +121,6 @@ export default {
     height: 65px;
 
 }*/
-
 
 .cancel-button {
     align-self: flex-end; /* Align to the right */

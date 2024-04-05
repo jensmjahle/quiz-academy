@@ -49,6 +49,11 @@ public class QuizController {
     logger.info("Received request to create quiz with title: " + quizDTO.getQuizName() + ".");
     return quizService.createQuiz(quizDTO);
   }
+  @GetMapping("/all")
+  public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes() {
+    logger.info("Received request to get all quizzes.");
+    return quizService.getAllPublicQuizzes();
+  }
 
 
 

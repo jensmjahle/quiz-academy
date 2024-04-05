@@ -7,6 +7,13 @@
     --fourth-color: #00a5cf;
     --fifth-color: #004e64;
 
+    /* Color Palette RGB */
+    --primary-color-rgb: 37, 161, 142;
+    --secondary-color-rgb: 122, 229, 130;
+    --tertiary-color-rgb: 159, 255, 203;
+    --fourth-color-rgb: 0, 165, 207;
+    --fifth-color-rgb: 0, 78, 100;
+
     /* Alternative Color Palette */
     /*
   --primary-color: #E76F51;
@@ -29,6 +36,9 @@
 
         --base-color: #213547;
         --base-contrast-color: #ffffff;
+
+        --base-color-rgb: 33, 53, 71; /* #213547 */
+        --base-contrast-color-rgb: 255, 255, 255; /* #ffffff */
     }
 
     button {
@@ -44,6 +54,9 @@
 
         --base-color: #f9f9f9;
         --base-contrast-color: #213547;
+
+        --base-color-rgb: 255, 255, 255; /* #ffffff */
+        --base-contrast-color-rgb: 33, 53, 71; /* #213547 */
     }
 
     button {

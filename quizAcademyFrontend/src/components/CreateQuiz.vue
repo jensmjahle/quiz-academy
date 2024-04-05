@@ -1,24 +1,22 @@
 <script setup>
-import { ref, onMounted, provide } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, onMounted, provide } from "vue";
+import { useRoute } from "vue-router";
 
 let route = useRoute();
 
 let questions = ref([]);
 
-provide('questions', questions);
-
+provide("questions", questions);
 
 // This method below will be changed to do an API call once the API is ready.
 // Then it will pull all questions given the current quiz id, which also needs to be made
 onMounted(() => {
-
     if (route.params.question) {
         questions.value.push(route.params.question);
     } else {
         questions.value = [
-            { id: 1, type: 'text_input', name: 'question 1', answer: 'answer 1' },
-            { id: 2, type: 'multichoice', name: 'question 2', answer: 'answer 2' }
+            { id: 1, type: "text_input", name: "question 1", answer: "answer 1" },
+            { id: 2, type: "multichoice", name: "question 2", answer: "answer 2" }
         ];
     }
 });
@@ -31,12 +29,17 @@ onMounted(() => {
             <input type="text" id="quiz_name" placeholder="Quiz name" />
         </div>
 
-
         <div id="question_creation">
             <h5>Add questions to your quiz:</h5>
-            <router-link class= "button" :to="{ name: 'multichoice'}">Add multiple choice question</router-link>
-            <router-link class= "button" :to="{ name: 'text_input'}">Add text input question</router-link>
-            <router-link class= "button" :to="{ name: 'drag_and_drop'}">Add drag and drop question</router-link>
+            <router-link class="button" :to="{ name: 'multichoice' }"
+                >Add multiple choice question</router-link
+            >
+            <router-link class="button" :to="{ name: 'text_input' }"
+                >Add text input question</router-link
+            >
+            <router-link class="button" :to="{ name: 'drag_and_drop' }"
+                >Add drag and drop question</router-link
+            >
         </div>
     </div>
     <div id="question_list">
@@ -50,9 +53,8 @@ onMounted(() => {
 </template>
 
 <style scoped>
-
 #title {
-    display:flex;
+    display: flex;
     flex-flow: column;
 }
 
@@ -62,11 +64,11 @@ onMounted(() => {
 }
 
 #question_creation {
-    display:flex;
+    display: flex;
     flex-flow: column;
 }
 
-#quiz_name  {
+#quiz_name {
     margin-top: 15px;
     margin-bottom: 10px;
     font-size: 30px;
