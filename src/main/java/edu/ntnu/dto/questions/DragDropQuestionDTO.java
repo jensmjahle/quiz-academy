@@ -41,5 +41,12 @@ public class DragDropQuestionDTO extends QuestionDTO {
   public List<String> getCategoryNames() {
     return new ArrayList<>(categories.keySet());
   }
+
+  @Override
+  public String toString() {
+    return "DragDropQuestionDTO{" +
+            "categories=" + categories +
+            '}';
+  }
 }
 

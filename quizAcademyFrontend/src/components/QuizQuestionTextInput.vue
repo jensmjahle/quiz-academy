@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import { useStore } from '../stores/createQuizState.js';
-import axios from 'axios';
 import router from "../router/index.js";
 
 let questionText = ref('');
@@ -17,14 +16,6 @@ const createQuestion = async () => {
         answers: answerText.value.split('*')
     };
 
-    try {
-        console.log(questionData.answers);
-        console.log(questionData);
-        const response = await axios.post('http://localhost:8080/question/create', questionData);
-        console.log(response.data);
-    } catch (error) {
-        console.error(error);
-    }
     store.addQuestion(questionData);
     await router.push('/create_quiz');
 }

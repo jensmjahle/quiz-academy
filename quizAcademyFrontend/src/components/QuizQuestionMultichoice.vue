@@ -17,15 +17,12 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue';
+import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '../stores/createQuizState.js';
-import axios from 'axios'; // Import axios
 
 const router = useRouter();
 const store = useStore();
-
-let quizId = inject('quizId');
 
 const question = ref('');
 const alternatives = ref([
@@ -37,21 +34,13 @@ const alternatives = ref([
 
 const submitForm = async () => {
     const questionData = {
-        questionId: 1,
         questionText: question.value,
-        quizId: quizId.value,
+        quizId: store.quizId,
         type: 'MULTIPLE_CHOICE',
         alternatives: alternatives.value.map(alternative => alternative.text),
         correctAlternatives: alternatives.value.filter(alternative => alternative.correct).map(alternative => alternative.text)
     };
     console.log(questionData);
-
-    try {
-        const response = await axios.post('http://localhost:8080/api/questions/multichoice', questionData);
-        console.log('Question posted successfully:', response.data);
-    } catch (error) {
-        console.error('Error posting question:', error);
-    }
 
     store.addQuestion(questionData);
 

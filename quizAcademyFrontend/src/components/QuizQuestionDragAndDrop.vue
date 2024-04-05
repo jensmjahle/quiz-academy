@@ -2,7 +2,6 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from '../stores/createQuizState.js';
-import axios from 'axios';
 
 
 let router = useRouter();
@@ -33,7 +32,6 @@ const submitForm = async () => {
 
 function postDragDropQuestion() {
     console.log(store.quizId);
-    const questionId = 1;
     const questionText = "Drag the correct answer to the correct box.";
 
     // Convert the categories from the input fields to the required format
@@ -44,7 +42,6 @@ function postDragDropQuestion() {
     });
 
     const dragDropQuestion = {
-        questionId: questionId,
         questionText: questionText,
         quizId: store.quizId,
         type: "DRAG_AND_DROP",
@@ -52,14 +49,6 @@ function postDragDropQuestion() {
     };
 
     console.log(dragDropQuestion);
-
-    axios.post("http://localhost:8080/question/create", dragDropQuestion)
-        .then(response => {
-            console.log("Question posted successfully:", response.data);
-        })
-        .catch(error => {
-            console.error("Error posting question:", error);
-        });
     store.addQuestion(dragDropQuestion);
 }
 

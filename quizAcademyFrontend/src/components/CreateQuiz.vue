@@ -9,7 +9,7 @@ const router = useRouter();
 const store = useStore();
 
 let quizCreated = ref(false);
-let quizId = ref(null);
+let quizId = ref(store.quizId);
 
 let questions = ref([]);
 let quizName = ref('');
@@ -49,7 +49,7 @@ const createQuiz = async () => {
         quizDescription.value = response.data.quizDescription;
         quizCreated.value = true;
         store.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription.value);
-        console.log(quizDescription.value);
+        console.log(quizCreated.value);
     } catch (error) {
         console.error(error);
     }
@@ -63,11 +63,12 @@ const updateQuiz = async () => {
         quizDescription: quizDescription.value,
         user: user,
         quizCreationDate: new Date(),
+        questions: store.quizQuestions,
     };
 
     try {
         const response = await axios.post('http://localhost:8080/quiz/update', quizData);
-        console.log(response.data);
+        quizId.value = response.data.quizId;
 
         showSavedMessage.value = true;
         setTimeout(() => {
