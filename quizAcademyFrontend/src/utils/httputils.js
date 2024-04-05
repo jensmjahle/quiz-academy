@@ -11,8 +11,8 @@ import {useTokenStore} from "../stores/token.js";
 export const getJwtToken = async (username, password) => {
     const config = {
         headers: {
-            "Content-type": "application/json",
-        },
+            "Content-type": "application/json"
+        }
     };
     try {
         await axios.post("http://localhost:8080/token/new", JSON.stringify({username, password}), config);

@@ -44,7 +44,7 @@ public class UserController {
    * @param userDTO the user to create
    * @return the response entity
    */
-  @PostMapping()
+@PostMapping("/create")
   public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
     return userService.createUser(userDTO);
   }

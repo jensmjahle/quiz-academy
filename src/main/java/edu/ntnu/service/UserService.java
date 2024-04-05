@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import edu.ntnu.repository.UserRepository;
 import java.util.logging.Logger;
@@ -16,6 +18,8 @@ import java.util.logging.Logger;
  */
 @Service
 public class UserService {
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   private final UserRepository userRepository;
   private final ModelMapper modelMapper = new ModelMapper();
@@ -69,6 +73,7 @@ public class UserService {
         return new ResponseEntity<>("Username already exists", HttpStatus.CONFLICT);
       } else {
         try {
+          userDAO.setPassword(passwordEncoder.encode(userDAO.getPassword()));
           userRepository.save(userDAO);
           logger.info("User " + userDAO.getUsername() + " created successfully");
           return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);

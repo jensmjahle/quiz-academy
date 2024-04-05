@@ -1,26 +1,26 @@
 <script setup>
-import { ref} from 'vue';
-import { useRouter } from 'vue-router';
+import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 let router = useRouter();
 
-let questionText = ref('');
-let questionAnswer = ref('');
+let questionText = ref("");
+let questionAnswer = ref("");
 
 function submitQuestion() {
     const questionObject = {
-        TI: 'TI',
+        TI: "TI",
         question: questionText.value,
-        answer: questionAnswer.value,
+        answer: questionAnswer.value
     };
     console.log(questionObject);
-    router.push('/create_quiz');
+    router.push("/create_quiz");
 }
 </script>
 
 <template>
-    <div id = "full_question">
-        <div id = "text_response_question">
+    <div id="full_question">
+        <div id="text_response_question">
             <input id="input" type="text" v-model="questionText" placeholder="Question" />
             <input id="input" type="text" placeholder="Answer" />
         </div>
@@ -31,11 +31,9 @@ function submitQuestion() {
             <button @click="submitQuestion">Submit</button>
         </div>
     </div>
-
 </template>
 
 <style scoped>
-
 #full_question {
     margin-top: 3vw;
     display: flex;
@@ -48,7 +46,7 @@ function submitQuestion() {
     flex-flow: column;
 }
 
-#input  {
+#input {
     margin-top: 15px;
     font-size: 30px;
     padding-top: 5px;
@@ -62,5 +60,4 @@ function submitQuestion() {
 #input::placeholder {
     text-align: center;
 }
-
 </style>

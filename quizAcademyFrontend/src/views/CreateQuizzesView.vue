@@ -11,15 +11,15 @@ export default {
         return { tokenStore };
     },
     async mounted() {
-        if(!this.tokenStore.jwtToken) {
+        if (!this.tokenStore.jwtToken) {
             console.log("Unauthenticated context");
         } else {
             console.log("Authenticated context");
-            let response  = this.tokenStore.loggedInUser;
+            let response = this.tokenStore.loggedInUser;
             this.user = response.data;
         }
     },
-    data () {
+    data() {
         return {
             user: null,
             sadImage: sadImage

@@ -7,6 +7,9 @@ import MultichoiceView from "../views/MultichoiceView.vue";
 import DragAndDropView from "../views/DragAndDropView.vue";
 import TextInputView from "../views/TextInputView.vue";
 import SigninWiew from "../views/QuizSigninView.vue";
+import * as path from "path";
+import PlayQuizView from "../views/PlayQuizView.vue";
+import { usePlayQuizStore } from "../stores/playQuizStore.js";
 
 export default createRouter({
     history: createWebHistory(),
@@ -52,6 +55,19 @@ export default createRouter({
             path: "/signup",
             name: "signup",
             component: SigninWiew
+        },
+        {
+            path: "/play_quiz/",
+            name: "play_quiz",
+            component: PlayQuizView,
+            beforeEnter: (to, from, next) => {
+                const playQuizStore = usePlayQuizStore(); // Access the playQuiz store
+                if (!playQuizStore.getQuiz) {
+                    next({ path: "/" }); // Redirect to homepage if playQuiz is null
+                } else {
+                    next(); // Proceed to the route
+                }
+            }
         }
     ]
 });
