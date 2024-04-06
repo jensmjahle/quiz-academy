@@ -171,7 +171,7 @@ public class QuizService {
   public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzes() {
     try {
       // Get all public quizzes from the database
-      Iterable<QuizDAO> quizzes = quizRepository.findAll();
+      Iterable<QuizDAO> quizzes = quizRepository.findAllByIsPublic(true);
 
       // Convert quizzes to DTOs
       if (quizzes != null) {
@@ -192,4 +192,9 @@ public class QuizService {
       return ResponseEntity.status(500).build();
     }
   }
+/*
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(String tag) {
+  }
+
+ */
 }
