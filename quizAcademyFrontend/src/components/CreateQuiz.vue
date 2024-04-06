@@ -11,7 +11,7 @@ const quizStore = useQuizStore();
 
 let quizCreated = ref(false);
 let quizId = ref(quizStore.quizId);
-
+let quizPublicStatus = ref(false);
 let questions = ref([]);
 let quizName = ref('');
 let showSavedMessage = ref(false);
@@ -49,7 +49,7 @@ const createQuiz = async () => {
         quizId.value = response.data.quizId;
         quizDescription.value = response.data.quizDescription;
         quizCreated.value = true;
-        quizStore.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription.value);
+        quizStore.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription.value, quizPublicStatus.value);
         console.log(quizCreated.value);
     } catch (error) {
         console.error(error);
@@ -63,6 +63,7 @@ const updateQuiz = async () => {
         quizName: quizName.value,
         quizDescription: quizDescription.value,
         user: user,
+        isPublic: quizPublicStatus.value,
         quizCreationDate: new Date(),
         questions: quizStore.quizQuestions,
     };
@@ -102,8 +103,12 @@ const resetWithConfirm = () => {
             <input type="text" id="quiz_name" v-model="quizName" placeholder="Quiz name" />
             <button class="button" @click="createQuiz" v-if="!quizCreated">Create Quiz</button>
         </div>
-        <div id="quiz_description">
+        <div id="quiz_description_and_public">
             <input type = "text" id="quiz_description" v-model="quizDescription" placeholder="give a short description for your quiz">
+            <div id="is_quiz_public">
+                <h5>Tick if quiz should be public:</h5>
+                <input type="checkbox" id="is_public" name="is_public" v-model="quizPublicStatus" value="is_public">
+            </div>
         </div>
 
         <div id="question_creation" v-if="quizCreated">
@@ -117,8 +122,8 @@ const resetWithConfirm = () => {
     <div id="question_list" v-if="quizCreated">
         <h5>Questions:</h5>
         <ul>
-            <li v-for="question in questions" :key="question.id">
-                {{ question.type }}: {{ question.name }}
+            <li v-for="(question, index) in questions" :key="question.id">
+                {{ question.type }}: {{ index + 1 }}. {{ question.questionText }}
             </li>
         </ul>
     </div>
@@ -188,5 +193,36 @@ const resetWithConfirm = () => {
 
 .button:active {
     color: var(--base-color);
+}
+
+#is_quiz_public {
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+}
+
+#is_public {
+    margin-left: 15px;
+    margin-right: 15px;
+    -webkit-appearance: none;
+    width: 20px; /* Adjust the value as per your needs */
+    height: 20px; /* Adjust the value as per your needs */
+    background-color: var(--fifth-color); /* Adjust the color as per your needs */
+    border-radius: 50%; /* This will make the checkbox completely round */
+    cursor: pointer;
+}
+
+#is_public:checked {
+    background-color: var(--tertiary-color);
+}
+
+#is_public:checked::after {
+    content: "";
+    display: block;
+    width: 10px; /* Adjust the value as per your needs */
+    height: 10px; /* Adjust the value as per your needs */
+    background-color: var(--fourth-color); /* Adjust the color as per your needs */
+    border-radius: 50%; /* This will make the circle completely round */
+    margin: 5px; /* Adjust the value as per your needs */
 }
 </style>

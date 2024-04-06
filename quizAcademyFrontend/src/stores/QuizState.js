@@ -10,6 +10,7 @@ export const useQuizStore = defineStore({
         quizId: null,
         quizName: null,
         quizDescription: null,
+        quizPublicStatus: false,
     }),
     actions: {
         quizQuestions: [],
@@ -50,11 +51,18 @@ export const useQuizStore = defineStore({
         resetQuizDescription() {
             this.quizDescription = null;
         },
-        initializeQuiz(quizId, quizName, questions, quizDescription) {
+        setQuizPublicStatus(status) {
+            this.quizPublicStatus = status;
+        },
+        resetQuizPublicStatus() {
+            this.quizPublicStatus = false;
+        },
+        initializeQuiz(quizId, quizName, questions, quizDescription, status) {
             this.setQuizId(quizId);
             this.setQuizName(quizName);
             this.setQuizDescription(quizDescription);
             this.setQuizQuestions(questions);
+            this.setQuizPublicStatus(status)
         },
         resetQuiz() {
             this.resetQuizId();
@@ -62,6 +70,7 @@ export const useQuizStore = defineStore({
             this.resetQuizQuestions();
             this.resetQuizDescription();
             this.resetQuestionStates();
+            this.resetQuizPublicStatus();
         },
         addDragDropQuestionState(questionState) {
             const store = useDragDropStore();
@@ -102,6 +111,21 @@ export const useQuizStore = defineStore({
         },
         resetQuestionStates() {
             this.quizQuestionStates = [];
+        },
+        fromQuestionToQuestionState(questionIndex) {
+            const question = this.quizQuestions[questionIndex];
+            if(question.questionType === "DD") {
+                const questionState = useDragDropStore();
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.questionCategories);
+            } else if(question.questionType === "MC") {
+                const questionState = useMultichoiceStore();
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.questionAlternatives);
+            } else if(question.questionType === "TI") {
+                const questionState = useTextInputStore();
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.correctAnswers);
+            } else {
+                console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question);
+            }
         }
     }
 });
