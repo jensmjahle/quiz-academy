@@ -36,6 +36,7 @@ public class QuizDAO {
   private Long quizId;
   private String quizName;
   private String quizDescription;
+  private boolean isPublic;
   @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "createdBy", referencedColumnName = "username")
@@ -111,6 +112,12 @@ public class QuizDAO {
     tagDAOs.remove(tagDAO);
   }
 
+  public boolean isPublic() {
+    return isPublic;
+  }
+  public void setIsPublic(boolean isPublic) {
+    this.isPublic = isPublic;
+  }
 
 }
 
