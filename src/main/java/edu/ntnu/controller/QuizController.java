@@ -50,11 +50,19 @@ public class QuizController {
     return quizService.createQuiz(quizDTO);
   }
   @GetMapping("/all")
-  public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes() {
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzes() {
     logger.info("Received request to get all quizzes.");
     return quizService.getAllPublicQuizzes();
+
   }
 
+  /*
+  @GetMapping("/all/{tag}")
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(@PathVariable String tag) {
+    logger.info("Received request to get all quizzes with tag: " + tag + ".");
+    return quizService.getAllPublicQuizzesByTag(tag);
+  }
 
+*/
 
 }

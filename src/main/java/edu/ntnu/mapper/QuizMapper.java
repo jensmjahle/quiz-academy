@@ -47,6 +47,7 @@ public class QuizMapper {
         quizDTO.setQuizName(quizDAO.getQuizName());
         quizDTO.setQuizDescription(quizDAO.getQuizDescription());
         quizDTO.setUser(quizDAO.getUser().getUsername());
+        quizDTO.setIsPublic(quizDAO.isPublic());
         quizDTO.setTags(quizDAO.getTags().stream().map(tagMapper::toTagDTO).collect(Collectors.toList()));
         quizDTO.setQuizCreationDate(quizDAO.getQuizCreationDate());
         return quizDTO;
@@ -77,6 +78,7 @@ public class QuizMapper {
         quizDAO.setQuizName(quizDTO.getQuizName());
         quizDAO.setQuizDescription(quizDTO.getQuizDescription());
         quizDAO.setQuizCreationDate(quizDTO.getQuizCreationDate());
+        quizDAO.setIsPublic(quizDTO.isPublic());
 
         // Map tagDTOs to Tag objects
       List <TagDTO> tags = quizDTO.getTags();
