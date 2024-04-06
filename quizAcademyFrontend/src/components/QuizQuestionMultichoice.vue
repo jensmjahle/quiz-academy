@@ -20,7 +20,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuizStore } from '../stores/QuizState.js';
-import { useMultichoiceStore} from "../stores/multichoideQuestionState.js";
+import { useMultichoiceStore} from "../stores/multichoideQuestionStore.js";
 
 const router = useRouter();
 const quizStore = useQuizStore();

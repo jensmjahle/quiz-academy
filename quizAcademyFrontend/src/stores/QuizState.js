@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
-import { useDragDropStore } from './dragAndDropQuestionState';
-import { useMultichoiceStore } from './multichoideQuestionState.js';
-import { useTextInputStore } from './textInputQuestionState.js';
+import { useDragDropStore } from './dragAndDropQuestionStore.js';
+import { useMultichoiceStore } from './multichoideQuestionStore.js';
+import { useTextInputStore } from './textInputQuestionStore.js';
 
 export const useQuizStore = defineStore({
     // unique id of the store across your application

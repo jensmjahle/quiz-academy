@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuizStore } from '../stores/QuizState.js';
-import { useDragDropStore} from "../stores/dragAndDropQuestionState.js";
+import { useDragDropStore} from "../stores/dragAndDropQuestionStore.js";
 
 let router = useRouter();
 

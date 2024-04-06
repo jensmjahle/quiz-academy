@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/QuizState.js';
-import { useTextInputStore } from "../stores/textInputQuestionState.js";
+import { useTextInputStore } from "../stores/textInputQuestionStore.js";
 import router from "../router/index.js";
 
 let questionText = ref('');
