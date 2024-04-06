@@ -1,22 +1,31 @@
 <script setup>
 import { ref } from 'vue';
-import { useStore } from '../stores/QuizState.js';
+import { useQuizStore } from '../stores/QuizState.js';
+import { useTextInputStore } from "../stores/textInputQuestionState.js";
 import router from "../router/index.js";
 
 let questionText = ref('');
 let answerText = ref('');
 
-const store = useStore();
+const quizStore = useQuizStore();
+const textInputStore = useTextInputStore();
+
+const statifyQuestionAndStore = () => {
+    const questionStateId = quizStore.quizQuestionStates.length;
+    textInputStore.setQuestionValues(quizStore.quizId,questionStateId, questionText.value, answerText.value.split('*'));
+    quizStore.addTextInputQuestionState(textInputStore);
+}
 
 const createQuestion = async () => {
     const questionData = {
         questionText: questionText.value,
-        quizId: store.quizId,
+        quizId: quizStore.quizId,
         type: "TEXT_INPUT",
         answers: answerText.value.split('*')
     };
 
-    store.addQuestion(questionData);
+    quizStore.addQuestion(questionData);
+    statifyQuestionAndStore();
     await router.push('/create_quiz');
 }
 </script>

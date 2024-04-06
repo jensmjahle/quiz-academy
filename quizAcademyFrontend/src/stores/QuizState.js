@@ -1,6 +1,9 @@
 import { defineStore } from 'pinia';
+import { useDragDropStore } from './dragAndDropQuestionState';
+import { useMultichoiceStore } from './multichoideQuestionState.js';
+import { useTextInputStore } from './textInputQuestionState.js';
 
-export const useStore = defineStore({
+export const useQuizStore = defineStore({
     // unique id of the store across your application
     id: 'main',
     state: () => ({
@@ -10,6 +13,7 @@ export const useStore = defineStore({
     }),
     actions: {
         quizQuestions: [],
+        quizQuestionStates: [],
         setQuizId(id) {
             this.quizId = id;
         },
@@ -57,6 +61,47 @@ export const useStore = defineStore({
             this.resetQuizName();
             this.resetQuizQuestions();
             this.resetQuizDescription();
+            this.resetQuestionStates();
+        },
+        addDragDropQuestionState(questionState) {
+            const store = useDragDropStore();
+            if(Array.isArray(this.quizQuestionStates)) {
+                store.quizId = questionState.quizId;
+                store.questionId = questionState.questionId;
+                store.questionText = questionState.questionText;
+                store.questionCategories = questionState.questionCategories;
+                this.quizQuestionStates.push(store);
+            } else {
+                console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
+            }
+        },
+        addMultichoiceQuestionState(questionState) {
+            const store = useMultichoiceStore();
+            if(Array.isArray(this.quizQuestionStates)) {
+                store.quizId = questionState.quizId;
+                store.questionId = questionState.questionId;
+                store.questionText = questionState.questionText;
+                store.questionAlternatives = questionState.questionCategories;
+                store.correctOptions = questionState.correctOptions;
+                this.quizQuestionStates.push(store);
+            } else {
+                console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
+            }
+        },
+        addTextInputQuestionState(questionState) {
+            const store = useTextInputStore();
+            if(Array.isArray(this.quizQuestionStates)) {
+                store.quizId = questionState.quizId;
+                store.questionId = questionState.questionId;
+                store.questionText = questionState.questionText;
+                store.correctAnswers = questionState.correctAnswers;
+                this.quizQuestionStates.push(store);
+            } else {
+                console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
+            }
+        },
+        resetQuestionStates() {
+            this.quizQuestionStates = [];
         }
     }
 });

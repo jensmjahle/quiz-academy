@@ -1,24 +1,24 @@
 import { defineStore } from 'pinia';
 
-export const useStore = defineStore({
-    // unique id of the store across your application
-    id: 'inputTextQuestion',
+export const useTextInputStore = defineStore({
+    id: 'textInputQuestion',
     state: () => ({
+        questionType: "IT",
         quizId: null,
-        questionId: null,
+        questionStateId: null,
         questionText: null,
         correctAnswers: [],
     }),
     actions: {
-        setQuestionValues(quizId, questionId, questionText, correctAnswers) {
+        setQuestionValues(quizId, questionStateId, questionText, correctAnswers) {
             this.quizId = quizId;
-            this.questionId = questionId;
+            this.questionStateId = questionStateId;
             this.questionText = questionText;
             this.correctAnswers = correctAnswers;
         },
         resetQuestionValues() {
             this.quizId = null;
-            this.questionId = null;
+            this.questionStateId = null;
             this.questionText = null;
             this.correctAnswers = [];
         },

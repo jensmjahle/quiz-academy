@@ -1,12 +1,13 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useStore } from '../stores/QuizState.js';
-
+import { useQuizStore } from '../stores/QuizState.js';
+import { useDragDropStore} from "../stores/dragAndDropQuestionState.js";
 
 let router = useRouter();
 
-const store = useStore();
+const quizStore = useQuizStore();
+const dragDropStore = useDragDropStore();
 
 const categories = ref([{ name: '', items: '' }]);
 
@@ -27,11 +28,18 @@ const removeCategory = (index) => {
 
 const submitForm = async () => {
     postDragDropQuestion();
+    statifyQuestionAndStore()
     await router.push('/create_quiz');
 }
 
+const statifyQuestionAndStore = () => {
+    const questionStateId = quizStore.quizQuestionStates.length;
+    dragDropStore.setQuestionValues(quizStore.quizId, questionStateId, "Drag the correct answer to the correct box.", categories.value);
+    quizStore.addDragDropQuestionState(dragDropStore);
+}
+
 function postDragDropQuestion() {
-    console.log(store.quizId);
+    console.log(quizStore.quizId);
     const questionText = "Drag the correct answer to the correct box.";
 
     // Convert the categories from the input fields to the required format
@@ -43,13 +51,13 @@ function postDragDropQuestion() {
 
     const dragDropQuestion = {
         questionText: questionText,
-        quizId: store.quizId,
+        quizId: quizStore.quizId,
         type: "DRAG_AND_DROP",
         categories: formattedCategories
     };
 
     console.log(dragDropQuestion);
-    store.addQuestion(dragDropQuestion);
+    quizStore.addQuestion(dragDropQuestion);
 }
 
 </script>

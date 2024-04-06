@@ -19,10 +19,13 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useStore } from '../stores/QuizState.js';
+import { useQuizStore } from '../stores/QuizState.js';
+import { useMultichoiceStore} from "../stores/multichoideQuestionState.js";
 
 const router = useRouter();
-const store = useStore();
+const quizStore = useQuizStore();
+const multichoiceStore = useMultichoiceStore();
+
 
 const question = ref('');
 const alternatives = ref([
@@ -32,17 +35,24 @@ const alternatives = ref([
     { text: '', correct: false }
 ]);
 
+const statifyQuestionAndStore = () => {
+    const questionStateId = quizStore.quizQuestions.length;
+    multichoiceStore.setQuestionValues(quizStore.quizId, questionStateId, question.value, alternatives.value);
+    quizStore.addMultichoiceQuestionState(multichoiceStore);
+}
+
 const submitForm = async () => {
     const questionData = {
         questionText: question.value,
-        quizId: store.quizId,
+        quizId: quizStore.quizId,
         type: 'MULTIPLE_CHOICE',
         alternatives: alternatives.value.map(alternative => alternative.text),
         correctAlternatives: alternatives.value.filter(alternative => alternative.correct).map(alternative => alternative.text)
     };
     console.log(questionData);
 
-    store.addQuestion(questionData);
+    quizStore.addQuestion(questionData);
+    statifyQuestionAndStore();
 
     await router.push('/create_quiz');
 }

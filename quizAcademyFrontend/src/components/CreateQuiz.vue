@@ -1,15 +1,16 @@
 <script setup>
 import { ref } from 'vue';
-import { useStore } from '../stores/QuizState.js';
+import { useQuizStore } from '../stores/QuizState.js';
 import axios from 'axios';
 import { useRouter } from 'vue-router'
 
 
 const router = useRouter();
-const store = useStore();
+const quizStore = useQuizStore();
+
 
 let quizCreated = ref(false);
-let quizId = ref(store.quizId);
+let quizId = ref(quizStore.quizId);
 
 let questions = ref([]);
 let quizName = ref('');
@@ -18,12 +19,12 @@ let quizDescription = ref('');
 
 const user = 'jens'; //TODO: Change this to the actual user
 
-if (store.quizName !== null) {
-    quizName.value = store.quizName;
-    quizDescription.value = store.quizDescription;
+if (quizStore.quizName !== null) {
+    quizName.value = quizStore.quizName;
+    quizDescription.value = quizStore.quizDescription;
     quizCreated.value = true;
-    if (Array.isArray(store.quizQuestions)) {
-        questions.value = store.quizQuestions;
+    if (Array.isArray(quizStore.quizQuestions)) {
+        questions.value = quizStore.quizQuestions;
     } else {
         console.log("no questions in store or not an array");
     }
@@ -48,7 +49,7 @@ const createQuiz = async () => {
         quizId.value = response.data.quizId;
         quizDescription.value = response.data.quizDescription;
         quizCreated.value = true;
-        store.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription.value);
+        quizStore.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription.value);
         console.log(quizCreated.value);
     } catch (error) {
         console.error(error);
@@ -63,7 +64,7 @@ const updateQuiz = async () => {
         quizDescription: quizDescription.value,
         user: user,
         quizCreationDate: new Date(),
-        questions: store.quizQuestions,
+        questions: quizStore.quizQuestions,
     };
 
     try {
@@ -81,13 +82,13 @@ const updateQuiz = async () => {
 
 const exitAndSave = () => {
     updateQuiz();
-    store.resetQuiz();
+    quizStore.resetQuiz();
     router.push('/quizzes');
 }
 
 const resetWithConfirm = () => {
     if (confirm('Are you sure you want to reset the quiz?')) {
-        store.resetQuiz();
+        quizStore.resetQuiz();
         router.push('/quizzes');
     }
 }

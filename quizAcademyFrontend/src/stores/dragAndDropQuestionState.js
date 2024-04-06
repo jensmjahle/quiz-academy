@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 
-export const useStore = defineStore({
-    // unique id of the store across your application
+export const useDragDropStore = defineStore({
     id: 'dragAndDropQuestion',
     state: () => ({
+        questionType: "DD",
         quizId: null,
         questionId: null,
         questionText: null,
