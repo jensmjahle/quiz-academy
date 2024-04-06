@@ -12,6 +12,10 @@ export const useQuizStore = defineStore({
         quizDescription: null,
         quizPublicStatus: false,
     }),
+
+    persist: {
+        storage: sessionStorage
+    },
     actions: {
         quizQuestions: [],
         quizQuestionStates: [],
@@ -117,12 +121,15 @@ export const useQuizStore = defineStore({
             if(question.questionType === "DD") {
                 const questionState = useDragDropStore();
                 questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.questionCategories);
+                return("/question/drag_and_drop");
             } else if(question.questionType === "MC") {
                 const questionState = useMultichoiceStore();
                 questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.questionAlternatives);
+                return("/question/multichoice");
             } else if(question.questionType === "TI") {
                 const questionState = useTextInputStore();
                 questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.correctAnswers);
+                return ("/question/text_input");
             } else {
                 console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question);
             }

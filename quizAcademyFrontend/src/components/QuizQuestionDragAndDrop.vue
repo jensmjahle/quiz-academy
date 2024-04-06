@@ -3,12 +3,15 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuizStore } from '../stores/QuizState.js';
 import { useDragDropStore} from "../stores/dragAndDropQuestionStore.js";
+import axios from 'axios';
 
 let router = useRouter();
+let edit = ref(false);
 
 const quizStore = useQuizStore();
 const dragDropStore = useDragDropStore();
 
+const questionText = "Drag the correct answer to the correct box.";
 const categories = ref([{ name: '', items: '' }]);
 
 const addCategory = () => {
@@ -26,9 +29,16 @@ const removeCategory = (index) => {
     }
 };
 
+//todo: check if this works
+if (dragDropStore.questionId !== null) {
+    categories.value = dragDropStore.questionCategories;
+    edit.value = true;
+}
+
 const submitForm = async () => {
     postDragDropQuestion();
     statifyQuestionAndStore()
+    dragDropStore.resetQuestionValues();
     await router.push('/create_quiz');
 }
 
@@ -40,9 +50,7 @@ const statifyQuestionAndStore = () => {
 
 function postDragDropQuestion() {
     console.log(quizStore.quizId);
-    const questionText = "Drag the correct answer to the correct box.";
 
-    // Convert the categories from the input fields to the required format
     const formattedCategories = {};
     categories.value.forEach(category => {
         const items = category.items.split('*');
@@ -58,6 +66,23 @@ function postDragDropQuestion() {
 
     console.log(dragDropQuestion);
     quizStore.addQuestion(dragDropQuestion);
+}
+
+const editQuestion = async () => {
+
+    const dragDropQuestion = {
+        questionText: questionText,
+        quizId: quizStore.quizId,
+        type: "DRAG_AND_DROP",
+        categories: categories.value
+    }
+
+    const response = await axios.post("http://localhost:8080/question/update", dragDropQuestion);
+    console.log(response.data);
+
+    statifyQuestionAndStore(); //todo: make update method instead of add
+    dragDropStore.resetQuestionValues();
+    await router.push('/create_quiz');
 }
 
 </script>
@@ -87,7 +112,8 @@ function postDragDropQuestion() {
             </div>
         <div id="buttons">
             <button id="add_category" @click="addCategory">Add a category</button>
-            <button id="submit_question" @click="submitForm">Submit</button>
+            <button id="submit_question" v-if="!edit" @click="submitForm">Submit</button>
+            <button id="update_question" v-if="edit" @click="editQuestion">Update</button>
         </div>
     </div>
 </template>

@@ -23,6 +23,7 @@ if (quizStore.quizName !== null) {
     quizName.value = quizStore.quizName;
     quizDescription.value = quizStore.quizDescription;
     quizCreated.value = true;
+    quizPublicStatus.value = quizStore.quizPublicStatus;
     if (Array.isArray(quizStore.quizQuestions)) {
         questions.value = quizStore.quizQuestions;
     } else {
@@ -39,6 +40,7 @@ const createQuiz = async () => {
         quizName: quizName.value,
         quizDescription: quizDescription.value,
         user: user,
+        isPublic: quizPublicStatus.value,
         quizCreationDate: new Date()
     };
 
@@ -81,6 +83,12 @@ const updateQuiz = async () => {
     }
 }
 
+const editQuestion = async (index) => {
+    const routing = quizStore.fromQuestionToQuestionState(index);
+    await router.push(routing)
+    console.log("edit question");
+
+}
 const exitAndSave = () => {
     updateQuiz();
     quizStore.resetQuiz();
@@ -122,7 +130,7 @@ const resetWithConfirm = () => {
     <div id="question_list" v-if="quizCreated">
         <h5>Questions:</h5>
         <ul>
-            <li v-for="(question, index) in questions" :key="question.id">
+            <li v-for="(question, index) in questions" :key="question.id" @click="editQuestion(index)">
                 {{ question.type }}: {{ index + 1 }}. {{ question.questionText }}
             </li>
         </ul>

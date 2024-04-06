@@ -3,22 +3,22 @@ import { defineStore } from 'pinia';
 export const useTextInputStore = defineStore({
     id: 'textInputQuestion',
     state: () => ({
-        questionType: "IT",
+        questionType: "TI",
         quizId: null,
-        questionStateId: null,
+        questionId: null,
         questionText: null,
         correctAnswers: [],
     }),
     actions: {
         setQuestionValues(quizId, questionStateId, questionText, correctAnswers) {
             this.quizId = quizId;
-            this.questionStateId = questionStateId;
+            this.questionId = questionStateId;
             this.questionText = questionText;
             this.correctAnswers = correctAnswers;
         },
         resetQuestionValues() {
             this.quizId = null;
-            this.questionStateId = null;
+            this.questionId = null;
             this.questionText = null;
             this.correctAnswers = [];
         },
