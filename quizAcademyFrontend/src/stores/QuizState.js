@@ -12,10 +12,6 @@ export const useQuizStore = defineStore({
         quizDescription: null,
         quizPublicStatus: false,
     }),
-
-    persist: {
-        storage: sessionStorage
-    },
     actions: {
         quizQuestions: [],
         quizQuestionStates: [],
@@ -44,6 +40,7 @@ export const useQuizStore = defineStore({
             } else {
                 console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestions);
                 this.quizQuestions = [question];
+                console.log("quizQuestions was reset to: ", this.quizQuestions);
             }
         },
         resetQuizQuestions() {
@@ -98,7 +95,8 @@ export const useQuizStore = defineStore({
                 store.correctOptions = questionState.correctOptions;
                 this.quizQuestionStates.push(store);
             } else {
-                console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
+                console.log("quizQuestionStates was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
+                this.quizQuestionStates = [store];
             }
         },
         addTextInputQuestionState(questionState) {
@@ -109,8 +107,15 @@ export const useQuizStore = defineStore({
                 store.questionText = questionState.questionText;
                 store.correctAnswers = questionState.correctAnswers;
                 this.quizQuestionStates.push(store);
+                console.log("added textinput question to state successfully");
             } else {
                 console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
+                store.quizId = questionState.quizId;
+                store.questionId = questionState.questionId;
+                store.questionText = questionState.questionText;
+                store.correctAnswers = questionState.correctAnswers;
+                this.quizQuestionStates = [store];
+                console.log("attempted to reset quizQuestionStates to an array: ", this.quizQuestionStates);
             }
         },
         resetQuestionStates() {
@@ -118,20 +123,23 @@ export const useQuizStore = defineStore({
         },
         fromQuestionToQuestionState(questionIndex) {
             const question = this.quizQuestions[questionIndex];
-            if(question.questionType === "DD") {
+            if(question.type === "DRAG_AND_DROP") {
+                console.log("id DRAG_AND_DROP found");
                 const questionState = useDragDropStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.questionCategories);
-                return("/question/drag_and_drop");
-            } else if(question.questionType === "MC") {
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.categories);
+                return("/create_quiz/drag_and_drop");
+            } else if(question.type === "MULTIPLE_CHOICE") {
+                console.log("id MULTIPLE_CHOICE found");
                 const questionState = useMultichoiceStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.questionAlternatives);
-                return("/question/multichoice");
-            } else if(question.questionType === "TI") {
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.alternatives, question.correctAlternatives);
+                return("/create_quiz/multichoice");
+            } else if(question.type === "TEXT_INPUT") {
+                console.log("id TEXT_INPUT found");
                 const questionState = useTextInputStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.correctAnswers);
-                return ("/question/text_input");
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.questionAnswers);
+                return ("/create_quiz/text_input");
             } else {
-                console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question);
+                console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question.questionType);
             }
         }
     }

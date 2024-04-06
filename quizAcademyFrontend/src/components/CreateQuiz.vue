@@ -1,13 +1,15 @@
 <script setup>
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/QuizState.js';
+import { useTextInputStore } from "../stores/textInputQuestionStore.js";
 import axios from 'axios';
 import { useRouter } from 'vue-router'
+import {useTokenStore} from "../stores/token.js";
 
 
 const router = useRouter();
 const quizStore = useQuizStore();
-
+const tokenStore = useTokenStore();
 
 let quizCreated = ref(false);
 let quizId = ref(quizStore.quizId);
@@ -17,7 +19,7 @@ let quizName = ref('');
 let showSavedMessage = ref(false);
 let quizDescription = ref('');
 
-const user = 'jens'; //TODO: Change this to the actual user
+const user = tokenStore.loggedInUser.data.username;
 
 if (quizStore.quizName !== null) {
     quizName.value = quizStore.quizName;
@@ -27,7 +29,8 @@ if (quizStore.quizName !== null) {
     if (Array.isArray(quizStore.quizQuestions)) {
         questions.value = quizStore.quizQuestions;
     } else {
-        console.log("no questions in store or not an array");
+        console.log("no questions in store or not an array. value: ", quizStore.quizQuestions);
+        questions.value = [];
     }
 } else {
     console.log("no quiz name")
@@ -60,25 +63,35 @@ const createQuiz = async () => {
 
 const updateQuiz = async () => {
 
+    if (Array.isArray(quizStore.quizQuestions)) {
+        questions.value = quizStore.quizQuestions;
+    } else {
+        console.log("no questions in store or not an array. value of questions: ", questions.value);
+        questions.value = [];
+    }
+
+    const date = new Date();
+
     const quizData = {
         quizId: quizId.value,
         quizName: quizName.value,
         quizDescription: quizDescription.value,
         user: user,
         isPublic: quizPublicStatus.value,
-        quizCreationDate: new Date(),
+        quizCreationDate: date,
         questions: quizStore.quizQuestions,
     };
 
     try {
         const response = await axios.post('http://localhost:8080/quiz/update', quizData);
+        console.log(response.data);
         quizId.value = response.data.quizId;
-
         showSavedMessage.value = true;
         setTimeout(() => {
             showSavedMessage.value = false;
         }, 5000);
     } catch (error) {
+        console.log("error in updateQuiz with values: ", quizData);
         console.error(error);
     }
 }
@@ -86,8 +99,7 @@ const updateQuiz = async () => {
 const editQuestion = async (index) => {
     const routing = quizStore.fromQuestionToQuestionState(index);
     await router.push(routing)
-    console.log("edit question");
-
+    console.log("Routing successful. ");
 }
 const exitAndSave = () => {
     updateQuiz();
@@ -120,6 +132,7 @@ const resetWithConfirm = () => {
         </div>
 
         <div id="question_creation" v-if="quizCreated">
+            <hr>
             <h5>Add questions to your quiz:</h5>
             <!-- Only render the router-link if quizId is not null -->
             <router-link v-if="quizId" class="button" :to="{ name: 'multichoice', params: { quizId: quizId.value }}">Add multiple choice question</router-link>

@@ -15,6 +15,10 @@ const questionText = "Drag the correct answer to the correct box.";
 const categories = ref([{ name: '', items: '' }]);
 
 const addCategory = () => {
+    if(categories.value.length >= 3) {
+        alert("You can't have more than 3 categories.");
+        return;
+    }
     categories.value.push({ name: "", items: "" });
 };
 
@@ -29,15 +33,24 @@ const removeCategory = (index) => {
     }
 };
 
-//todo: check if this works
 if (dragDropStore.questionId !== null) {
-    categories.value = dragDropStore.questionCategories;
-    edit.value = true;
+    console.log("question id found");
+    const updatedCategories = [];
+    const categoriesFromStore = dragDropStore.questionCategories;
+
+    for (const [innerObject] of Object.entries(categoriesFromStore)) {
+        for (const key in innerObject) {
+            updatedCategories.push({
+                name: key,
+                items: innerObject[key].join('*')
+            });
+        }
+    }
+    categories.value = updatedCategories;
 }
 
 const submitForm = async () => {
     postDragDropQuestion();
-    statifyQuestionAndStore()
     dragDropStore.resetQuestionValues();
     await router.push('/create_quiz');
 }
@@ -56,6 +69,8 @@ function postDragDropQuestion() {
         const items = category.items.split('*');
         formattedCategories[category.name] = items;
     });
+
+    console.log(formattedCategories);
 
     const dragDropQuestion = {
         questionText: questionText,

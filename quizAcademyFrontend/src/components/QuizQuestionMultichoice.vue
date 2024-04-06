@@ -1,5 +1,6 @@
 <template>
     <div id="QuizQuestionMultichoice">
+        <h5 id="currently_editing" v-if="edit">Editing question</h5>
         <div id="question">
             <h5 id="quiz_question">Q.1</h5>
             <input
@@ -10,14 +11,35 @@
             />
         </div>
         <div id="alternatives">
-            <div v-for="(alternative, index) in alternatives" :key="index">
+            <div>
                 <input
                     id="input"
-                    v-model="alternative.text"
+                    v-model="alternatives[0]"
                     type="text"
-                    :placeholder="'alternative ' + (index + 1)"
+                    placeholder="alternative one"
                 />
-                <input id="checkbox" v-model="alternative.correct" type="checkbox" />
+                <input id="checkbox" v-model="correctAlternatives[0]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[1]"
+                    type="text"
+                    placeholder="alternative two"
+                />
+                <input id="checkbox" v-model="correctAlternatives[1]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[2]"
+                    type="text"
+                    placeholder="alternative three"
+                />
+                <input id="checkbox" v-model="correctAlternatives[2]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[3]"
+                    type="text"
+                    placeholder="alternative four"
+                />
+                <input id="checkbox" v-model="correctAlternatives[3]" type="checkbox" />
             </div>
         </div>
         <div>
@@ -39,39 +61,37 @@ const quizStore = useQuizStore();
 const multichoiceStore = useMultichoiceStore();
 
 let edit = ref(false);
-const question = ref('');
-const alternatives = ref([
-    { text: "", correct: false },
-    { text: "", correct: false },
-    { text: "", correct: false },
-    { text: "", correct: false }
-]);
+let question = ref('');
+let alternatives = ref([]);
+let correctAlternatives = ref([]);
+
 
 //todo: check if this works
 if (multichoiceStore.questionId !== null) {
     question.value = multichoiceStore.questionText;
     alternatives.value = multichoiceStore.questionAlternatives;
+    correctAlternatives.value = multichoiceStore.correctAlternatives;
     edit.value = true;
 }
 
 const statifyQuestionAndStore = () => {
     const questionStateId = quizStore.quizQuestions.length;
-    multichoiceStore.setQuestionValues(quizStore.quizId, questionStateId, question.value, alternatives.value);
-    quizStore.addMultichoiceQuestionState(multichoiceStore);
+    multichoiceStore.setQuestionValues(quizStore.quizId, questionStateId, question.value, alternatives, correctAlternatives);
+    console.log("alternatives: ", alternatives, "\ncorrect alternatives: ", correctAlternatives);
 }
 
 const submitForm = async () => {
     const questionData = {
         questionText: question.value,
         quizId: quizStore.quizId,
+        questionId: quizStore.quizQuestions.length,
         type: 'MULTIPLE_CHOICE',
-        alternatives: alternatives.value.map(alternative => alternative.text),
-        correctAlternatives: alternatives.value.filter(alternative => alternative.correct).map(alternative => alternative.text)
+        alternatives: alternatives.value,
+        correctAlternatives: correctAlternatives.value
     };
     console.log(questionData);
 
     quizStore.addQuestion(questionData);
-    statifyQuestionAndStore();
 
     multichoiceStore.resetQuestionValues();
 
@@ -82,9 +102,10 @@ const updateQuestion = async () => {
     const questionData = {
         questionText: question.value,
         quizId: quizStore.quizId,
+        questionId: multichoiceStore.questionId,
         type: 'MULTIPLE_CHOICE',
-        alternatives: alternatives.value.map(alternative => alternative.text),
-        correctAlternatives: alternatives.value.filter(alternative => alternative.correct).map(alternative => alternative.text)
+        alternatives: alternatives.value,
+        correctAlternatives: correctAlternatives.value,
     };
 
     const response = await axios.post('http://localhost:8080/question/update', questionData);
