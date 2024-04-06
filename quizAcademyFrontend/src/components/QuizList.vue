@@ -35,6 +35,7 @@ const props = defineProps({
 
 <style scoped>
 .quiz-list-container {
+    justify-content: center;
     display: flex;
     flex-grow: 1;
     gap: 10px; /* Add gap between items */
