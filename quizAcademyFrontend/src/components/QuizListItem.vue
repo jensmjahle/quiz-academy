@@ -47,17 +47,38 @@ export default {
     margin: 5px; /* Add margin between items */
     cursor: pointer; /* Change cursor to pointer */
     border-radius: 10px;
-    font-size: calc(1vw + 1vh); /* Adjust font size based on viewport size */
     text-align: center;
-    background-size: cover;
     background-color: var(--secondary-color);
     min-width: 20vw;
     max-width: 100vw;
-    aspect-ratio: 1;
     overflow-wrap: break-word; /* Break words that exceed the container width */
     word-break: break-word;
     transition: 0.3s;
     text-overflow: ellipsis;
+    font-size: calc(1vw + 1vh);
+
+
+
+    background-image: none;
+
+
+    @media screen and (min-width: 768px) {
+        column-gap: 20px;
+        aspect-ratio: 1;
+        background-size: cover;
+
+    }
+
+    @media screen and (min-width: 1024px) {
+        column-gap: 30px;
+        aspect-ratio: 1;
+        background-size: cover;
+
+    }
+
+
+
+
 
     h3 {
         color: var(--fourth-color);
