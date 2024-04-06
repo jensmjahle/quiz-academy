@@ -53,7 +53,6 @@ public class QuizController {
   public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzes() {
     logger.info("Received request to get all quizzes.");
     return quizService.getAllPublicQuizzes();
-
   }
 
   /*

@@ -27,7 +27,6 @@ export default {
                 this.questionNr++;
             } else {
                 this.store.lastQuestion(score);
-                this.questionNr++;
                 this.isCompleted = true;
             }
         },
@@ -63,7 +62,7 @@ export default {
         <BaseAnswerContainer :question="store.getCurrentQuestion" @nextQuestion='nextQuestion' class="component"></BaseAnswerContainer>
     </div>
     <div v-else>
-        <Summary :score="store.getScore" :total-score="questionNr" @finishQuiz='finishQuiz' @resetQuiz='resetQuiz' ></Summary>
+        <Summary :score="store.getScore" :total-score="questionNr+1" @finishQuiz='finishQuiz' @resetQuiz='resetQuiz' ></Summary>
 
 
     </div>

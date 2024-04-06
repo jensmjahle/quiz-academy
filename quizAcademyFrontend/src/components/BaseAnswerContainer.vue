@@ -2,6 +2,7 @@
 import MultipleChoiceAnswers from '../components/questionComponents/MultipleChoiceAnswers.vue';
 import logo from "../assets/logo.png";
 import TextInputAnswers from "./questionComponents/TextInputAnswers.vue";
+import TrueFalseAnswers from "./questionComponents/TrueFalseAnswers.vue";
 
 export default {
     props: {
@@ -28,7 +29,7 @@ export default {
                 case 'DRAG_AND_DROP':
                     return 'BaseInputNumber'
                 case 'TRUE_FALSE':
-                    return 'BaseInputDate'
+                    return TrueFalseAnswers
                 default:
                     return 'BaseInputText'
             }
@@ -61,7 +62,7 @@ export default {
 <div>
     <img :src="logo" alt="logo" class="image" v-if="!hasAnswered"/>
     <h1 v-if="hasAnswered && isCorrect" class="correct">Correct answer!</h1>
-    <h1 v-if="hasAnswered && !isCorrect"class="wrong">Wrong answer!</h1>
+    <h1 v-if="hasAnswered && !isCorrect" class="wrong">Wrong answer!</h1>
     <component :is="answerComponent" :question="question"  :hasAnswered="hasAnswered" @displayResults="displayResults" class="component"/>
     <button v-if="hasAnswered" @click=(handleNext) class="nextQuestion">Next</button>
 </div>

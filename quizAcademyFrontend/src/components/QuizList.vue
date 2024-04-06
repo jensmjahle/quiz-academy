@@ -49,8 +49,10 @@ const props = defineProps({
     column-gap: 10px;
 
 
+
     /* Default to single column on narrow screens */
     grid-template-columns: repeat(1, minmax(0, 1fr));
+    width: 100%;
 
     /* Adjust grid for wider screens */
     @media screen and (min-width: 768px) {
