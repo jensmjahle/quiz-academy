@@ -38,7 +38,7 @@ if (dragDropStore.questionId !== null) {
     const updatedCategories = [];
     const categoriesFromStore = dragDropStore.questionCategories;
 
-    for (const [innerObject] of Object.entries(categoriesFromStore)) {
+    for (const [, innerObject] of Object.entries(categoriesFromStore)) { //I don't know why this works, but keep the comma
         for (const key in innerObject) {
             updatedCategories.push({
                 name: key,
