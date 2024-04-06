@@ -51,6 +51,7 @@ public class QuestionMapper {
           mcq.setQuestionId(questionId);
           mcq.setQuestionText(questionText);
           mcq.setQuizId(quizId);
+          mcq.setType(QuestionType.MULTIPLE_CHOICE.toString());
           mcq.setAlternatives(splitStringToList(((MultipleChoiceQuestionDAO) questionDAO).getAlternatives()));
           mcq.setCorrectAlternatives(splitStringToList(((MultipleChoiceQuestionDAO) questionDAO).getCorrectAlternatives()));
           if (imageBase64 != null) { mcq.setImageBase64(imageBase64); }
@@ -60,6 +61,7 @@ public class QuestionMapper {
           tiq.setQuestionId(questionId);
           tiq.setQuestionText(questionText);
           tiq.setQuizId(quizId);
+          tiq.setType(QuestionType.TEXT_INPUT.toString());
           tiq.setAnswers(splitStringToList(((TextInputQuestionDAO) questionDAO).getAnswer()));
           if (imageBase64 != null) { tiq.setImageBase64(imageBase64); }
           return tiq;
@@ -68,6 +70,7 @@ public class QuestionMapper {
           ddq.setQuestionId(questionId);
           ddq.setQuestionText(questionText);
           ddq.setQuizId(quizId);
+          ddq.setType(QuestionType.DRAG_AND_DROP.toString());
           ddq.setCategories(mapStringToCategories(((DragDropQuestionDAO) questionDAO).getCategories()));
           if (imageBase64 != null) { ddq.setImageBase64(imageBase64); }
           return ddq;
@@ -76,6 +79,7 @@ public class QuestionMapper {
           tfq.setQuestionId(questionId);
           tfq.setQuestionText(questionText);
           tfq.setQuizId(quizId);
+          tfq.setType(QuestionType.TRUE_FALSE.toString());
           tfq.setCorrectAnswer(((TrueFalseQuestionDAO) questionDAO).isCorrectAnswer());
           if (imageBase64 != null) { tfq.setImageBase64(imageBase64); }
           return tfq;

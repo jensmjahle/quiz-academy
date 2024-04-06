@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView, useRoute } from "vue-router";
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import NavigationBar from "./components/NavigationBar.vue";
 
 const welcomeMessage = ref(
@@ -39,10 +39,23 @@ const handleLinkClicked = (args) => {
 };
 const headerHeight = ref(0);
 const footerHeight = ref(0);
+const isPlayQuizPage = ref(false);
+
+
 
 onMounted(() => {
     headerHeight.value = document.getElementById("header").offsetHeight;
     footerHeight.value = document.getElementById("footer").offsetHeight;
+    watch(
+        () => route.name,
+        () => {
+            if (route.name === "play_quiz") {
+                isPlayQuizPage.value = true;
+            } else {
+                isPlayQuizPage.value = false;
+            }
+        }
+    );
 });
 
 const route = useRoute();
@@ -56,7 +69,7 @@ const bodyClass = computed(() => {
 
 <template>
     <div id="app">
-        <div id="header">
+        <div v-if="!isPlayQuizPage" id="header">
             <h1 :style="{ fontSize: headerSize }">Quiz Academy</h1>
             <h5>{{ welcomeMessage }}</h5>
         </div>

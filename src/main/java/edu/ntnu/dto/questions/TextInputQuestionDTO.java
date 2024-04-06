@@ -8,8 +8,8 @@ public class TextInputQuestionDTO extends QuestionDTO {
   public TextInputQuestionDTO() {
   }
 
-  public TextInputQuestionDTO(Long questionId, String questionText, Long quizId, List<String> answers) {
-    super(questionId, questionText, quizId);
+  public TextInputQuestionDTO(Long questionId, String questionText, Long quizId, String type, List<String> answers) {
+    super(questionId, questionText, quizId, type);
     this.answers = answers;
   }
 

@@ -2,6 +2,7 @@
 import { onMounted, ref } from "vue";
 import QuizList from "../components/QuizList.vue";
 import { fetchQuizzes } from "../utils/quizUtils.js";
+import { usePlayQuizStore } from "../stores/playQuizStore.js";
 
 const newQuiz = {
     quizId: 4,
@@ -97,9 +98,12 @@ onMounted(async () => {
     quizzes.value = await fetchQuizzes();
 });
 
+
 </script>
+router.push("/play_quiz");
 
 <template>
+    <button @click="quizzes.push(play_quiz)" v-if="usePlayQuizStore().quiz!==null">Continue Last Quiz...</button>
     <div id="body">
         <h2>Our top picks!!!</h2>
         <QuizList :quizzes="quizzes" />

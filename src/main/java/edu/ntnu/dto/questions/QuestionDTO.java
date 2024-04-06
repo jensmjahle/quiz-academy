@@ -6,16 +6,18 @@ public abstract class QuestionDTO {
   private Long questionId;
   private String questionText;
   private Long quizId;
+  private String type;
   @Nullable
   private String imageBase64;
 
   public QuestionDTO() {
   }
 
-  public QuestionDTO(Long questionId, String questionText, Long quizId) {
+  public QuestionDTO(Long questionId, String questionText, Long quizId, String type) {
     this.questionId = questionId;
     this.questionText = questionText;
     this.quizId = quizId;
+    this.type = type;
   }
 
   public Long getQuestionId() {
@@ -46,6 +48,12 @@ public abstract class QuestionDTO {
   }
   public void setImageBase64(String imageBase64) {
     this.imageBase64 = imageBase64;
+  }
+  public String getType() {
+    return type;
+  }
+  public void setType(String type) {
+    this.type = type;
   }
 
   @Override

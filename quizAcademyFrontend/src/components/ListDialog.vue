@@ -39,7 +39,6 @@ export default {
         playQuiz() {
             usePlayQuizStore().startQuiz(this.selectedQuiz);
             router.push("/play_quiz");
-            console.log("Play quiz:", this.selectedQuiz);
         },
         exportCSV() {
             console.log("Export as CSV:", this.selectedQuiz);
