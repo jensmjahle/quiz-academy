@@ -1,7 +1,5 @@
 <script setup>
-
 import QuizQuestionMultipleChoice from "../components/QuizQuestionMultichoice.vue";
-
 </script>
 
 <template>
@@ -10,6 +8,4 @@ import QuizQuestionMultipleChoice from "../components/QuizQuestionMultichoice.vu
     </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -15,13 +15,13 @@ const questionText = "Drag the correct answer to the correct box.";
 const categories = ref([{ name: '', items: '' }]);
 
 const addCategory = () => {
-    categories.value.push({ name: '', items: '' });
+    categories.value.push({ name: "", items: "" });
 };
 
 const removeCategory = (index) => {
     const category = categories.value[index];
     if (category.name || category.items) {
-        if (window.confirm('Are you sure you want to remove this category?')) {
+        if (window.confirm("Are you sure you want to remove this category?")) {
             categories.value.splice(index, 1);
         }
     } else {
@@ -93,23 +93,23 @@ const editQuestion = async () => {
         <h5>Write all correct responses in each box. Separated by: *</h5>
         <h5>They will be displayed in a single box to be sorted.</h5>
 
-            <div v-for="(category, index) in categories" :key="index" id="category_with_answers">
-                <input
-                    class = "box_label"
-                    id="box_label_category"
-                    type="text"
-                    v-model="category.name"
-                    placeholder="Category"
-                />
-                <input
-                    class = "box_label"
-                    id="box_label_answers"
-                    type="text"
-                    v-model="category.items"
-                    placeholder="Enter correct items here, separated by: *"
-                />
-                <button id="remove_category" @click="removeCategory(index)">Remove category</button>
-            </div>
+        <div v-for="(category, index) in categories" :key="index" id="category_with_answers">
+            <input
+                class="box_label"
+                id="box_label_category"
+                type="text"
+                v-model="category.name"
+                placeholder="Category"
+            />
+            <input
+                class="box_label"
+                id="box_label_answers"
+                type="text"
+                v-model="category.items"
+                placeholder="Enter correct items here, separated by: *"
+            />
+            <button id="remove_category" @click="removeCategory(index)">Remove category</button>
+        </div>
         <div id="buttons">
             <button id="add_category" @click="addCategory">Add a category</button>
             <button id="submit_question" v-if="!edit" @click="submitForm">Submit</button>
@@ -119,7 +119,6 @@ const editQuestion = async () => {
 </template>
 
 <style scoped>
-
 #drag-and-drop-question {
     margin-top: 3vw;
     display: flex;
@@ -127,12 +126,12 @@ const editQuestion = async () => {
     align-items: center;
 }
 
-#category_with_answers{
+#category_with_answers {
     display: flex;
     flex-flow: column;
 }
 
-.box_label  {
+.box_label {
     margin-top: 15px;
     font-size: 30px;
     padding-top: 5px;
@@ -156,5 +155,4 @@ const editQuestion = async () => {
     flex-flow: row;
     justify-content: center;
 }
-
 </style>

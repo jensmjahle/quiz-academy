@@ -21,6 +21,7 @@
     width: 100vw;
     background-color: var(--primary-color);
     padding: 1px;
+    overflow-x: hidden;
 }
 
 #body {
@@ -28,6 +29,7 @@
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
+    overflow-x: hidden;
 }
 
 #footer {
@@ -38,6 +40,7 @@
     height: 10vh;
     width: 100vw;
     background-color: var(--secondary-color);
+    overflow-x: hidden;
 }
 
 button {

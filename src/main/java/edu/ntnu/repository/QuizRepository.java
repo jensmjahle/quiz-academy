@@ -24,16 +24,10 @@ public interface QuizRepository extends JpaRepository<QuizDAO, Long> {
   @Query("SELECT q.tagDAOs FROM QuizDAO q WHERE q.quizId = :quizId")
   Iterable<TagDAO> findAllTagsByQuizId(Long quizId);
 
+  Iterable<QuizDAO> findAllByIsPublic(boolean isPublic);
   @Modifying
   @Transactional
   @Query("DELETE FROM QuizDAO q WHERE q.quizId = :quizId")
   void deleteByQuizId(Long quizId);
-/*
-  @Transactional
-  @Modifying
-  @Query("UPDATE Quiz q SET q.tags.add(:tagId) WHERE q.quizId = :quizId")
-  void addTag(Long quizId, Long tagId);
-
-*/
 
 }

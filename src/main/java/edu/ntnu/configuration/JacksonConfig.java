@@ -7,9 +7,16 @@ import edu.ntnu.utils.QuestionDTODeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Configuration class for Jackson.
+ */
 @Configuration
 public class JacksonConfig {
 
+  /**
+   * Creates an ObjectMapper with a custom deserializer for QuestionDTO.
+   * @return the ObjectMapper
+   */
   @Bean
   public ObjectMapper objectMapper() {
     ObjectMapper objectMapper = new ObjectMapper();

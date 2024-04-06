@@ -56,8 +56,8 @@ const updateQuestion = async ()=> {
 </script>
 
 <template>
-    <div id = "full_question">
-        <div id = "text_response_question">
+    <div id="full_question">
+        <div id="text_response_question">
             <input id="input" type="text" v-model="questionText" placeholder="Question" />
             <input id="input" type="text" v-model="answerText" placeholder="Answer" />
         </div>
@@ -69,11 +69,9 @@ const updateQuestion = async ()=> {
             <button @click="updateQuestion" v-if="edit">Update</button>
         </div>
     </div>
-
 </template>
 
 <style scoped>
-
 #full_question {
     margin-top: 3vw;
     display: flex;
@@ -86,7 +84,7 @@ const updateQuestion = async ()=> {
     flex-flow: column;
 }
 
-#input  {
+#input {
     margin-top: 15px;
     font-size: 30px;
     padding-top: 5px;
@@ -100,5 +98,4 @@ const updateQuestion = async ()=> {
 #input::placeholder {
     text-align: center;
 }
-
 </style>

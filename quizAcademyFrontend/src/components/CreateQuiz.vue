@@ -144,9 +144,8 @@ const resetWithConfirm = () => {
 </template>
 
 <style scoped>
-
 #title {
-    display:flex;
+    display: flex;
     flex-flow: column;
 }
 
@@ -156,11 +155,11 @@ const resetWithConfirm = () => {
 }
 
 #question_creation {
-    display:flex;
+    display: flex;
     flex-flow: column;
 }
 
-#quiz_name  {
+#quiz_name {
     margin-top: 15px;
     margin-bottom: 10px;
     font-size: 30px;

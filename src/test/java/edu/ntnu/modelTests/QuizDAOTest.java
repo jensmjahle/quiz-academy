@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import org.springframework.boot.test.context.SpringBootTest;
 
 @DisplayName("Quiz Tests")
 public class QuizDAOTest {

@@ -1,22 +1,83 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-import { useRouter } from 'vue-router';
+import { RouterLink } from "vue-router";
+import { useRouter } from "vue-router";
+import { useTokenStore } from "../stores/token.js";
+import { watch, ref } from "vue";
+
 const router = useRouter();
 
+const tokenStore = useTokenStore();
+const isLoggedIn = ref(tokenStore.loggedInUser !== null);
+const username = ref(tokenStore.getUsername);
 
+const logout = () => {
+    tokenStore.logout();
+    router.push("/login");
+};
 
+const dropdownOpen = ref(false);
+
+const toggleDropdown = () => {
+    dropdownOpen.value = !dropdownOpen.value;
+};
+
+watch(
+    () => tokenStore.loggedInUser,
+    () => {
+        isLoggedIn.value = tokenStore.loggedInUser !== null;
+        username.value = tokenStore.getUsername;
+    }
+);
 </script>
 
 <template>
-  <div id="navigation-bar">
-    <nav>
-      <RouterLink @click="$emit('link-clicked','Home')" to="/" class="router-button">Home</RouterLink>
-      <RouterLink @click="$emit('link-clicked','My Quizzes')" to="/quizzes" class="router-button">My Quizzes</RouterLink>
-      <RouterLink @click="$emit('link-clicked','Create Quiz')" to="/create_quiz" class="router-button">Create Quiz</RouterLink>
-      <RouterLink @click="$emit('link-clicked','Log In')" to="/login" class="router-button">Log In</RouterLink>
-      <RouterLink @click="$emit('link-clicked','Sign Up')" to="/signup" class="router-button">Sign Up</RouterLink>
-    </nav>
-  </div>
+    <div id="navigation-bar">
+        <nav>
+            <RouterLink @click="$emit('link-clicked', 'Home')" to="/" class="router-button"
+                >Home</RouterLink
+            >
+            <RouterLink
+                @click="$emit('link-clicked', 'My Quizzes')"
+                to="/quizzes"
+                class="router-button"
+                >My Quizzes</RouterLink
+            >
+            <RouterLink
+                @click="$emit('link-clicked', 'Create Quiz')"
+                to="/create_quiz"
+                class="router-button"
+                >Create Quiz</RouterLink
+            >
+            <RouterLink
+                v-if="!isLoggedIn"
+                @click="$emit('link-clicked', 'Log In')"
+                to="/login"
+                class="router-button"
+                >Log in</RouterLink
+            >
+            <div v-else class="dropdown">
+                <button
+                    @click="toggleDropdown"
+                    class="router-button-loggedIn"
+                    :class="{ active: dropdownOpen }"
+                >
+                    {{ username }}
+                    <span class="arrow-icon" :class="{ 'arrow-rotate': dropdownOpen }"
+                        >&#9662;</span
+                    >
+                </button>
+                <div class="dropdown-content" :class="{ show: dropdownOpen }">
+                    <a @click="logout">Logout</a>
+                </div>
+            </div>
+          <RouterLink
+              v-if="!isLoggedIn"
+              @click="$emit('link-clicked', 'Sign Up')"
+              to="/signup"
+              class="router-button"
+          >Sign Up</RouterLink>
+        </nav>
+    </div>
 </template>
 
 <style scoped>
@@ -29,6 +90,7 @@ const router = useRouter();
     width: 100%;
     display: flex;
     justify-content: center;
+    overflow: hidden;
 }
 
 nav {
@@ -39,27 +101,77 @@ nav {
     width: 75%;
 }
 
+.dropdown-content a {
+    color: var(--fourth-color); /* Set the color of the anchor tags within the dropdown to black */
+    background-color: var(--tertiary-color);
+}
+
 .router-button {
     color: var(--fourth-color);
     text-decoration: none;
     text-align: center;
-    max-width: 15%;
-    border-bottom-width: 4px;
-    border-top-width: 4px;
-    border-bottom-style: solid;
-    border-top-style: solid;
-    border-color: var(--secondary-color);
-    margin-left: 20px;
-    margin-right: 20px;
+    padding: 10px;
+    margin: 0 10px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    height: 100%;
+}
+
+.router-button-loggedIn {
+    color: var(--fourth-color);
+    text-decoration: none;
+    text-align: center;
+    padding: 10px;
+    margin: 0 10px;
+    font-size: calc(1.2vw + 1.2vh);
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    height: 100%;
 }
 
 .router-button:hover {
     color: var(--base-color);
-    border-bottom-color: var(--tertiary-color);
+    border-color: transparent;
 }
 
-.router-link-active {
+.router-button-loggedIn:hover {
     color: var(--base-color);
-    border-bottom-color: var(--tertiary-color);
+    border-color: transparent;
+}
+
+.active {
+    border-color: var(--tertiary-color);
+}
+
+.dropdown {
+    position: relative;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    padding: 10px 16px;
+    z-index: 1;
+    top: 100%; /* Position the dropdown below the button */
+    left: 0; /* Align the dropdown with the button */
+}
+
+.arrow-icon {
+    font-size: calc(1.2vw + 1.2vh);
+    margin-left: 0px;
+}
+
+.arrow-rotate {
+    transform: rotate(180deg); /* Rotate arrow when dropdown is open */
+}
+
+.dropdown-content.show {
+    display: block;
 }
 </style>

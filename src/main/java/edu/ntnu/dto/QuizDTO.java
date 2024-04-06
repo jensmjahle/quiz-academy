@@ -10,6 +10,7 @@ public class QuizDTO {
   private String quizName;
   private String quizDescription;
   private String user;
+  private boolean isPublic;
   @Nullable
   private List<TagDTO> tags;
   @Nullable
@@ -20,7 +21,7 @@ public class QuizDTO {
   public QuizDTO() {
   }
 
-  public QuizDTO(Long quizId, String quizName, String quizDescription, String user, List<TagDTO> tags, Date quizCreationDate, List<QuestionDTO> questions) {
+  public QuizDTO(Long quizId, String quizName, String quizDescription, String user, List<TagDTO> tags, Date quizCreationDate, List<QuestionDTO> questions, boolean isPublic) {
     this.quizId = quizId;
     this.quizName = quizName;
     this.quizDescription = quizDescription;
@@ -28,6 +29,7 @@ public class QuizDTO {
     this.tags = tags;
     this.quizCreationDate = quizCreationDate;
     this.questions = questions;
+    this.isPublic = isPublic;
 
   }
 
@@ -98,6 +100,12 @@ public class QuizDTO {
 
   public void removeTag(TagDTO tag) {
     this.tags.remove(tag);
+  }
+  public boolean isPublic() {
+    return isPublic;
+  }
+  public void setIsPublic(boolean isPublic) {
+    this.isPublic = isPublic;
   }
 
   @Override

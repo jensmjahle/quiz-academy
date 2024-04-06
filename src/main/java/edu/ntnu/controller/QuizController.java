@@ -49,6 +49,10 @@ public class QuizController {
     logger.info("Received request to create quiz with title: " + quizDTO.getQuizName() + ".");
     return quizService.createQuiz(quizDTO);
   }
+  @GetMapping("/all")
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzes() {
+    logger.info("Received request to get all quizzes.");
+    return quizService.getAllPublicQuizzes();
 
   @PostMapping("/update")
   public ResponseEntity<QuizDTO> updateQuiz(@RequestBody QuizDTO quizDTO) {

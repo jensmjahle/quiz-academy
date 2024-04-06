@@ -1,5 +1,4 @@
 <script setup>
-
 import QuizQuestionTextInput from "../components/QuizQuestionTextInput.vue";
 </script>
 
@@ -7,9 +6,6 @@ import QuizQuestionTextInput from "../components/QuizQuestionTextInput.vue";
     <div>
         <QuizQuestionTextInput />
     </div>
-
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>

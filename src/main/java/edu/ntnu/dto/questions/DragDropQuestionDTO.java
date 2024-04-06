@@ -11,8 +11,8 @@ public class DragDropQuestionDTO extends QuestionDTO {
   public DragDropQuestionDTO() {
   }
 
-  public DragDropQuestionDTO(Long questionId, String questionText, Long quizId, Map<String, List<String>> categories) {
-    super(questionId, questionText, quizId);
+  public DragDropQuestionDTO(Long questionId, String questionText, Long quizId, String type, Map<String, List<String>> categories) {
+    super(questionId, questionText, quizId, type);
     this.categories = categories;
   }
 

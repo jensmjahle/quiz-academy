@@ -10,8 +10,8 @@ public class MultipleChoiceQuestionDTO extends QuestionDTO {
   public MultipleChoiceQuestionDTO() {
   }
 
-  public MultipleChoiceQuestionDTO(Long questionId, String questionText, Long quizId, List<String> alternatives, List<String> correctAlternatives) {
-    super(questionId, questionText, quizId);
+  public MultipleChoiceQuestionDTO(Long questionId, String questionText, Long quizId, String type, List<String> alternatives, List<String> correctAlternatives) {
+    super(questionId, questionText, quizId, type);
     this.alternatives = alternatives;
     this.correctAlternatives = correctAlternatives;
   }

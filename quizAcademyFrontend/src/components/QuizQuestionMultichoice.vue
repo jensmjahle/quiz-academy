@@ -2,11 +2,21 @@
     <div id="QuizQuestionMultichoice">
         <div id="question">
             <h5 id="quiz_question">Q.1</h5>
-            <input id="input" v-model="question" type="text" placeholder="Enter your question here" />
+            <input
+                id="input"
+                v-model="question"
+                type="text"
+                placeholder="Enter your question here"
+            />
         </div>
         <div id="alternatives">
             <div v-for="(alternative, index) in alternatives" :key="index">
-                <input id="input" v-model="alternative.text" type="text" :placeholder="'alternative ' + (index + 1)"/>
+                <input
+                    id="input"
+                    v-model="alternative.text"
+                    type="text"
+                    :placeholder="'alternative ' + (index + 1)"
+                />
                 <input id="checkbox" v-model="alternative.correct" type="checkbox" />
             </div>
         </div>
@@ -31,10 +41,10 @@ const multichoiceStore = useMultichoiceStore();
 let edit = ref(false);
 const question = ref('');
 const alternatives = ref([
-    { text: '', correct: false },
-    { text: '', correct: false },
-    { text: '', correct: false },
-    { text: '', correct: false }
+    { text: "", correct: false },
+    { text: "", correct: false },
+    { text: "", correct: false },
+    { text: "", correct: false }
 ]);
 
 //todo: check if this works
@@ -91,7 +101,8 @@ const updateQuestion = async () => {
 
 <style scoped>
 @media only screen and (max-width: 600px) {
-    #question, #alternatives {
+    #question,
+    #alternatives {
         flex: 1;
         flex-direction: column;
     }
@@ -140,7 +151,6 @@ const updateQuestion = async () => {
     border-radius: 50%;
     background-color: var(--secondary-color);
     padding: 5px 7px;
-
 }
 
 #input {
@@ -176,5 +186,4 @@ const updateQuestion = async () => {
     border-radius: 50%; /* This will make the circle completely round */
     margin: 5px; /* Adjust the value as per your needs */
 }
-
 </style>
