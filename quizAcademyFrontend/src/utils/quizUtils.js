@@ -1,7 +1,9 @@
 // quizUtils.js
 import axios from "axios";
+import { getJwtToken } from "./httputils.js";
+import { useTokenStore } from "../stores/token.js";
 
-export const fetchQuizzes = async () => {
+export const fetchPublicQuizzes = async () => {
     try {
         const response = await axios.get("http://localhost:8080/quiz/all");
         return response.data;
@@ -20,10 +22,26 @@ export const fetchQuizById = async (quizId) => {
         return null;
     }
 }
+export const fetchAllQuizzesByUser = async (userId) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/quiz/all/${userId}`,
+            {
+                headers: {
+                    "Authorization": "Bearer " + useTokenStore().jwtToken
+                }
+            });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching quizzes by user:", error);
+        return [];
+    }
+}
+
 
 export const fetchAllQuizzesByTag = async (tagId) => {
     try {
         const response = await axios.get(`http://localhost:8080/quiz/tag/${tagId}`);
+
         return response.data;
     } catch (error) {
         console.error("Error fetching quizzes by tag:", error);

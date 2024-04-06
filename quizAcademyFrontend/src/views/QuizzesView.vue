@@ -1,28 +1,86 @@
-<template>
-    <div id="body">
-        <h1>Quiz List</h1>
-        <QuizList :quizzes="quizzes" />
 
-    </div>
-</template>
 
-<script setup>
+<script>
 import { onMounted, ref } from "vue";
-import { fetchQuizzes } from "../utils/quizUtils.js";
+import { fetchAllQuizzesByUser, fetchPublicQuizzes } from "../utils/quizUtils.js";
 import QuizList from "../components/QuizList.vue";
+import { useTokenStore } from "../stores/token.js";
+import CreateQuiz from "../components/CreateQuiz.vue";
+import sadImage from "../assets/sad.svg";
+export default {
+    components: { QuizList },
+    setup() {
+        const tokenStore = useTokenStore();
+        return { tokenStore };
+    },
+    async mounted() {
+        if (!this.tokenStore.jwtToken) {
+            console.log("Unauthenticated context");
+        } else {
+            console.log("Authenticated context");
+            let response = this.tokenStore.loggedInUser;
+            this.user = response.data;
+            this.quizzes = await fetchAllQuizzesByUser(this.user.username);
 
-const quizzes = ref([]);
-onMounted(async () => {
-    quizzes.value = await fetchQuizzes();
-});
+        }
+    },
+    data() {
+        return {
+            user: null,
+            sadImage: sadImage,
+            quizzes: []
+        }
+    }
+};
+
+
 
 </script>
 
+<template>
+    <div>
+        <div v-if="user" id="mainContainer">
+            <h1>My Quizzes</h1>
+            <QuizList :quizzes="quizzes" />
+        </div>
+        <div v-if="!user">
+            <img :src="sadImage" alt="Hallo" id="sad-face">
+            <p id="not-logged-in-message">Please log in to<br>
+                view your quizzes</p>
+            <button @click="$router.push('/login')" id="okay-button">Okay</button>
+        </div>
+    </div>
+</template>
+
 <style scoped>
-#body {
+#mainContainer {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    flex-grow: 1;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#not-logged-in-message {
+    text-align: center;
+    margin-top: 20px;
+    font-size: calc(1.5vw + 1.6vh);
+}
+
+#sad-face {
+    display: block;
+    margin: 20px auto 0;
+    width: 30%;
+}
+
+#okay-button {
+    display: block;
+    margin: 20px auto 0;
+    padding: 10px 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 </style>

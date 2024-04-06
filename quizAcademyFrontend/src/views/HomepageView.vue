@@ -1,7 +1,7 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import QuizList from "../components/QuizList.vue";
-import { fetchQuizzes } from "../utils/quizUtils.js";
+import { fetchPublicQuizzes } from "../utils/quizUtils.js";
 import { usePlayQuizStore } from "../stores/playQuizStore.js";
 
 const newQuiz = {
@@ -95,7 +95,7 @@ const newQuiz = {
 
 const quizzes = ref([]);
 onMounted(async () => {
-    quizzes.value = await fetchQuizzes();
+    quizzes.value = await fetchPublicQuizzes();
 });
 
 
