@@ -21,18 +21,25 @@
             </div>
         </div>
         <div>
-            <button @click="submitForm">Submit</button>
+            <button @click="submitForm" v-if="!edit">Submit</button>
+            <button @click="updateQuestion" v-if="edit">Update</button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useQuizStore } from '../stores/QuizState.js';
+import { useMultichoiceStore} from "../stores/multichoideQuestionStore.js";
+import axios from "axios";
 
 const router = useRouter();
+const quizStore = useQuizStore();
+const multichoiceStore = useMultichoiceStore();
 
-const question = ref("");
+let edit = ref(false);
+const question = ref('');
 const alternatives = ref([
     { text: "", correct: false },
     { text: "", correct: false },
@@ -40,18 +47,56 @@ const alternatives = ref([
     { text: "", correct: false }
 ]);
 
-const submitForm = () => {
-    const formData = {
-        type: "MC",
-        question: question.value,
-        alternatives: alternatives.value.map((alternative) => ({
-            text: alternative.text,
-            correct: !!alternative.correct
-        }))
+//todo: check if this works
+if (multichoiceStore.questionId !== null) {
+    question.value = multichoiceStore.questionText;
+    alternatives.value = multichoiceStore.questionAlternatives;
+    edit.value = true;
+}
+
+const statifyQuestionAndStore = () => {
+    const questionStateId = quizStore.quizQuestions.length;
+    multichoiceStore.setQuestionValues(quizStore.quizId, questionStateId, question.value, alternatives.value);
+    quizStore.addMultichoiceQuestionState(multichoiceStore);
+}
+
+const submitForm = async () => {
+    const questionData = {
+        questionText: question.value,
+        quizId: quizStore.quizId,
+        type: 'MULTIPLE_CHOICE',
+        alternatives: alternatives.value.map(alternative => alternative.text),
+        correctAlternatives: alternatives.value.filter(alternative => alternative.correct).map(alternative => alternative.text)
     };
-    console.log(formData);
-    router.push("/create_quiz");
-};
+    console.log(questionData);
+
+    quizStore.addQuestion(questionData);
+    statifyQuestionAndStore();
+
+    multichoiceStore.resetQuestionValues();
+
+    await router.push('/create_quiz');
+}
+
+const updateQuestion = async () => {
+    const questionData = {
+        questionText: question.value,
+        quizId: quizStore.quizId,
+        type: 'MULTIPLE_CHOICE',
+        alternatives: alternatives.value.map(alternative => alternative.text),
+        correctAlternatives: alternatives.value.filter(alternative => alternative.correct).map(alternative => alternative.text)
+    };
+
+    const response = await axios.post('http://localhost:8080/question/update', questionData);
+
+    console.log(response.data);
+
+    statifyQuestionAndStore(); //todo: make update instead of add
+
+    multichoiceStore.resetQuestionValues();
+
+    await router.push('/create_quiz');
+}
 </script>
 
 <style scoped>

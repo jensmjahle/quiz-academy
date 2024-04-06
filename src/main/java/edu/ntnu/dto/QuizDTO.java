@@ -13,6 +13,7 @@ public class QuizDTO {
   private boolean isPublic;
   @Nullable
   private List<TagDTO> tags;
+  @Nullable
   private Date quizCreationDate;
   @Nullable
   private List<QuestionDTO> questions;
