@@ -41,12 +41,14 @@ export default {
             this.hasAnswered = true
             this.isCorrect = isCorrect
             if(isCorrect){
-                this.score += 1
+                this.score = 1
+            } else {
+                this.score = 0
             }
         },
         handleNext(){
             this.hasAnswered = false
-            this.$emit('nextQuestion',this.score)
+            this.$emit('nextQuestion', this.score)
 
         }
 
