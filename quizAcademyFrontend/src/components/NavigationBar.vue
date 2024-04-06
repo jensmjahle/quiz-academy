@@ -3,6 +3,7 @@ import { RouterLink } from "vue-router";
 import { useRouter } from "vue-router";
 import { useTokenStore } from "../stores/token.js";
 import { ref, watch } from "vue";
+import { refresh } from "../utils/updateTokenUtil.js"
 
 const router = useRouter();
 const tokenStore = useTokenStore();
@@ -23,6 +24,7 @@ const toggleDropdown = () => {
 
 const closeDropdown = () => {
     dropdownOpen.value = false;
+    refresh();
 };
 
 watch(
@@ -65,7 +67,6 @@ watch(
     width: 100%;
     display: flex;
     justify-content: center;
-    box-sizing: border-box; /* Add this line */
 }
 
 nav {
@@ -146,7 +147,7 @@ nav {
     background: linear-gradient(to bottom, var(--secondary-color) 0%, var(--secondary-color) 70%, transparent 150%);
     padding: 10px 12px;
     font-size: calc(1.2vw + 1.2vh);
-    height: calc(2.2vw + 2.2vh);
+    height: calc(3.2vw + 2.2vh);
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
     border-bottom-color: var(--tertiary-color);
