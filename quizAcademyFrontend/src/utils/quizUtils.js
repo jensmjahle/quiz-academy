@@ -5,7 +5,7 @@ import { useTokenStore } from "../stores/token.js";
 
 export const fetchPublicQuizzes = async () => {
     try {
-        const response = await axios.get("http://localhost:8080/quiz/all");
+        const response = await axios.get("http://localhost:8080/quiz/public/all");
         return response.data;
     } catch (error) {
         console.error("Error fetching quizzes:", error);
@@ -37,11 +37,14 @@ export const fetchAllQuizzesByUser = async (userId) => {
     }
 }
 
-
-export const fetchAllQuizzesByTag = async (tagId) => {
+export const fetchAllQuizzesByTag = async (tag) => {
     try {
-        const response = await axios.get(`http://localhost:8080/quiz/tag/${tagId}`);
-
+        const response = await axios.get(`http://localhost:8080/quiz/public/all/tags/${tag}`,
+            {
+            headers: {
+            "Authorization": "Bearer " + useTokenStore().jwtToken
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Error fetching quizzes by tag:", error);

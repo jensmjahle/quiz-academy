@@ -1,6 +1,7 @@
 package edu.ntnu.controller;
 
 import edu.ntnu.dto.QuizDTO;
+import edu.ntnu.dto.TagDTO;
 import edu.ntnu.service.QuizService;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,8 +55,8 @@ public class QuizController {
    */
   @GetMapping("/all/{username}")
   public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes(@PathVariable String username) {
-    logger.info("Received request to get all quizzes for user: " + username + ".");
-    return quizService.getAllQuizzes(username);
+      logger.info("Received request to get all quizzes for user: " + username + ".");
+      return quizService.getAllQuizzes(username);
   }
 
   /**
@@ -97,4 +98,10 @@ public class QuizController {
     logger.info("Received request to update quiz with id: " + quizDTO.getQuizId() + ".");
     return quizService.updateQuiz(quizDTO);
     }
+
+  @GetMapping("public/all/tags/{tagId}")
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(@PathVariable Long tagId) {
+    logger.info("Received request to get all quizzes with tag: " + tagId + ".");
+    return quizService.getAllPublicQuizzesByTag(tagId);
+  }
 }
