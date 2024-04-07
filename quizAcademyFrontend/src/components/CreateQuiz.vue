@@ -136,6 +136,8 @@ const resetWithConfirm = () => {
             <router-link v-if="quizId" class="button" :to="{ name: 'multichoice', params: { quizId: quizId.value }}">Add multiple choice question</router-link>
             <router-link v-if="quizId" class="button" :to="{ name: 'text_input', params: { quizId: quizId.value }}">Add text input question</router-link>
             <router-link v-if="quizId" class="button" :to="{ name: 'drag_and_drop', params: { quizId: quizId.value }}">Add drag and drop question</router-link>
+            <router-link v-if="quizId" class="button" :to="{ name: 'true_false', params: { quizId: quizId.value }}">Add true or false question</router-link>
+
         </div>
     </div>
     <div id="question_list" v-if="quizCreated">
