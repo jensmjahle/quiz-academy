@@ -1,9 +1,9 @@
 <script setup>
-import { RouterLink } from "vue-router";
-import { useRouter } from "vue-router";
-import { useTokenStore } from "../stores/token.js";
-import { ref, watch } from "vue";
-import { refresh } from "../utils/updateTokenUtil.js"
+import {RouterLink, useRouter} from "vue-router";
+import {useTokenStore} from "../stores/token.js";
+import {onMounted, ref} from "vue";
+import {refresh} from "../utils/updateTokenUtil.js";
+import {fetchPublicTags} from "../utils/tagUtils.js";
 
 const router = useRouter();
 const tokenStore = useTokenStore();
@@ -11,10 +11,13 @@ const tokenStore = useTokenStore();
 const isLoggedIn = ref(tokenStore.loggedInUser !== null);
 const username = ref(tokenStore.getUsername);
 const searchInput = ref('');
+const categoriesDropdownOpen = ref(false);
+const logoutDropdownOpen = ref(false);
+const tags = ref([]);
 
 const searchQuizzes = () => {
-router.push({ path: "/search", query: { search: searchInput.value } });
-closeDropdown();
+  router.push({ path: "/search", query: { search: searchInput.value } });
+  closeDropdown();
 };
 
 const searchQuizzesButtons = (searchTerm) => {
@@ -27,9 +30,6 @@ const logout = () => {
   tokenStore.logout();
   router.push("/login");
 };
-
-const categoriesDropdownOpen = ref(false);
-const logoutDropdownOpen = ref(false);
 
 const toggleCategoriesDropdown = () => {
   categoriesDropdownOpen.value = !categoriesDropdownOpen.value;
@@ -52,14 +52,9 @@ const closeDropdownAndSearch = (inputSearch) => {
   searchQuizzesButtons(inputSearch);
 };
 
-watch(
-    () => tokenStore.loggedInUser,
-    () => {
-      isLoggedIn.value = tokenStore.loggedInUser !== null;
-      username.value = tokenStore.getUsername;
-    }
-);
-
+onMounted(async () => {
+  tags.value = await fetchPublicTags();
+});
 </script>
 
 <template>
@@ -75,17 +70,7 @@ watch(
           <input id="categoryInput" v-model="searchInput" type="text" placeholder="Search category tag" />
           <button id="categorySearch" @click="searchQuizzes">Submit search</button>
           <RouterLink @click="closeDropdown" to="/" class="router-button-search">All Categories</RouterLink>
-          <button @click="closeDropdownAndSearch('Math')" class="router-button-search">Math</button>
-          <button @click="closeDropdownAndSearch('Science')" class="router-button-search">Science</button>
-          <button @click="closeDropdownAndSearch('History')" class="router-button-search">History</button>
-          <button @click="closeDropdownAndSearch('Geography')" class="router-button-search">Geography</button>
-          <button @click="closeDropdownAndSearch('Literature')" class="router-button-search">Literature</button>
-          <button @click="closeDropdownAndSearch('Music')" class="router-button-search">Music</button>
-          <button @click="closeDropdownAndSearch('Art')" class="router-button-search">Art</button>
-          <button @click="closeDropdownAndSearch('Sports')" class="router-button-search">Sports</button>
-          <button @click="closeDropdownAndSearch('Movies')" class="router-button-search">Movies</button>
-          <button @click="closeDropdownAndSearch('TV Shows')" class="router-button-search">TV Shows</button>
-        </div>
+          <button v-for="tag in tags" :key="tag.tagId" @click="closeDropdownAndSearch(tag.tagName)" class="router-button-search">{{ tag.tagName }}</button>        </div>
       </div>
       <RouterLink @click="closeDropdown" to="/quizzes" class="router-button">My Quizzes</RouterLink>
       <RouterLink @click="closeDropdown" to="/create_quiz" class="router-button">Create Quiz</RouterLink>
