@@ -7,6 +7,8 @@ import { useRouter } from 'vue-router';
 let edit = ref(false);
 let questionText = ref('');
 let answerText = ref('');
+let questionPhoto = ref(null);
+let imageUploaded = ref(false);
 
 const router = useRouter();
 const quizStore = useQuizStore();
@@ -17,7 +19,26 @@ if(textInputStore.questionId !== null) {
     edit.value = true;
     questionText.value = textInputStore.questionText;
     answerText.value = textInputStore.correctAnswers.join('*');
+    questionPhoto.value = textInputStore.questionImage;
+    if (questionPhoto.value !== null) {
+        imageUploaded.value = true;
+    }
+    console.log("questionPhoto: ", questionPhoto.value);
 }
+
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        // `reader.result` contains the base64 string representation of the image
+        questionPhoto.value = reader.result;
+        console.log("questionPhoto: ", questionPhoto.value);
+    };
+    // Read the file as a data URL (base64)
+    reader.readAsDataURL(file);
+};
 
 const createQuestion = () => {
 
@@ -28,7 +49,8 @@ const createQuestion = () => {
         quizId: quizStore.quizId,
         questionId: quizStore.quizQuestions.length,
         type: "TEXT_INPUT",
-        answers: answerText.value.split('*')
+        answers: answerText.value.split('*'),
+        imageBase64: questionPhoto.value
     };
 
     quizStore.addQuestion(questionData);
@@ -47,7 +69,8 @@ const updateQuestion = ()=> {
         quizId: quizStore.quizId,
         questionId: textInputStore.questionId,
         type: "TEXT_INPUT",
-        answers: answerText.value.split('*')
+        answers: answerText.value.split('*'),
+        imageBase64: questionPhoto.value
     };
 
     const indexOfQuestion = quizStore.getIndexById(textInputStore.questionId);
@@ -56,6 +79,13 @@ const updateQuestion = ()=> {
 
     textInputStore.resetQuestionValues();
     router.push('/create_quiz');
+}
+
+const cancelPressed = () => {
+    if (confirm('Are you sure you want to cancel?')) {
+        textInputStore.resetQuestionValues();
+        router.push('/create_quiz');
+    }
 }
 </script>
 
@@ -68,10 +98,18 @@ const updateQuestion = ()=> {
         <div>
             <h5>Separate correct answers with: *</h5>
         </div>
+        <div v-if="imageUploaded">
+            <h5 >Current image</h5>
+            <img :src="questionPhoto" alt="Question image"/>
+        </div>
+        <div id="add_picture">
+            <h5>Add a picture to your quiz:</h5>
+            <input type="file" @change="handleFileUpload" accept="image/*" />
+        </div>
         <div>
             <button @click="createQuestion" v-if="!edit">Submit</button>
             <button @click="updateQuestion" v-if="edit">Update</button>
-            <button id="cancel" @click="router.push('/create_quiz')">Cancel</button>
+            <button id="cancel" @click="cancelPressed">Cancel</button>
         </div>
     </div>
 </template>

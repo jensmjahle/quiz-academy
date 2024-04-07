@@ -35,6 +35,12 @@ if (quizStore.quizName !== null) {
     console.log("no quiz name")
 }
 
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    console.log("Selected file:", file.name);
+};
+
 const createQuiz = async () => {
     //const tags = []; //TODO: Change this to the actual tags
 
@@ -137,6 +143,10 @@ const resetWithConfirm = () => {
             <router-link v-if="quizId" class="button" :to="{ name: 'text_input', params: { quizId: quizId.value }}">Add text input question</router-link>
             <router-link v-if="quizId" class="button" :to="{ name: 'drag_and_drop', params: { quizId: quizId.value }}">Add drag and drop question</router-link>
         </div>
+    </div>
+    <div id="add_picture">
+        <h5>Add a picture to your quiz:</h5>
+        <input type="file" @change="handleFileUpload" accept="image/*" />
     </div>
     <div id="question_list" v-if="quizCreated">
         <h5>Questions (click to edit):</h5>

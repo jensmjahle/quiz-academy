@@ -91,7 +91,7 @@ export const useQuizStore = defineStore({
             } else if(question.type === "TEXT_INPUT") {
                 console.log("id TEXT_INPUT found");
                 const questionState = useTextInputStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.answers);
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.answers, question.imageBase64);
                 return ("/create_quiz/text_input");
             } else {
                 console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question.questionType);
