@@ -1,27 +1,8 @@
 package edu.ntnu.dao;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import jakarta.persistence.CascadeType;
-import edu.ntnu.dao.QuizDAO;
 import jakarta.persistence.Entity;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Column;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
 
 /**
  * Represents a user in the system.
@@ -42,6 +23,16 @@ public class UserDAO {
    */
   public UserDAO() {
   }
+
+  /**
+   * Creates a new instance of the User class.
+   *
+   * @param username the username of the user
+   * @param password the password of the user
+   * @param email the email of the user
+   * @param firstName the first name of the user
+   * @param lastName the last name of the user
+   */
   public UserDAO(String username, String password, String email, String firstName, String lastName) {
     this.username = username;
     this.password = password;

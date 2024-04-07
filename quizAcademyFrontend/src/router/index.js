@@ -10,6 +10,7 @@ import SigninWiew from "../views/QuizSigninView.vue";
 import * as path from "path";
 import PlayQuizView from "../views/PlayQuizView.vue";
 import { usePlayQuizStore } from "../stores/playQuizStore.js";
+import SearchpageView from "@/views/SearchpageView.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -20,6 +21,7 @@ export default createRouter({
         },
         {
             path: "/quizzes",
+            name: "quizzes",
             component: QuizzesView
         },
         {
@@ -29,10 +31,6 @@ export default createRouter({
         },
         {
             path: "/create_quiz",
-            component: CreateQuizzesView
-        },
-        {
-            path: "/create_quiz/",
             name: "create_quiz",
             component: CreateQuizzesView
         },
@@ -55,6 +53,11 @@ export default createRouter({
             path: "/signup",
             name: "signup",
             component: SigninWiew
+        },
+        {
+            path: "/search",
+            name: "search",
+            component: SearchpageView
         },
         {
             path: "/play_quiz/",

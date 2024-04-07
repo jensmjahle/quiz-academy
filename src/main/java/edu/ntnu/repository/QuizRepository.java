@@ -30,4 +30,9 @@ public interface QuizRepository extends JpaRepository<QuizDAO, Long> {
   @Query("DELETE FROM QuizDAO q WHERE q.quizId = :quizId")
   void deleteByQuizId(Long quizId);
 
+  Iterable<QuizDAO> findAllByIsPublicAndTagDAOs_TagId(boolean b, Long tagId);
+
+
+  @Query("SELECT q FROM QuizDAO q LEFT JOIN q.tagDAOs t WHERE q.isPublic = true AND (LOWER(q.quizName) LIKE %:searchString% OR LOWER(t.tagName) LIKE %:searchString%)")
+  Iterable<QuizDAO> findAllPublicQuizzesWithSearchString(String searchString);
 }

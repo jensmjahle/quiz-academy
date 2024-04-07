@@ -1,22 +1,25 @@
 <script setup>
-import { ref, onMounted } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref } from 'vue';
+import {useRouter} from "vue-router";
+import { useQuizStore } from '../stores/QuizState.js';
+import { useDragDropStore} from "../stores/dragAndDropQuestionStore.js";
 
-let route = useRoute();
-let router = useRouter();
+const router = useRouter();
+let edit = ref(false);
+const imageUploaded = ref(false);
 
-let quizId = ref(0);
+const quizStore = useQuizStore();
+const dragDropStore = useDragDropStore();
 
-onMounted(() => {
-    if (route.params.quizId) {
-        quizId.value = route.params.quizId;
-    }
-});
-
-const categories = ref([{ name: "", items: "" }]);
-const storedData = ref({});
+const questionText = ref('');
+const categories = ref([{ name: '', items: '' }]);
+const questionPhoto = ref(null);
 
 const addCategory = () => {
+    if(categories.value.length >= 3) {
+        alert("You can't have more than 3 categories.");
+        return;
+    }
     categories.value.push({ name: "", items: "" });
 };
 
@@ -31,24 +34,111 @@ const removeCategory = (index) => {
     }
 };
 
-const submitForm = () => {
-    const quizData = {
-        "D&D": {}
-    };
+if (dragDropStore.questionId !== null) {
+    edit.value = true;
+    questionText.value = dragDropStore.questionText;
+    console.log("question id found");
+    const updatedCategories = [];
+    const categoriesFromStore = dragDropStore.questionCategories;
+    console.log("categories from store: ", categoriesFromStore);
+    for (const key in categoriesFromStore) {
+        updatedCategories.push({
+            name: key,
+            items: categoriesFromStore[key].join('*')
+        });
+    }
+    categories.value = updatedCategories;
+    if (dragDropStore.questionImage !== null) {
+        questionPhoto.value = dragDropStore.questionImage;
+        imageUploaded.value = true;
+    }
+}
 
-    categories.value.forEach((category) => {
-        const items = category.items.split("*");
-        quizData["D&D"][category.name] = items;
+const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        // `reader.result` contains the base64 string representation of the image
+        questionPhoto.value = reader.result;
+        console.log("questionPhoto: ", questionPhoto.value);
+    };
+    // Read the file as a data URL (base64)
+    reader.readAsDataURL(file);
+    imageUploaded.value = true;
+};
+
+const postDragDropQuestion = () => {
+
+    const formattedCategories = {};
+    categories.value.forEach(category => {
+        const items = category.items.split('*');
+        formattedCategories[category.name] = items;
     });
 
-    console.log(quizData);
-    router.push("/create_quiz");
-};
+    console.log("quizId: ", quizStore.quizId);
+
+    const dragDropQuestion = {
+        questionText: questionText.value,
+        quizId: quizStore.quizId,
+        type: "DRAG_AND_DROP",
+        categories: formattedCategories,
+        imageBase64: questionPhoto.value
+    };
+
+    console.log(dragDropQuestion);
+    quizStore.addQuestion(dragDropQuestion);
+
+    dragDropStore.resetQuestionValues();
+    router.push('/create_quiz');
+}
+
+const editQuestion = () => {
+    const formattedCategories = {};
+
+    categories.value.forEach(category => {
+        const items = category.items.split('*');
+        formattedCategories[category.name] = items;
+    });
+
+    const dragDropQuestion = {
+        questionText: questionText.value,
+        quizId: quizStore.quizId,
+        type: "DRAG_AND_DROP",
+        categories: formattedCategories,
+        imageBase64: questionPhoto.value
+    }
+
+    const indexOfQuestion = quizStore.getIndexById(dragDropStore.questionId);
+    console.log("index of question: ", indexOfQuestion);
+    quizStore.swapQuestions(indexOfQuestion, dragDropQuestion);
+
+    dragDropStore.resetQuestionValues();
+    router.push('/create_quiz');
+}
+
+const cancelPressed = () => {
+    if(confirm('Are you sure you want to cancel?')) {
+        dragDropStore.resetQuestionValues();
+        router.push('/create_quiz');
+    }
+}
+
 </script>
 
 <template>
     <div id="drag-and-drop-question">
         <h4>Drag and Drop Question</h4>
+        <input id="question_text" class="box_label" placeholder="Question Name" v-model="questionText" />
+        <div id="add_picture">
+            <h5>Add or change picture for your question:</h5>
+            <div v-if="imageUploaded">
+                <h5 >Current image</h5>
+                <img :src="questionPhoto" alt="Question image"/>
+            </div>
+            <input type="file" @change="handleFileUpload" accept="image/*" />
+        </div>
         <h5>Write all correct responses in each box. Separated by: *</h5>
         <h5>They will be displayed in a single box to be sorted.</h5>
 
@@ -71,7 +161,9 @@ const submitForm = () => {
         </div>
         <div id="buttons">
             <button id="add_category" @click="addCategory">Add a category</button>
-            <button id="submit_question" @click="submitForm">Submit</button>
+            <button id="submit_question" v-if="!edit" @click="postDragDropQuestion">Submit</button>
+            <button id="update_question" v-if="edit" @click="editQuestion">Update</button>
+            <button id="cancel" @click="cancelPressed">Cancel</button>
         </div>
     </div>
 </template>
@@ -98,13 +190,10 @@ const submitForm = () => {
     background-color: var(--fifth-color);
     border-radius: 5px;
     width: 60vw;
-}
-
-.box_label::placeholder {
     text-align: center;
 }
 
-#box_label_category {
+.box_label::placeholder {
     text-align: center;
 }
 
@@ -112,5 +201,9 @@ const submitForm = () => {
     display: flex;
     flex-flow: row;
     justify-content: center;
+}
+
+#remove_category {
+
 }
 </style>

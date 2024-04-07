@@ -10,12 +10,16 @@ import edu.ntnu.repository.TagRepository;
 import edu.ntnu.service.QuestionService;
 import edu.ntnu.service.UserService;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper class for the Quiz entity.
+ */
 @Component
 public class QuizMapper {
   private final Logger logger = Logger.getLogger(QuizMapper.class.getName());
@@ -26,6 +30,14 @@ public class QuizMapper {
   private final TagMapper tagMapper;
 
 
+  /**
+   * Constructor for the QuizMapper class.
+   * @param userService The UserService object.
+   * @param tagMapper The TagMapper object.
+   * @param questionService The QuestionService object.
+   * @param tagRepository The TagRepository object.
+   * @param questionMapper The QuestionMapper object.
+   */
   @Autowired
   public QuizMapper(
       UserService userService,
@@ -40,6 +52,11 @@ public class QuizMapper {
     this.questionMapper = questionMapper;
   }
 
+    /**
+     * Maps a QuizDAO object to a QuizDTO object without the questions.
+     * @param quizDAO The QuizDAO object to map.
+     * @return The QuizDTO object.
+     */
     public QuizDTO toQuizDTOWithoutQuestions(QuizDAO quizDAO) {
     try {
         QuizDTO quizDTO = new QuizDTO();
@@ -48,7 +65,12 @@ public class QuizMapper {
         quizDTO.setQuizDescription(quizDAO.getQuizDescription());
         quizDTO.setUser(quizDAO.getUser().getUsername());
         quizDTO.setIsPublic(quizDAO.isPublic());
-        quizDTO.setTags(quizDAO.getTags().stream().map(tagMapper::toTagDTO).collect(Collectors.toList()));
+        if (quizDAO.getTags() == null) {
+            logger.warning("No tags found for quiz with id " + quizDAO.getQuizId() + ". Setting tags to null.");
+            quizDTO.setTags(null);
+        } else {
+            quizDTO.setTags(quizDAO.getTags().stream().map(tagMapper::toTagDTO).collect(Collectors.toList()));
+        }
         quizDTO.setQuizCreationDate(quizDAO.getQuizCreationDate());
         return quizDTO;
     } catch (Exception e) {
@@ -57,6 +79,11 @@ public class QuizMapper {
     }
     }
 
+    /**
+     * Maps a QuizDAO object to a QuizDTO object.
+     * @param quizDAO The QuizDAO object to map.
+     * @return The QuizDTO object.
+     */
     public QuizDTO toQuizDTO(QuizDAO quizDAO) {
         QuizDTO quizDTO = toQuizDTOWithoutQuestions(quizDAO);
 
@@ -73,15 +100,26 @@ public class QuizMapper {
         return quizDTO;
     }
 
+    /**
+     * Maps a QuizDAO object to a QuizDTO object.
+     * @param quizDAO The QuizDAO object to map.
+     * @return The QuizDTO object.
+     */
     public QuizDAO toDAOWithoutId(QuizDTO quizDTO) {
         QuizDAO quizDAO = new QuizDAO();
         quizDAO.setQuizName(quizDTO.getQuizName());
         quizDAO.setQuizDescription(quizDTO.getQuizDescription());
-        quizDAO.setQuizCreationDate(quizDTO.getQuizCreationDate());
         quizDAO.setIsPublic(quizDTO.isPublic());
+        if (quizDTO.getQuizCreationDate() == null) {
+            logger.warning("No creation date found for quiz with id " + quizDTO.getQuizId() + ". Setting creation date to current date.");
+            quizDAO.setQuizCreationDate(new Date());
+        } else {
+            quizDAO.setQuizCreationDate(quizDTO.getQuizCreationDate());
+        }
 
         // Map tagDTOs to Tag objects
-      List <TagDTO> tags = quizDTO.getTags();
+        if (quizDTO.getTags() != null) {
+         List <TagDTO> tags = quizDTO.getTags();
         if (tags != null && !tags.isEmpty()) {
           for (TagDTO tagDTO : tags) {
             TagDAO tagDAO = tagMapper.toDAO(tagDTO);
@@ -91,6 +129,10 @@ public class QuizMapper {
             quizDAO.setTags(null);
             logger.warning("No tags found for quiz with id " + quizDTO.getQuizId() + ". Setting tags to null.");
         }
+    } else {
+        quizDAO.setTags(null);
+        logger.warning("No tags found in quizDTO. Setting tags to null.");
+        }
 
         // Retrieve the user from the database and map it to the quiz
         quizDAO.setUser(userService.getUserObjectByUsername(quizDTO.getUser()));
@@ -98,6 +140,11 @@ public class QuizMapper {
         return quizDAO;
     }
 
+    /**
+     * Maps a QuizDTO object to a QuizDAO object.
+     * @param quizDTO The QuizDTO object to map.
+     * @return The QuizDAO object.
+     */
     public QuizDAO toDAO(QuizDTO quizDTO) {
         QuizDAO quizDAO = toDAOWithoutId(quizDTO);
         quizDAO.setQuizId(quizDTO.getQuizId());
