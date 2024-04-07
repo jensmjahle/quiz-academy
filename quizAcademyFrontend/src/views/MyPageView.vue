@@ -35,6 +35,10 @@ const deleteAccount = () => {
   border-radius: 10px;
   background-color: var(--secondary-color);
   font-size: calc(1.5vw + 1.5vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .title {
@@ -58,6 +62,20 @@ const deleteAccount = () => {
 p {
   font-size: calc(1.5vw + 1.5vh);
   letter-spacing: 1px;
+}
+
+.btn {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: calc(1.5vw + 1.5vh);
+}
+
+.btn:hover {
+  background-color: var(--fourth-color);
 }
 
 </style>
