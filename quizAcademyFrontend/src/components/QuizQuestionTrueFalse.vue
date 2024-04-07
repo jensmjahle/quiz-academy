@@ -18,7 +18,7 @@ if(trueFalseStore.questionId !== null) {
     console.log("question id was found in store: ", trueFalseStore.questionId);
     edit.value = true;
     questionText.value = trueFalseStore.questionText;
-    answer.value = trueFalseStore.correctAnswer;
+    answer.value = trueFalseStore.questionAnswer;
     questionPhoto.value = trueFalseStore.questionImage;
     if (questionPhoto.value !== null) {
         imageUploaded.value = true;
@@ -48,7 +48,7 @@ const createQuestion = () => {
         quizId: quizStore.quizId,
         questionId: quizStore.quizQuestions.length,
         type: "TRUE_FALSE",
-        answer: answer.value,
+        correctAnswer: answer.value,
         imageBase64: questionPhoto.value
     };
 
@@ -68,7 +68,7 @@ const updateQuestion = ()=> {
         quizId: quizStore.quizId,
         questionId: trueFalseStore.questionId,
         type: "TRUE_FALSE",
-        answer: answer.value,
+        correctAnswer: answer.value,
         imageBase64: questionPhoto.value
     };
 

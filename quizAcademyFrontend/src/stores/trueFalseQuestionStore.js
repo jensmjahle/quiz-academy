@@ -7,7 +7,7 @@ export const useTrueFalseStore = defineStore({
         quizId: null,
         questionId: null,
         questionText: null,
-        correctAnswer: null,
+        questionAnswer: null,
         questionImage: null,
     }),
     actions: {
@@ -15,14 +15,14 @@ export const useTrueFalseStore = defineStore({
             this.quizId = quizId;
             this.questionId = questionStateId;
             this.questionText = questionText;
-            this.correctAnswer = correctAnswer;
+            this.questionAnswer = correctAnswer;
             this.questionImage = questionImage;
         },
         resetQuestionValues() {
             this.quizId = null;
             this.questionId = null;
             this.questionText = null;
-            this.correctAnswers = null;
+            this.questionAnswer = null;
             this.questionImage = null;
         },
     }
