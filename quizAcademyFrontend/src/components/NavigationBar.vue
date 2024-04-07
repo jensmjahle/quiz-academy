@@ -20,6 +20,7 @@ closeDropdown();
 const searchQuizzesButtons = (searchTerm) => {
   searchInput.value = searchTerm;
   router.push({ path: "/search", query: { search: searchTerm } });
+  closeDropdown();
 };
 
 const logout = () => {

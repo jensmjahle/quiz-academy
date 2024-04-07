@@ -39,15 +39,20 @@ export const fetchAllQuizzesByUser = async (userId) => {
 
 export const fetchAllQuizzesByTag = async (tag) => {
     try {
-        const response = await axios.get(`http://localhost:8080/quiz/public/all/tags/${tag}`,
-            {
-            headers: {
-            "Authorization": "Bearer " + useTokenStore().jwtToken
-            }
-        });
+        const response = await axios.get(`http://localhost:8080/quiz/public/all/tags/${tag}`);
         return response.data;
     } catch (error) {
         console.error("Error fetching quizzes by tag:", error);
+        return [];
+    }
+}
+
+export const fetchAllQuizzesBySearch = async (searchString) => {
+    try {
+        const response = await axios.get(`http://localhost:8080/quiz/public/all/${searchString}`);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching quizzes by title:", error);
         return [];
     }
 }
