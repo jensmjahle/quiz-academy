@@ -20,6 +20,7 @@ export default createRouter({
         },
         {
             path: "/quizzes",
+            name: "quizzes",
             component: QuizzesView
         },
         {
@@ -29,10 +30,6 @@ export default createRouter({
         },
         {
             path: "/create_quiz",
-            component: CreateQuizzesView
-        },
-        {
-            path: "/create_quiz/",
             name: "create_quiz",
             component: CreateQuizzesView
         },

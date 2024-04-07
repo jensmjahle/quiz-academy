@@ -1,5 +1,6 @@
-<template>
+<template   >
     <div id="QuizQuestionMultichoice">
+        <h5 id="currently_editing" v-if="edit">Editing question</h5>
         <div id="question">
             <h5 id="quiz_question">Q.1</h5>
             <input
@@ -10,48 +11,118 @@
             />
         </div>
         <div id="alternatives">
-            <div v-for="(alternative, index) in alternatives" :key="index">
+            <div>
                 <input
                     id="input"
-                    v-model="alternative.text"
+                    v-model="alternatives[0]"
                     type="text"
-                    :placeholder="'alternative ' + (index + 1)"
+                    placeholder="alternative one"
                 />
-                <input id="checkbox" v-model="alternative.correct" type="checkbox" />
+                <input id="checkbox" v-model="correctAlternatives[0]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[1]"
+                    type="text"
+                    placeholder="alternative two"
+                />
+                <input id="checkbox" v-model="correctAlternatives[1]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[2]"
+                    type="text"
+                    placeholder="alternative three"
+                />
+                <input id="checkbox" v-model="correctAlternatives[2]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[3]"
+                    type="text"
+                    placeholder="alternative four"
+                />
+                <input id="checkbox" v-model="correctAlternatives[3]" type="checkbox" />
             </div>
         </div>
         <div>
-            <button @click="submitForm">Submit</button>
+            <button @click="submitForm" v-if="!edit">Submit</button>
+            <button @click="updateQuestion" v-if="edit">Update</button>
+            <button id="cancel" @click="router.push('/create_quiz')">Cancel</button>
+
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useQuizStore } from '../stores/QuizState.js';
+import { useMultichoiceStore} from "../stores/multichoideQuestionStore.js";
+import axios from "axios";
 
 const router = useRouter();
+const quizStore = useQuizStore();
+const multichoiceStore = useMultichoiceStore();
 
-const question = ref("");
-const alternatives = ref([
-    { text: "", correct: false },
-    { text: "", correct: false },
-    { text: "", correct: false },
-    { text: "", correct: false }
-]);
+let edit = ref(false);
+let question = ref('');
+let alternatives = ref([]);
+let correctAlternatives = ref([]);
 
-const submitForm = () => {
-    const formData = {
-        type: "MC",
-        question: question.value,
-        alternatives: alternatives.value.map((alternative) => ({
-            text: alternative.text,
-            correct: !!alternative.correct
-        }))
+
+//todo: check if this works
+if (multichoiceStore.questionId !== null) {
+    question.value = multichoiceStore.questionText;
+    alternatives.value = multichoiceStore.questionAlternatives;
+    correctAlternatives.value = multichoiceStore.correctAlternatives;
+    edit.value = true;
+}
+
+function oneCorrectCheck() {
+    // Use Array.prototype.some() to check if at least one correct alternative is selected
+    return correctAlternatives.value.some((correct) => {
+        return !!correct;
+    });
+}
+
+const submitForm = async () => {
+    const hasCorrect = oneCorrectCheck();
+    if (!hasCorrect) {
+        alert('You need to select one correct alternative');
+        return;
+    }
+    const questionData = {
+        questionText: question.value,
+        quizId: quizStore.quizId,
+        questionId: quizStore.quizQuestions.length,
+        type: 'MULTIPLE_CHOICE',
+        alternatives: alternatives.value,
+        correctAlternatives: correctAlternatives.value
     };
-    console.log(formData);
-    router.push("/create_quiz");
-};
+    console.log(questionData);
+
+    quizStore.addQuestion(questionData);
+
+    multichoiceStore.resetQuestionValues();
+
+    await router.push('/create_quiz');
+}
+
+const updateQuestion = () => {
+    const questionData = {
+        questionText: question.value,
+        quizId: quizStore.quizId,
+        questionId: multichoiceStore.questionId,
+        type: 'MULTIPLE_CHOICE',
+        alternatives: alternatives.value,
+        correctAlternatives: correctAlternatives.value,
+    };
+
+    const indexOfQuestion = quizStore.getIndexById(multichoiceStore.questionId);
+    quizStore.swapQuestions(indexOfQuestion, questionData);
+
+    multichoiceStore.resetQuestionValues();
+
+    router.push('/create_quiz');
+}
 </script>
 
 <style scoped>
