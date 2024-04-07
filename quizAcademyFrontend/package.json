@@ -9,7 +9,7 @@
     "format": "prettier --write src/",
     "test:unit": "vitest",
     "preview": "vite preview",
-    "test:coverage": "vitest run -- coverage --environment jsdom"
+    "test:coverage": "npm run test:unit -- --coverage"
   },
   "dependencies": {
     "@types/jsdom": "^21.1.6",

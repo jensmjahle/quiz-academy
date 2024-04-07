@@ -4,6 +4,7 @@ import edu.ntnu.dao.questions.DragDropQuestionDAO;
 import edu.ntnu.dao.questions.MultipleChoiceQuestionDAO;
 import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
 import edu.ntnu.dto.QuizDTO;
+import edu.ntnu.dto.TagDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.mapper.QuizMapper;
 import edu.ntnu.dao.QuizDAO;
@@ -274,5 +275,58 @@ public class QuizService {
       logger.severe("An error occurred while updating quiz with name " + quizDTO.getQuizName() + ": " + e.getMessage());
       return ResponseEntity.status(500).build();
     }
+  }
+
+
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(Long tagId) {
+    try {
+
+      // Get all public quizzes from the database
+      Iterable<QuizDAO> quizzes = quizRepository.findAllByIsPublicAndTagDAOs_TagId(true, tagId);
+
+      // Convert quizzes to DTOs
+      if (quizzes != null) {
+        List<QuizDTO> quizDTOs = new ArrayList<>();
+        for (QuizDAO quizDAO : quizzes) {
+          quizDTOs.add(quizMapper.toQuizDTO(quizDAO));
+        }
+
+        int numQuizzes = quizDTOs.size();
+        logger.info(numQuizzes + " public quizzes found. Returning quizzes.");
+        return ResponseEntity.ok(quizDTOs);
+      } else {
+        logger.info("No public quizzes found.");
+        return ResponseEntity.notFound().build();
+      }
+    } catch (Exception e) {
+      logger.severe("An error occurred while getting all public quizzes: " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
+
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesBySearchString(String searchString) {
+    try {
+      // Get all public quizzes from the database
+      Iterable<QuizDAO> quizzes = quizRepository.findAllPublicQuizzesWithSearchString(searchString.toLowerCase());
+
+      // Convert quizzes to DTOs
+      if (quizzes != null) {
+        List<QuizDTO> quizDTOs = new ArrayList<>();
+        for (QuizDAO quizDAO : quizzes) {
+          quizDTOs.add(quizMapper.toQuizDTO(quizDAO));
+        }
+
+        int numQuizzes = quizDTOs.size();
+        logger.info(numQuizzes + " public quizzes found. Returning quizzes.");
+        return ResponseEntity.ok(quizDTOs);
+      } else {
+        logger.info("No public quizzes found.");
+        return ResponseEntity.notFound().build();
+      }
+    } catch (Exception e) {
+      logger.severe("An error occurred while getting all public quizzes: " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+
   }
 }

@@ -16,3 +16,6 @@ Run these two commands:
 docker build -t quizacademyapplication .
 
 docker run -p 8080:8080 quizacademyapplication
+
+### Running swagger endpoint documentation:
+Paste http://localhost:8080/swagger-ui/index.html into web browser, (8080 is the default port in which the backend runs)

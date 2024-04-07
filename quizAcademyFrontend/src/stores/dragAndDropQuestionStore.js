@@ -8,13 +8,15 @@ export const useDragDropStore = defineStore({
         questionId: null,
         questionText: null,
         questionCategories: [],
+        questionImage: null,
     }),
     actions: {
-        setQuestionValues(quizId, questionId, questionText, questionCategories) {
+        setQuestionValues(quizId, questionId, questionText, questionCategories, questionImage) {
             this.quizId = quizId;
             this.questionId = questionId;
             this.questionText = questionText;
             this.questionCategories = questionCategories;
+            this.questionImage = questionImage;
         },
         resetQuestionValues() {
             this.quizId = null;

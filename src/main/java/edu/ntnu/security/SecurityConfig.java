@@ -26,10 +26,22 @@ public class SecurityConfig {
         .csrf().disable()
         .cors().and()
         .authorizeHttpRequests()
-        .requestMatchers("/token/new","/quiz/all", "/quiz/create", "/quiz/update", "/question/update", "/users/create", "/token/delete").permitAll()
+        .requestMatchers("/token/new",
+                "/quiz/all",
+                "/quiz/create",
+                "/users/create",
+                "/token/delete",
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html",
+                "/swagger-ui/index.html",
+                "/swagger-resources/",
+                "/webjars/", "/error").permitAll()
         .anyRequest().authenticated().and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
+
+
 
     return http.build();
   }

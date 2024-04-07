@@ -81,17 +81,17 @@ export const useQuizStore = defineStore({
             if(question.type === "DRAG_AND_DROP") {
                 console.log("id DRAG_AND_DROP found");
                 const questionState = useDragDropStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.categories);
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.categories, question.imageBase64);
                 return("/create_quiz/drag_and_drop");
             } else if(question.type === "MULTIPLE_CHOICE") {
                 console.log("id MULTIPLE_CHOICE found");
                 const questionState = useMultichoiceStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.alternatives, question.correctAlternatives);
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.alternatives, question.correctAlternatives, question.imageBase64);
                 return("/create_quiz/multichoice");
             } else if(question.type === "TEXT_INPUT") {
                 console.log("id TEXT_INPUT found");
                 const questionState = useTextInputStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.answers);
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.answers, question.imageBase64);
                 return ("/create_quiz/text_input");
             } else {
                 console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question.questionType);

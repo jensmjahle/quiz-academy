@@ -8,15 +8,17 @@ export const useMultichoiceStore = defineStore({
         questionId: null,
         questionText: null,
         questionAlternatives: [],
-        correctAlternatives: []
+        correctAlternatives: [],
+        questionImage: null,
     }),
     actions: {
-        setQuestionValues(quizId, questionId, questionText, questionAlternatives, correctAlternatives) {
+        setQuestionValues(quizId, questionId, questionText, questionAlternatives, correctAlternatives, questionPhoto) {
             this.quizId = quizId;
             this.questionId = questionId;
             this.questionText = questionText;
             this.questionAlternatives = questionAlternatives;
             this.correctAlternatives = correctAlternatives;
+            this.questionImage = questionPhoto;
         },
         resetQuestionValues() {
             this.quizId = null;
@@ -24,6 +26,7 @@ export const useMultichoiceStore = defineStore({
             this.questionText = null;
             this.questionAlternatives = [];
             this.correctAlternatives = [];
+            this.questionImage = null;
         },
     }
 });

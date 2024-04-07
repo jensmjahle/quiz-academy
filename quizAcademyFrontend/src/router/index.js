@@ -11,6 +11,7 @@ import * as path from "path";
 import PlayQuizView from "../views/PlayQuizView.vue";
 import { usePlayQuizStore } from "../stores/playQuizStore.js";
 import SearchpageView from "@/views/SearchpageView.vue";
+import MyPageView from "@/views/MyPageView.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -58,6 +59,11 @@ export default createRouter({
             path: "/search",
             name: "search",
             component: SearchpageView
+        },
+        {
+            path: "/profile",
+            name: "profile",
+            component: MyPageView
         },
         {
             path: "/play_quiz/",
