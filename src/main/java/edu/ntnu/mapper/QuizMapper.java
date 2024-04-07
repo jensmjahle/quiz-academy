@@ -65,6 +65,7 @@ public class QuizMapper {
         quizDTO.setQuizDescription(quizDAO.getQuizDescription());
         quizDTO.setUser(quizDAO.getUser().getUsername());
         quizDTO.setIsPublic(quizDAO.isPublic());
+        quizDTO.setQuizImage(quizDAO.getQuizImage());
         if (quizDAO.getTags() == null) {
             logger.warning("No tags found for quiz with id " + quizDAO.getQuizId() + ". Setting tags to null.");
             quizDTO.setTags(null);
@@ -110,6 +111,7 @@ public class QuizMapper {
         quizDAO.setQuizName(quizDTO.getQuizName());
         quizDAO.setQuizDescription(quizDTO.getQuizDescription());
         quizDAO.setIsPublic(quizDTO.isPublic());
+        quizDAO.setQuizImage(quizDTO.getQuizImage());
         if (quizDTO.getQuizCreationDate() == null) {
             logger.warning("No creation date found for quiz with id " + quizDTO.getQuizId() + ". Setting creation date to current date.");
             quizDAO.setQuizCreationDate(new Date());

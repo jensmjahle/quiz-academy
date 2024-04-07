@@ -37,7 +37,7 @@ public class QuestionMapper {
       String questionText = questionDAO.getQuestionText();
       Long quizId = questionDAO.getQuizId();
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionType(questionDAO);
-      String imageBase64 = convertImageToBase64(questionDAO.getImage());
+      String imageBase64 = questionDAO.getImage();
 
       switch (questionType) {
         case MULTIPLE_CHOICE:
@@ -116,7 +116,7 @@ public class QuestionMapper {
       String questionText = questionDTO.getQuestionText();
       Long quizId = questionDTO.getQuizId();
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(questionDTO);
-      byte [] image = convertBase64ToImage(questionDTO.getImageBase64());
+      String image = questionDTO.getImageBase64();
 
       switch (questionType) {
         case MULTIPLE_CHOICE:

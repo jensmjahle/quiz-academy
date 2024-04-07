@@ -21,11 +21,11 @@ export default {
         }
     },
     methods: {
-        checkAnswer(selectedAlternative) {
+        checkAnswer(selectedAlternative, index) {
             const alternatives = this.question.alternatives;
             const correctAlternatives = this.question.correctAlternatives;
             this.selectedAnswer = selectedAlternative;
-            this.isCorrect = correctAlternatives.includes(selectedAlternative);
+            this.isCorrect = correctAlternatives[index];
 
 
             for (let i = 0; i < this.question.alternatives.length; i++) {
@@ -43,7 +43,7 @@ export default {
     <div class="alternative-buttons">
         <button v-for="(alternative, index) in question.alternatives"
                 :key="alternative"
-                @click="checkAnswer(alternative)"
+                @click="checkAnswer(alternative, index)"
                 :disabled="hasAnswered"
                 :class="{ 'correct': hasAnswered && correctAnswers[index],
                            'incorrect': hasAnswered && !correctAnswers[index],
