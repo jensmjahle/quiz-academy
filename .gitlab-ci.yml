@@ -1,18 +1,19 @@
 image: maven:eclipse-temurin
 
-
 stages:
-  - build
-  - test
-  - package
+  - build-backend
+  - test-backend
+  - package-backend
+  - install-frontend
+  - test-frontend
 
-build:
-  stage: build
+build-backend:
+  stage: build-backend
   script:
     - mvn compile
 
-test:
-  stage: test
+test-backend:
+  stage: test-backend
   script:
     - mvn verify
   artifacts:
@@ -22,8 +23,28 @@ test:
         - target/surefire-reports/TEST-*.xml
         - target/failsafe-reports/TEST-*.xml
 
-
-package:
-  stage: package
+package-backend:
+  stage: package-backend
   script:
     - mvn clean package
+
+install-frontend:
+  image: node:latest
+  stage: install-frontend
+  script:
+    - cd quizAcademyFrontend
+    - npm i
+  artifacts:
+    paths:
+      - node_modules/
+      - dist/
+    expire_in: 30 days
+
+test-frontend:
+  image: node:latest
+  stage: test-frontend
+  script:
+    - cd quizAcademyFrontend
+    - npm install
+    - npm run test:unit
+
