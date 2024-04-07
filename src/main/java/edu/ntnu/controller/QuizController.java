@@ -92,13 +92,9 @@ public class QuizController {
     return quizService.getAllPublicQuizzes();
   }
 
-  /*
-  @GetMapping("/all/{tag}")
-  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(@PathVariable String tag) {
-    logger.info("Received request to get all quizzes with tag: " + tag + ".");
-    return quizService.getAllPublicQuizzesByTag(tag);
-  }
-
-*/
-
+  @PostMapping("/update")
+  public ResponseEntity<QuizDTO> updateQuiz(@RequestBody QuizDTO quizDTO) {
+    logger.info("Received request to update quiz with id: " + quizDTO.getQuizId() + ".");
+    return quizService.updateQuiz(quizDTO);
+    }
 }
