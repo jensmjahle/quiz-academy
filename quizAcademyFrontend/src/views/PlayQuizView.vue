@@ -2,14 +2,16 @@
 import { usePlayQuizStore } from "../stores/playQuizStore.js";
 import router from "../router/index.js";
 import BaseAnswerContainer from "../components/BaseAnswerContainer.vue";
+import Summary from "../components/Summary.vue";
 export default {
-    components: { BaseAnswerContainer },
+    components: { Summary, BaseAnswerContainer },
     data() {
         return {
             store: usePlayQuizStore(),
             questionNr: 0,
             question: null,
             quizName: null,
+            isCompleted: false,
         };
     },
     setup() {
@@ -24,9 +26,18 @@ export default {
                 this.store.nextQuestion(score);
                 this.questionNr++;
             } else {
-                console.log("Quiz finished");
-                router.push("/quiz_results");
+                this.store.lastQuestion(score);
+                this.isCompleted = true;
             }
+        },
+        finishQuiz() {
+            this.store.finishQuiz();
+            router.push("/");
+        },
+        resetQuiz() {
+            this.store.resetQuiz();
+            this.questionNr = 0;
+            this.isCompleted = false;
         },
     },
 }
@@ -41,15 +52,19 @@ export default {
             <h5 class="qNr">Question {{questionNr+1}} of {{store.quiz.questions.length}}</h5>
             <h5 class="user">Created By: {{store.quiz.user}}</h5>
         </div>
-        <div class="question">
+        <div class="question" v-if="!isCompleted">
             <h2 v-if="store.quiz.questions && store.quiz.questions.length > 0">
                 {{ store.quiz.questions[questionNr].questionText }}
             </h2>
         </div>
-
     </div>
-    <div class="answers">
+    <div class="answers" v-if="!isCompleted">
         <BaseAnswerContainer :question="store.getCurrentQuestion" @nextQuestion='nextQuestion' class="component"></BaseAnswerContainer>
+    </div>
+    <div v-else>
+        <Summary :score="store.getScore" :total-score="questionNr+1" @finishQuiz='finishQuiz' @resetQuiz='resetQuiz' ></Summary>
+
+
     </div>
 
 </template>

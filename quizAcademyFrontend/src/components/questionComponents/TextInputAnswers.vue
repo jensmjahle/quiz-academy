@@ -32,6 +32,20 @@ export default {
 
 <template>
 <div class="container">
+<div class="correctAnswers" v-if="hasAnswered">
+
+    <h4>Accepted answers:</h4>
+    <ul>
+    <li
+        v-for="answer in question.answers"
+        :key="answer.id">
+        <h5>{{answer}}</h5>
+    </li>
+        </ul>
+</div>
+
+
+
     <input
         v-model="answer"
         :placeholder="'Answer here...'"
@@ -77,7 +91,16 @@ export default {
     cursor: default;
 }
 
-
+.correctAnswers {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1em;
+    padding: 3px;
+    border-radius: 10px;
+    background-color: rgba(var(--base-color-rgb), 0.1);
+}
 .correct {
     border-color: var(--correct-answer-border-color);
     color: var(--correct-answer-border-color) ;

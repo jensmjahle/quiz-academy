@@ -218,7 +218,7 @@ window.addEventListener("beforeunload", function (event) {
 
 <style scoped>
 .login-form {
-    width: 50%;
+    width: 70%;
     padding: 50px;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -227,6 +227,7 @@ window.addEventListener("beforeunload", function (event) {
 .form-group {
     margin-bottom: 20px;
     text-align: left;
+    overflow-x: unset;
 }
 
 .half-width {
