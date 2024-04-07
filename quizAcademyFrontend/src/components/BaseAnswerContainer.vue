@@ -52,7 +52,6 @@ export default {
             } else {
                 this.score = 0
             }
-            console.log(this.question)
         },
         handleNext(){
             this.hasAnswered = false

@@ -62,7 +62,6 @@ const handleFileUpload = (event) => {
     const reader = new FileReader();
     reader.onload = () => {
         quizPhoto.value = reader.result;
-        console.log("quizPhoto during onload: ", quizPhoto.value)
         quizStore.setQuizPhoto(quizPhoto.value);
     };
     reader.readAsDataURL(file);
@@ -148,6 +147,12 @@ const editQuestion = async (index) => {
     const routing = quizStore.fromQuestionToQuestionState(index);
     await router.push(routing);
 }
+
+const deleteQuestion = (index) => {
+    if (confirm('Are you sure you want to delete the question?')) {
+        quizStore.deleteQuestion(index);
+    }
+}
 const exitAndSave = () => {
     updateQuiz();
     quizStore.resetQuiz();
@@ -200,6 +205,7 @@ const resetWithConfirm = () => {
         <h5>Questions (click to edit):</h5>
         <ul>
             <li v-for="(question, index) in questions" :key="question.id" @click="editQuestion(index)" id="question_in_list" >
+                <span style="cursor: pointer; margin-left: 5px;" @click.stop="deleteQuestion(index)">[X]</span>
                 {{ question.type }}: {{ index  + 1 }}. {{ question.questionText }}
             </li>
         </ul>
