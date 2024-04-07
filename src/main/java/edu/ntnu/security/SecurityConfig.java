@@ -27,10 +27,11 @@ public class SecurityConfig {
         .cors().and()
         .authorizeHttpRequests()
         .requestMatchers("/token/new",
-                "/quiz/all",
                 "/quiz/create",
                 "/users/create",
+                "/tag/all",
                 "/token/delete",
+                "/quiz/public/**",
                 "/v3/api-docs/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
