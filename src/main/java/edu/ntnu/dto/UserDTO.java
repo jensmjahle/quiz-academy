@@ -1,10 +1,13 @@
 package edu.ntnu.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * Data transfer object for the User entity.
  */
 public class UserDTO {
   private String username;
+  @JsonIgnore
   private String password;
   private String email;
   private String firstName;

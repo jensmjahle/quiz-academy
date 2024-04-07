@@ -121,6 +121,9 @@ export const useQuizStore = defineStore({
                 }
             }
             return -1;
+        },
+        deleteQuestion(index) {
+            this.quizQuestions.splice(index, 1);
         }
     }
 });
