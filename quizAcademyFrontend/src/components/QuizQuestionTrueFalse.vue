@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { useQuizStore } from '../stores/QuizState.js';
+import { useQuizStore } from '../stores/QuizStore.js';
 import { useTrueFalseStore } from "../stores/trueFalseQuestionStore.js";
 import { useRouter } from 'vue-router';
 
