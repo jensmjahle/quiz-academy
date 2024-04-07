@@ -395,7 +395,7 @@ nav {
   .router-button-loggedIn {
     width: 90%;
     justify-self: center;
-    margin-top: 12px;
+    margin-top: 15px;
     font-size: calc(2.2vw + 1.2vh);
   }
 
