@@ -104,3 +104,18 @@ export const signUpUser = (firstName, lastName, username, password, email) => {
         throw error;
     });
 }
+
+export const deleteUser = (username) => {
+    const config = {
+        headers: {
+            "Content-type": "application/json",
+            "Authorization": "Bearer " + useTokenStore().jwtToken
+        }
+    };
+    return axios.delete("http://localhost:8080/users/delete/" + username, config).then((response) => {
+        return response;
+    }).catch((error) => {
+        console.log("An error occurred during deletion:", error);
+        throw error;
+    });
+}

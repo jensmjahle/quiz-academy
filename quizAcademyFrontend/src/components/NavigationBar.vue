@@ -97,6 +97,7 @@ watch(
         </button>
         <div class="dropdown-content" :class="{ show: logoutDropdownOpen }">
           <a @click="logout">Logout</a>
+          <RouterLink @click="closeDropdown" to="/profile" class="router-button-mypage" id="my-page-button">My Page</RouterLink>
         </div>
       </div>
       <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/signup" class="router-button">Sign Up</RouterLink>
@@ -182,18 +183,22 @@ nav {
 }
 
 .dropdown-content {
+  box-sizing: content-box;
   z-index: 999; /* Increase this value as needed */
   position: absolute;
   top: 100%; /* Position it right below the button */
   display: none;
-  background: linear-gradient(to bottom, var(--secondary-color) 0%, var(--secondary-color) 80%, transparent 150%);
+  background: linear-gradient(to bottom, var(--secondary-color) 0%, var(--secondary-color) 90%, transparent 150%);
   padding: 10px 12px;
   font-size: calc(1.2vw + 1.2vh);
-  height: calc(3.2vw + 3.2vh);
+  height: calc(8.2vw + 5.2vh);
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-color: var(--tertiary-color);
   box-shadow: 0 5px 4px rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+
 }
 
 .dropdown-content a {
@@ -210,7 +215,7 @@ nav {
   color: var(--fourth-color);
   text-decoration: none;
   text-align: center;
-  padding: 10px;
+  padding: 0;
   margin: 0 10px;
   border: none;
   background-color: transparent;
@@ -224,14 +229,19 @@ nav {
 }
 
 .dropdown-content.show {
-  display: block;
+  position: absolute;
+  margin: 0;
+  left: -8px;
+  display: inline-grid;
   overflow: visible;
   z-index: 999;
-  margin-left: 7px;
+  justify-content: center;
+  justify-items: center;
 }
 
 .dropdown-content a:hover {
   cursor: pointer;
+  color: var(--base-color);
 }
 
 .dropdown-content-category {
@@ -319,4 +329,23 @@ nav {
   color: var(--base-color);
   border-color: transparent;
 }
+
+.router-button-mypage {
+  color: var(--fourth-color);
+  text-decoration: none;
+  text-align: center;
+  padding: 0;
+  margin: 0 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  font-size: calc(1.2vw + 1.2vh);
+}
+
+.router-button-mypage:hover {
+  color: var(--base-color);
+  border-color: transparent;
+}
+
 </style>
