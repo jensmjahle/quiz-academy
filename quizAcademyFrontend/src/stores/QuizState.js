@@ -136,11 +136,23 @@ export const useQuizStore = defineStore({
             } else if(question.type === "TEXT_INPUT") {
                 console.log("id TEXT_INPUT found");
                 const questionState = useTextInputStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.questionAnswers);
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.answers);
                 return ("/create_quiz/text_input");
             } else {
                 console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question.questionType);
             }
+        },
+        swapQuestions(index1, question) {
+            this.quizQuestions.splice(index1, 1);
+            this.quizQuestions[index1] = question;
+        },
+        getIndexById(questionId){
+            for(let i = 0; i < this.quizQuestions.length; i++) {
+                if(this.quizQuestions[i].questionId === questionId) {
+                    return i;
+                }
+            }
+            return -1;
         }
     }
 });

@@ -19,22 +19,7 @@ if(textInputStore.questionId !== null) {
     answerText.value = textInputStore.correctAnswers.join('*');
 }
 
-const statifyQuestionAndStore = () => {
-    const questionStateId = quizStore.quizQuestions.length + 1;
-    if (answerText.value.includes('*')) {
-        answerText.value.split('*');
-        textInputStore.setQuestionValues(quizStore.quizId, questionStateId, questionText.value, answerText.value);
-        console.log("answer text after includes(\"*\") check:", answerText.value);
-    } else {
-        textInputStore.setQuestionValues(quizStore.quizId, questionStateId, questionText.value, [answerText.value]);
-        console.log("answer text didn't include asterisk. Attempting to input: ", [answerText.value]);
-    }
-    quizStore.addTextInputQuestionState(textInputStore);
-    console.log("edit: ", edit.value);
-    edit.value = true;
-}
-
-const createQuestion = async () => {
+const createQuestion = () => {
 
     console.log("answerText: ", answerText.value);
 
@@ -43,15 +28,14 @@ const createQuestion = async () => {
         quizId: quizStore.quizId,
         questionId: quizStore.quizQuestions.length,
         type: "TEXT_INPUT",
-        questionAnswers: answerText.value.split('*')
+        answers: answerText.value.split('*')
     };
-
-    console.log("answer text after input in data; ", questionData.questionAnswers);
 
     quizStore.addQuestion(questionData);
     textInputStore.resetQuestionValues();
     try{
-        await router.push('/create_quiz');
+        console.log("pushing to create_quiz");
+        router.push('/create_quiz');
     } catch(error) {
         console.error("pushing to create_quiz failed with error: ", error);
     }
@@ -66,11 +50,8 @@ const updateQuestion = async ()=> {
         answers: answerText.value.split('*')
     };
 
-    console.log(questionData)
-
-    const response = await axios.post('http://localhost:8080/question/update', questionData);
-    console.log(response.data);
-    //statifyQuestionAndStore(); //todo: make update method instead of add
+    const indexOfQuestion = quizStore.getIndexById(textInputStore.questionId);
+    quizStore.swapQuestions(indexOfQuestion, questionData);
 
     textInputStore.resetQuestionValues();
     await router.push('/create_quiz');

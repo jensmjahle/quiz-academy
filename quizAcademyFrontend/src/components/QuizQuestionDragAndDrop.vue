@@ -34,9 +34,11 @@ const removeCategory = (index) => {
 };
 
 if (dragDropStore.questionId !== null) {
+    edit.value = true;
     console.log("question id found");
     const updatedCategories = [];
     const categoriesFromStore = dragDropStore.questionCategories;
+    console.log("categories from store: ", categoriesFromStore);
 
     for (const [, innerObject] of Object.entries(categoriesFromStore)) { //I don't know why this works, but keep the comma
         for (const key in innerObject) {
@@ -55,14 +57,7 @@ const submitForm = async () => {
     await router.push('/create_quiz');
 }
 
-const statifyQuestionAndStore = () => {
-    const questionStateId = quizStore.quizQuestionStates.length;
-    dragDropStore.setQuestionValues(quizStore.quizId, questionStateId, "Drag the correct answer to the correct box.", categories.value);
-    quizStore.addDragDropQuestionState(dragDropStore);
-}
-
 function postDragDropQuestion() {
-    console.log(quizStore.quizId);
 
     const formattedCategories = {};
     categories.value.forEach(category => {
@@ -70,7 +65,7 @@ function postDragDropQuestion() {
         formattedCategories[category.name] = items;
     });
 
-    console.log(formattedCategories);
+    console.log("formatted categories when posting: ", formattedCategories);
 
     const dragDropQuestion = {
         questionText: questionText,
@@ -83,7 +78,7 @@ function postDragDropQuestion() {
     quizStore.addQuestion(dragDropQuestion);
 }
 
-const editQuestion = async () => {
+const editQuestion = () => {
 
     const dragDropQuestion = {
         questionText: questionText,
@@ -91,13 +86,12 @@ const editQuestion = async () => {
         type: "DRAG_AND_DROP",
         categories: categories.value
     }
+    const indexOfQuestion = quizStore.getIndexById(dragDropStore.questionId);
+    console.log("index of question: ", indexOfQuestion);
+    quizStore.swapQuestions(indexOfQuestion, dragDropQuestion);
 
-    const response = await axios.post("http://localhost:8080/question/update", dragDropQuestion);
-    console.log(response.data);
-
-    statifyQuestionAndStore(); //todo: make update method instead of add
     dragDropStore.resetQuestionValues();
-    await router.push('/create_quiz');
+    router.push('/create_quiz');
 }
 
 </script>

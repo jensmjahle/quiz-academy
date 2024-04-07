@@ -98,7 +98,7 @@ const submitForm = async () => {
     await router.push('/create_quiz');
 }
 
-const updateQuestion = async () => {
+const updateQuestion = () => {
     const questionData = {
         questionText: question.value,
         quizId: quizStore.quizId,
@@ -108,15 +108,12 @@ const updateQuestion = async () => {
         correctAlternatives: correctAlternatives.value,
     };
 
-    const response = await axios.post('http://localhost:8080/question/update', questionData);
-
-    console.log(response.data);
-
-    statifyQuestionAndStore(); //todo: make update instead of add
+    const indexOfQuestion = quizStore.getIndexById(multichoiceStore.questionId);
+    quizStore.swapQuestions(indexOfQuestion, questionData);
 
     multichoiceStore.resetQuestionValues();
 
-    await router.push('/create_quiz');
+    router.push('/create_quiz');
 }
 </script>
 
