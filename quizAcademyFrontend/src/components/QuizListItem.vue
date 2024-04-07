@@ -19,6 +19,17 @@
 
             <h5 class="quiz-description" >{{ quiz.quizDescription }}</h5>
         </div>
+        <h5 :class=" {
+        'always-visible': quiz.tags.length>0,
+        'tags': true,
+        'quiz-content': true
+        } " >
+            Tags: {{quiz.tags.length}}
+        </h5>
+
+
+
+
 
     </li>
 </template>
@@ -42,6 +53,7 @@ export default {
 <style scoped>
 .quiz-item {
     display: block;
+    position: relative;
     border: 1px solid var(--secondary-color);
     padding: 10px;
     margin: 5px; /* Add margin between items */
@@ -56,10 +68,8 @@ export default {
     transition: 0.3s;
     text-overflow: ellipsis;
     font-size: calc(1vw + 1vh);
-
-
-
     background-image: none;
+    overflow: visible;
 
 
     @media screen and (min-width: 768px) {
@@ -95,6 +105,20 @@ export default {
     border-radius: 10px;
 }
 
+.tags {
+    display: marker;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    transition: 0.3s;
+    padding: 3px;
+    margin: -10px;
+    background-color: rgba(var(--primary-color-rgb), 0.8);
+    font-size: calc(1.2vw + 1.5vh);
+
+
+}
+
 .quiz-item:hover {
     background-color: var(--tertiary-color); /* Change background color on hover */
     transition: 0.3s;
@@ -124,6 +148,14 @@ export default {
 }
 .quiz-name {
     line-height: 1;
+}
+
+@media screen and (min-width: 768px) {
+    .tags {
+        margin: 10px;
+        background-color: rgba(var(--base-contrast-color-rgb), 0.8);
+        font-size: calc(1vw + 1vh);
+    }
 }
 
 </style>
