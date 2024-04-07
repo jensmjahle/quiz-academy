@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useQuizStore } from '../stores/QuizState.js';
+import { useQuizStore } from '../stores/QuizStore.js';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useTokenStore } from '../stores/token.js';

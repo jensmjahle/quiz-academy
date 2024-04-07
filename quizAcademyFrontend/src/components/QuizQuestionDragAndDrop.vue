@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import {useRouter} from "vue-router";
-import { useQuizStore } from '../stores/QuizState.js';
+import { useQuizStore } from '../stores/QuizStore.js';
 import { useDragDropStore} from "../stores/dragAndDropQuestionStore.js";
 
 const router = useRouter();
