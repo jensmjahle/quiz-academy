@@ -1,10 +1,10 @@
 <script setup>
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import {useRouter} from "vue-router";
 import { useQuizStore } from '../stores/QuizState.js';
 import { useDragDropStore} from "../stores/dragAndDropQuestionStore.js";
 
-let router = useRouter();
+const router = useRouter();
 let edit = ref(false);
 
 const quizStore = useQuizStore();
@@ -39,25 +39,16 @@ if (dragDropStore.questionId !== null) {
     const updatedCategories = [];
     const categoriesFromStore = dragDropStore.questionCategories;
     console.log("categories from store: ", categoriesFromStore);
-
-    for (const [, innerObject] of Object.entries(categoriesFromStore)) { //I don't know why this works, but keep the comma
-        for (const key in innerObject) {
-            updatedCategories.push({
-                name: key,
-                items: innerObject[key].join('*')
-            });
-        }
+    for (const key in categoriesFromStore) {
+        updatedCategories.push({
+            name: key,
+            items: categoriesFromStore[key].join('*')
+        });
     }
     categories.value = updatedCategories;
 }
 
-const submitForm = async () => {
-    postDragDropQuestion();
-    dragDropStore.resetQuestionValues();
-    await router.push('/create_quiz');
-}
-
-function postDragDropQuestion() {
+const postDragDropQuestion = () => {
 
     const formattedCategories = {};
     categories.value.forEach(category => {
@@ -65,7 +56,7 @@ function postDragDropQuestion() {
         formattedCategories[category.name] = items;
     });
 
-    console.log("formatted categories when posting: ", formattedCategories);
+    console.log("quizId: ", quizStore.quizId);
 
     const dragDropQuestion = {
         questionText: questionText.value,
@@ -76,10 +67,18 @@ function postDragDropQuestion() {
 
     console.log(dragDropQuestion);
     quizStore.addQuestion(dragDropQuestion);
+
+    dragDropStore.resetQuestionValues();
+    router.push('/create_quiz');
 }
 
 const editQuestion = () => {
     const formattedCategories = {};
+
+    categories.value.forEach(category => {
+        const items = category.items.split('*');
+        formattedCategories[category.name] = items;
+    });
 
     const dragDropQuestion = {
         questionText: questionText.value,
@@ -87,6 +86,7 @@ const editQuestion = () => {
         type: "DRAG_AND_DROP",
         categories: formattedCategories
     }
+
     const indexOfQuestion = quizStore.getIndexById(dragDropStore.questionId);
     console.log("index of question: ", indexOfQuestion);
     quizStore.swapQuestions(indexOfQuestion, dragDropQuestion);
@@ -123,8 +123,9 @@ const editQuestion = () => {
         </div>
         <div id="buttons">
             <button id="add_category" @click="addCategory">Add a category</button>
-            <button id="submit_question" v-if="!edit" @click="submitForm">Submit</button>
+            <button id="submit_question" v-if="!edit" @click="postDragDropQuestion">Submit</button>
             <button id="update_question" v-if="edit" @click="editQuestion">Update</button>
+            <button id="cancel" @click="router.push('/create_quiz')">Cancel</button>
         </div>
     </div>
 </template>

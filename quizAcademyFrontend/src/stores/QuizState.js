@@ -38,7 +38,7 @@ export const useQuizStore = defineStore({
             if(Array.isArray(this.quizQuestions)) {
             this.quizQuestions.push(question);
             } else {
-                console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestions);
+                console.log("quizQuestions in addQuestion was called when not an array. Value of quizQuestions: ", this.quizQuestions);
                 this.quizQuestions = [question];
                 console.log("quizQuestions was reset to: ", this.quizQuestions);
             }
@@ -72,51 +72,6 @@ export const useQuizStore = defineStore({
             this.resetQuizDescription();
             this.resetQuestionStates();
             this.resetQuizPublicStatus();
-        },
-        addDragDropQuestionState(questionState) {
-            const store = useDragDropStore();
-            if(Array.isArray(this.quizQuestionStates)) {
-                store.quizId = questionState.quizId;
-                store.questionId = questionState.questionId;
-                store.questionText = questionState.questionText;
-                store.questionCategories = questionState.questionCategories;
-                this.quizQuestionStates.push(store);
-            } else {
-                console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
-            }
-        },
-        addMultichoiceQuestionState(questionState) {
-            const store = useMultichoiceStore();
-            if(Array.isArray(this.quizQuestionStates)) {
-                store.quizId = questionState.quizId;
-                store.questionId = questionState.questionId;
-                store.questionText = questionState.questionText;
-                store.questionAlternatives = questionState.questionCategories;
-                store.correctOptions = questionState.correctOptions;
-                this.quizQuestionStates.push(store);
-            } else {
-                console.log("quizQuestionStates was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
-                this.quizQuestionStates = [store];
-            }
-        },
-        addTextInputQuestionState(questionState) {
-            const store = useTextInputStore();
-            if(Array.isArray(this.quizQuestionStates)) {
-                store.quizId = questionState.quizId;
-                store.questionId = questionState.questionId;
-                store.questionText = questionState.questionText;
-                store.correctAnswers = questionState.correctAnswers;
-                this.quizQuestionStates.push(store);
-                console.log("added textinput question to state successfully");
-            } else {
-                console.log("quizQuestions was called when not an array. Value of quizQuestions: ", this.quizQuestionStates);
-                store.quizId = questionState.quizId;
-                store.questionId = questionState.questionId;
-                store.questionText = questionState.questionText;
-                store.correctAnswers = questionState.correctAnswers;
-                this.quizQuestionStates = [store];
-                console.log("attempted to reset quizQuestionStates to an array: ", this.quizQuestionStates);
-            }
         },
         resetQuestionStates() {
             this.quizQuestionStates = [];

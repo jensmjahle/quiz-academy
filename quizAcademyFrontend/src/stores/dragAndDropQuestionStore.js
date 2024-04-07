@@ -14,14 +14,7 @@ export const useDragDropStore = defineStore({
             this.quizId = quizId;
             this.questionId = questionId;
             this.questionText = questionText;
-            if(Array.isArray(questionCategories)) {
-                this.questionCategories = questionCategories;
-            } else {
-                console.log("questionCategories was called when not an array. Value of questionCategories: ", questionCategories);
-                this.questionCategories = [questionCategories];
-                console.log("attempted to reset questionCategories to an array: ", this.questionCategories);
-            }
-
+            this.questionCategories = questionCategories;
         },
         resetQuestionValues() {
             this.quizId = null;

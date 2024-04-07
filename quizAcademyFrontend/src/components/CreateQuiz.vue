@@ -1,7 +1,6 @@
 <script setup>
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/QuizState.js';
-import { useTextInputStore } from "../stores/textInputQuestionStore.js";
 import axios from 'axios';
 import { useRouter } from 'vue-router'
 import {useTokenStore} from "../stores/token.js";
@@ -98,8 +97,7 @@ const updateQuiz = async () => {
 
 const editQuestion = async (index) => {
     const routing = quizStore.fromQuestionToQuestionState(index);
-    await router.push(routing)
-    console.log("Routing successful. ");
+    await router.push(routing);
 }
 const exitAndSave = () => {
     updateQuiz();

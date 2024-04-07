@@ -1,4 +1,4 @@
-<template>
+<template   >
     <div id="QuizQuestionMultichoice">
         <h5 id="currently_editing" v-if="edit">Editing question</h5>
         <div id="question">
@@ -45,6 +45,8 @@
         <div>
             <button @click="submitForm" v-if="!edit">Submit</button>
             <button @click="updateQuestion" v-if="edit">Update</button>
+            <button id="cancel" @click="router.push('/create_quiz')">Cancel</button>
+
         </div>
     </div>
 </template>

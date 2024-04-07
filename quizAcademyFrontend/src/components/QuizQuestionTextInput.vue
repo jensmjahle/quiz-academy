@@ -2,13 +2,13 @@
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/QuizState.js';
 import { useTextInputStore } from "../stores/textInputQuestionStore.js";
-import router from "../router/index.js";
-import axios from "axios";
+import { useRouter } from 'vue-router';
 
 let edit = ref(false);
 let questionText = ref('');
 let answerText = ref('');
 
+const router = useRouter();
 const quizStore = useQuizStore();
 const textInputStore = useTextInputStore();
 
@@ -41,7 +41,7 @@ const createQuestion = () => {
     }
 }
 
-const updateQuestion = async ()=> {
+const updateQuestion = ()=> {
     const questionData = {
         questionText: questionText.value,
         quizId: quizStore.quizId,
@@ -51,10 +51,11 @@ const updateQuestion = async ()=> {
     };
 
     const indexOfQuestion = quizStore.getIndexById(textInputStore.questionId);
+    console.log("index of question: ", indexOfQuestion);
     quizStore.swapQuestions(indexOfQuestion, questionData);
 
     textInputStore.resetQuestionValues();
-    await router.push('/create_quiz');
+    router.push('/create_quiz');
 }
 </script>
 
@@ -70,6 +71,7 @@ const updateQuestion = async ()=> {
         <div>
             <button @click="createQuestion" v-if="!edit">Submit</button>
             <button @click="updateQuestion" v-if="edit">Update</button>
+            <button id="cancel" @click="router.push('/create_quiz')">Cancel</button>
         </div>
     </div>
 </template>
