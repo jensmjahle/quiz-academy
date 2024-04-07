@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller for handling quiz requests.
+ */
 @RestController
 @RequestMapping("/quiz")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -21,34 +24,68 @@ public class QuizController {
   private final Logger logger = Logger.getLogger(QuizController.class.getName());
   private final QuizService quizService;
 
+  /**
+   * Creates a new instance of the QuizController class.
+   *
+   * @param quizService the quiz service
+   */
   @Autowired
   public QuizController(QuizService quizService) {
     this.quizService = quizService;
   }
 
+  /**
+   * Get a quiz by id.
+   *
+   * @param quizId the id of the quiz
+   * @return the quiz with the given id
+   */
  @GetMapping("/{quizId}")
   public ResponseEntity<QuizDTO> getQuiz(@PathVariable Long quizId) {
     logger.info("Received request to get quiz with id: " + quizId + ".");
     return quizService.getQuiz(quizId);
   }
 
+  /**
+   * Get all quizzes for a user.
+   *
+   * @param username the username of the user
+   * @return all quizzes for the user
+   */
   @GetMapping("/all/{username}")
   public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes(@PathVariable String username) {
     logger.info("Received request to get all quizzes for user: " + username + ".");
     return quizService.getAllQuizzes(username);
   }
 
+  /**
+   * Delete a quiz by id.
+   *
+   * @param quizId the id of the quiz
+   * @return the response entity
+   */
   @DeleteMapping("/delete/{quizId}")
   public ResponseEntity<String> deleteQuiz(@PathVariable Long quizId) {
     logger.info("Received request to delete quiz with id: " + quizId + ".");
     return quizService.deleteQuiz(quizId);
   }
 
+  /**
+   * Create a new quiz.
+   *
+   * @param quizDTO the quiz to create
+   * @return the response entity
+   */
   @PostMapping("/create")
   public ResponseEntity<QuizDTO> createQuiz(@RequestBody QuizDTO quizDTO) {
     logger.info("Received request to create quiz with title: " + quizDTO.getQuizName() + ".");
     return quizService.createQuiz(quizDTO);
   }
+
+  /**
+   * Get all public quizzes.
+   * @return all public quizzes
+   */
   @GetMapping("/all")
   public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzes() {
     logger.info("Received request to get all quizzes.");

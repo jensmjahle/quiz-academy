@@ -1,20 +1,18 @@
 package edu.ntnu;
 
-
 import org.springframework.boot.*;
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.web.bind.annotation.*;
-
-
 
 
 @SpringBootApplication
 @RestController
 public class QuizAcademyApplication {
 
-
-
-//test
+	/**
+	 * The main method of the application.
+	 * @param args the command line arguments
+	 */
 	@GetMapping("/")
 	public String home() {
 		return "Spring is here!";
