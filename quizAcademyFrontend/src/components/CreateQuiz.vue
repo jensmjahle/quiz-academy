@@ -1,42 +1,68 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useQuizStore } from '../stores/QuizState.js';
 import axios from 'axios';
-import { useRouter } from 'vue-router'
-import {useTokenStore} from "../stores/token.js";
+import { useRouter } from 'vue-router';
+import { useTokenStore } from '../stores/token.js';
+import { fetchPublicTags } from '@/utils/tagUtils.js';
 
-
-const router = useRouter();
 const quizStore = useQuizStore();
 const tokenStore = useTokenStore();
+const router = useRouter();
 
-let quizCreated = ref(false);
-let quizId = ref(quizStore.quizId);
-let quizPublicStatus = ref(false);
-let questions = ref([]);
-let quizName = ref('');
-let showSavedMessage = ref(false);
-let quizDescription = ref('');
+const quizCreated = ref(false);
+const quizId = ref(quizStore.quizId);
+const quizPublicStatus = ref(false);
+const questions = ref([]);
+const quizName = ref('');
+const showSavedMessage = ref(false);
+const quizDescription = ref('');
+const quizTags = ref([]);
+const allTags = ref();
+const selectedTag = ref(null);
 
 const user = tokenStore.loggedInUser.data.username;
 
-if (quizStore.quizName !== null) {
-    quizName.value = quizStore.quizName;
-    quizDescription.value = quizStore.quizDescription;
-    quizCreated.value = true;
-    quizPublicStatus.value = quizStore.quizPublicStatus;
-    if (Array.isArray(quizStore.quizQuestions)) {
-        questions.value = quizStore.quizQuestions;
-    } else {
-        console.log("no questions in store or not an array. value: ", quizStore.quizQuestions);
-        questions.value = [];
+const initializeData = async () => {
+    try {
+        const tags = await fetchPublicTags(); // Fetch tags asynchronously
+        allTags.value = tags.map(tag => ({ tagId: tag.tagId, tagName: tag.tagName }));
+
+        if (quizStore.quizName !== null) {
+            quizCreated.value = true;
+            quizName.value = quizStore.quizName;
+            quizDescription.value = quizStore.quizDescription;
+            quizPublicStatus.value = quizStore.quizPublicStatus;
+            quizTags.value = quizStore.quizTags;
+            if (Array.isArray(quizStore.quizQuestions)) {
+                questions.value = quizStore.quizQuestions;
+            } else {
+                console.log("No questions in store or not an array. Value: ", quizStore.quizQuestions);
+                questions.value = [];
+            }
+        } else {
+            console.log("No quiz name");
+        }
+    } catch (error) {
+        console.error("Error fetching tags:", error);
     }
-} else {
-    console.log("no quiz name")
-}
+};
+
+onMounted(() => {
+    initializeData(); // Call the async function when component is mounted
+});
+
+console.log()
+
+const addTagToQuiz = () => {
+    const selectedTagObj = selectedTag.value;
+    if (selectedTagObj && !quizTags.value.some(tag => tag.tagId === selectedTagObj.tagId)) {
+        quizTags.value.push({ tagId: selectedTagObj.tagId, tagName: selectedTagObj.tagName });
+    }
+};
+
 
 const createQuiz = async () => {
-    //const tags = []; //TODO: Change this to the actual tags
 
     const quizData = {
         quizName: quizName.value,
@@ -53,7 +79,7 @@ const createQuiz = async () => {
         quizId.value = response.data.quizId;
         quizDescription.value = response.data.quizDescription;
         quizCreated.value = true;
-        quizStore.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription.value, quizPublicStatus.value);
+        quizStore.initializeQuiz(quizId.value, quizName.value, questions.value, quizDescription.value, quizPublicStatus.value, quizTags.value);
         console.log(quizCreated.value);
     } catch (error) {
         console.error(error);
@@ -68,6 +94,9 @@ const updateQuiz = async () => {
         console.log("no questions in store or not an array. value of questions: ", questions.value);
         questions.value = [];
     }
+    if (!Array.isArray(quizTags.value)) {
+        quizTags.value = [quizTags.value];
+    }
 
     const date = new Date();
 
@@ -76,6 +105,7 @@ const updateQuiz = async () => {
         quizName: quizName.value,
         quizDescription: quizDescription.value,
         user: user,
+        tags: quizTags.value,
         isPublic: quizPublicStatus.value,
         quizCreationDate: date,
         questions: quizStore.quizQuestions,
@@ -94,6 +124,13 @@ const updateQuiz = async () => {
         console.error(error);
     }
 }
+
+const removeTag = (tagToRemove) => {
+    const index = quizTags.value.indexOf(tagToRemove);
+    if (index !== -1) {
+        quizTags.value.splice(index, 1);
+    }
+};
 
 const editQuestion = async (index) => {
     const routing = quizStore.fromQuestionToQuestionState(index);
@@ -142,7 +179,22 @@ const resetWithConfirm = () => {
         <h5>Questions (click to edit):</h5>
         <ul>
             <li v-for="(question, index) in questions" :key="question.id" @click="editQuestion(index)" id="question_in_list" >
-                {{ question.type }}: {{ index + 1 }}. {{ question.questionText }}
+                {{ question.type }}: {{ index  + 1 }}. {{ question.questionText }}
+            </li>
+        </ul>
+    </div>
+    <div v-if="quizCreated">
+        <h5>Select Tags:</h5>
+        <select v-model="selectedTag" @change="addTagToQuiz">
+            <option v-for="tag in allTags" :key="tag" :value="tag">{{ tag }}</option>
+        </select>
+    </div>
+    <div v-if="quizCreated">
+        <h5>Current tags:</h5>
+        <ul>
+            <li v-for="tag in quizTags" :key="tag.tagId" @click="removeTag(tag)">
+                <span style="cursor: pointer; margin-left: 5px;" @click.stop="removeTag(tag)">[X]</span>
+                {{ tag.tagName }}
             </li>
         </ul>
     </div>
