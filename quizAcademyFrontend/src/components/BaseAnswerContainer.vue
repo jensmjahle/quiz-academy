@@ -98,6 +98,7 @@ font-size: 1.5em;
 }
 .image {
     max-height: 40vh;
+    border-radius: 10px;
 }
 .correct {
     color: var(--correct-answer-border-color);
