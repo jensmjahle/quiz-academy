@@ -81,7 +81,7 @@ export const useQuizStore = defineStore({
             if(question.type === "DRAG_AND_DROP") {
                 console.log("id DRAG_AND_DROP found");
                 const questionState = useDragDropStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.categories);
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.categories, question.imageBase64);
                 return("/create_quiz/drag_and_drop");
             } else if(question.type === "MULTIPLE_CHOICE") {
                 console.log("id MULTIPLE_CHOICE found");
