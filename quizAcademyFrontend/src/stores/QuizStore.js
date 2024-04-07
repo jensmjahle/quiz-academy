@@ -63,10 +63,10 @@ export const useQuizStore = defineStore({
             this.quizTags = [];
         },
         setQuizPhoto(photo) {
-            this.quizPhoto = photo;
+            this.quizImage = photo;
         },
         resetQuizPhoto() {
-            this.quizPhoto = null;
+            this.quizImage = null;
         },
         initializeQuiz(quizId, quizName, questions, quizDescription, status, tags, photo) {
             this.setQuizId(quizId);
