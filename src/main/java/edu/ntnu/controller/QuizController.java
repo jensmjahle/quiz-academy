@@ -1,6 +1,7 @@
 package edu.ntnu.controller;
 
 import edu.ntnu.dto.QuizDTO;
+import edu.ntnu.dto.TagDTO;
 import edu.ntnu.service.QuizService;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

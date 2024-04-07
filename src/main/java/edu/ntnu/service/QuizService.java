@@ -4,6 +4,7 @@ import edu.ntnu.dao.questions.DragDropQuestionDAO;
 import edu.ntnu.dao.questions.MultipleChoiceQuestionDAO;
 import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
 import edu.ntnu.dto.QuizDTO;
+import edu.ntnu.dto.TagDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.mapper.QuizMapper;
 import edu.ntnu.dao.QuizDAO;
@@ -195,6 +196,7 @@ public class QuizService {
 
   public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(Long tagId) {
     try {
+
       // Get all public quizzes from the database
       Iterable<QuizDAO> quizzes = quizRepository.findAllByIsPublicAndTagDAOs_TagId(true, tagId);
 
