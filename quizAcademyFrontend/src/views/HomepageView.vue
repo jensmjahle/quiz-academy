@@ -31,9 +31,7 @@ export default {
 
 
 
-
 </script>
-router.push("/play_quiz");
 
 <template>
 

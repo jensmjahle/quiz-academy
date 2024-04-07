@@ -3,6 +3,9 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    overflow-x: clip;
+    max-width: 100vw;
 }
 
 #app {
@@ -11,7 +14,7 @@
     align-items: center;
     min-height: 100vh;
     width: 100vw;
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 #header {
@@ -21,7 +24,7 @@
     align-items: center;
     width: 100vw;
     background-color: var(--primary-color);
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 #body {
@@ -29,7 +32,7 @@
     flex-direction: column;
     align-items: center;
     flex-grow: 1;
-    overflow-x: hidden;
+    width: 100vw;
 }
 
 #footer {
@@ -40,7 +43,7 @@
     height: 10vh;
     width: 100vw;
     background-color: var(--secondary-color);
-    overflow-x: hidden;
+    overflow-x: clip;
 }
 
 button {

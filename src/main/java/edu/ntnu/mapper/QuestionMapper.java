@@ -12,11 +12,6 @@ import edu.ntnu.enums.QuestionType;
 import edu.ntnu.dao.questions.QuestionDAO;
 import edu.ntnu.dao.questions.TextInputQuestionDAO;
 import edu.ntnu.utils.QuestionTypeIdentifier;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
@@ -24,7 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import org.springframework.stereotype.Component;
 
 @Component

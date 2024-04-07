@@ -1,34 +1,48 @@
 package edu.ntnu.dao.questions;
 
-
-import edu.ntnu.dao.QuizDAO;
 import jakarta.persistence.Entity;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Column;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
+
+/**
+ * Represents a true/false question in the system.
+ */
 @Entity
 public class TrueFalseQuestionDAO extends QuestionDAO {
 
   private boolean correctAnswer;
 
+  /**
+   * Creates a new instance of the TrueFalseQuestionDAO class.
+   */
   public TrueFalseQuestionDAO() {
   }
 
+  /**
+   * Creates a new instance of the TrueFalseQuestionDAO class.
+   *
+   * @param questionId the id of the question
+   * @param questionText the text of the question
+   * @param quizId the id of the quiz
+   * @param correctAnswer the correct answer of the question
+   */
   public TrueFalseQuestionDAO(Long questionId, String questionText, Long quizId, boolean correctAnswer) {
     super(questionId, questionText, quizId);
     this.correctAnswer = correctAnswer;
   }
 
+  /**
+   * Returns the correct answer of the question.
+   *
+   * @return the correct answer of the question
+   */
   public boolean isCorrectAnswer() {
     return correctAnswer;
   }
 
+  /**
+   * Sets the correct answer of the question.
+   *
+   * @param correctAnswer the correct answer of the question
+   */
   public void setCorrectAnswer(boolean correctAnswer) {
     this.correctAnswer = correctAnswer;
   }
