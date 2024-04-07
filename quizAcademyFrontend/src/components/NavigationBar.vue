@@ -1,9 +1,48 @@
+<template>
+  <div id="navigation-bar">
+    <nav>
+      <RouterLink @click="closeDropdown" to="/" class="router-button">Home</RouterLink>
+
+      <div id="categoryDropdown">
+        <button @click="toggleCategoriesDropdown" class="router-button-loggedIn" :class="{ active: categoriesDropdownOpen }">
+          Search
+          <span class="arrow-icon" :class="{ 'arrow-rotate': categoriesDropdownOpen }">&#9662;</span>
+        </button>
+        <div class="dropdown-content-category" :class="{ show: categoriesDropdownOpen }">
+          <input id="categoryInput" v-model="searchInput" type="text" placeholder="Search category tag" />
+          <button id="categorySearch" @click="searchQuizzes">Submit search</button>
+          <RouterLink @click="closeDropdown" to="/" class="router-button">All Categories</RouterLink>
+          <button v-for="tag in tags" :key="tag.tagId" @click="closeDropdownAndSearch(tag.tagName)" class="router-button">{{ tag.tagName }}</button>
+        </div>
+      </div>
+
+      <RouterLink @click="closeDropdown" to="/quizzes" class="router-button">My Quizzes</RouterLink>
+      <RouterLink @click="closeDropdown" to="/create_quiz" class="router-button">Create Quiz</RouterLink>
+
+      <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/login" class="router-button">Log in</RouterLink>
+
+      <div v-if="isLoggedIn" class="dropdown">
+        <button @click="toggleLogoutDropdown" class="router-button-loggedIn" :class="{ active: logoutDropdownOpen }">
+          {{ username }}
+          <span class="arrow-icon" :class="{ 'arrow-rotate': logoutDropdownOpen }">&#9662;</span>
+        </button>
+        <div class="dropdown-content" :class="{ show: logoutDropdownOpen }">
+          <a @click="logout" class="router-button">Logout</a>
+          <RouterLink @click="closeDropdown" to="/profile" class="router-button">My Page</RouterLink>
+        </div>
+      </div>
+
+      <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/signup" class="router-button">Sign Up</RouterLink>
+    </nav>
+  </div>
+</template>
+
 <script setup>
-import {RouterLink, useRouter} from "vue-router";
-import {useTokenStore} from "../stores/token.js";
-import {onMounted, ref, watch} from "vue";
-import {refresh} from "../utils/updateTokenUtil.js";
-import {fetchPublicTags} from "../utils/tagUtils.js";
+import { RouterLink, useRouter } from "vue-router";
+import { useTokenStore } from "../stores/token.js";
+import { onMounted, ref, watch } from "vue";
+import { refresh } from "../utils/updateTokenUtil.js";
+import { fetchPublicTags } from "../utils/tagUtils.js";
 
 const router = useRouter();
 const tokenStore = useTokenStore();
@@ -63,41 +102,7 @@ watch(
       username.value = tokenStore.getUsername;
     }
 );
-
 </script>
-
-<template>
-  <div id="navigation-bar">
-    <nav>
-      <RouterLink @click="closeDropdown" to="/" class="router-button">Home</RouterLink>
-      <div id="categoryDropdown">
-        <button @click="toggleCategoriesDropdown" class="router-button-loggedIn" :class="{ active: categoriesDropdownOpen }">
-          Search
-          <span class="arrow-icon" :class="{ 'arrow-rotate': categoriesDropdownOpen }">&#9662;</span>
-        </button>
-        <div class="dropdown-content-category" :class="{ show: categoriesDropdownOpen }">
-          <input id="categoryInput" v-model="searchInput" type="text" placeholder="Search category tag" />
-          <button id="categorySearch" @click="searchQuizzes">Submit search</button>
-          <RouterLink @click="closeDropdown" to="/" class="router-button-search">All Categories</RouterLink>
-          <button v-for="tag in tags" :key="tag.tagId" @click="closeDropdownAndSearch(tag.tagName)" class="router-button-search">{{ tag.tagName }}</button>        </div>
-      </div>
-      <RouterLink @click="closeDropdown" to="/quizzes" class="router-button">My Quizzes</RouterLink>
-      <RouterLink @click="closeDropdown" to="/create_quiz" class="router-button">Create Quiz</RouterLink>
-      <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/login" class="router-button">Log in</RouterLink>
-      <div v-else class="dropdown">
-        <button @click="toggleLogoutDropdown" class="router-button-loggedIn" :class="{ active: logoutDropdownOpen }">
-          {{ username }}
-          <span class="arrow-icon" :class="{ 'arrow-rotate': logoutDropdownOpen }">&#9662;</span>
-        </button>
-        <div class="dropdown-content" :class="{ show: logoutDropdownOpen }">
-          <a @click="logout">Logout</a>
-          <RouterLink @click="closeDropdown" to="/profile" class="router-button-mypage" id="my-page-button">My Page</RouterLink>
-        </div>
-      </div>
-      <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/signup" class="router-button">Sign Up</RouterLink>
-    </nav>
-  </div>
-</template>
 
 <style scoped>
 #navigation-bar {
@@ -233,6 +238,12 @@ nav {
   z-index: 999;
   justify-content: center;
   justify-items: center;
+  padding-top: 0;
+  .router-button {
+    padding: 10px;
+    width: 100%;
+    justify-self: center;
+  }
 }
 
 .dropdown-content a:hover {
@@ -344,4 +355,46 @@ nav {
   border-color: transparent;
 }
 
+@media screen and (max-width: 450px) {
+  nav {
+    display: inline-grid;
+    grid-template-columns: repeat(2, auto);
+    grid-column-gap: 10px;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    font-size: calc(2.2vw + 1.2vh);
+  }
+
+  #categorySearch,
+  .router-button-search,
+  .router-button-mypage {
+    padding: 10px;
+    margin: 5px 0;
+    width: 90%;
+    justify-self: center;
+  }
+
+  .dropdown-content a {
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+  }
+
+  .router-button {
+    padding-bottom: 10px;
+    width: 90%;
+    justify-self: center;
+  }
+
+  .router-button-loggedIn {
+    width: 90%;
+    justify-self: center;
+    margin-top: 12px;
+    font-size: calc(2.2vw + 1.2vh);
+  }
+
+  .dropdown-content-category.show {
+    padding-top: 0;
+  }
+}
 </style>
