@@ -1,6 +1,7 @@
 package edu.ntnu.dao;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Lob;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,8 +30,9 @@ public class QuizDAO {
   private String quizName;
   private String quizDescription;
   private boolean isPublic;
+  @Lob
   @Column(name = "image", nullable = true)
-  private String quizImage;
+  private byte[] quizImage;
   @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "createdBy", referencedColumnName = "username")
@@ -189,12 +191,12 @@ public class QuizDAO {
     this.isPublic = isPublic;
   }
 
-  public String getQuizImage() {
-    return quizImage;
-  }
-  public void setQuizImage(String quizImage) {
-    this.quizImage = quizImage;
-  }
+public byte[] getQuizImage() {
+  return quizImage;
+}
+public void setQuizImage(byte[] quizImage) {
+  this.quizImage = quizImage;
+}
 }
 
 
