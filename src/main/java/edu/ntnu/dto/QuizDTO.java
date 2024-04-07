@@ -14,6 +14,7 @@ public class QuizDTO {
   private String quizDescription;
   private String user;
   private boolean isPublic;
+  private String quizImage;
   @Nullable
   private List<TagDTO> tags;
   @Nullable
@@ -199,6 +200,14 @@ public class QuizDTO {
    */
   public void setIsPublic(boolean isPublic) {
     this.isPublic = isPublic;
+  }
+
+  public String getQuizImage() {
+    return quizImage;
+  }
+
+  public void setQuizImage(String quizImage) {
+    this.quizImage = quizImage;
   }
 
   /**

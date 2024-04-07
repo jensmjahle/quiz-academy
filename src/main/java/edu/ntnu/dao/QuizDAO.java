@@ -29,6 +29,8 @@ public class QuizDAO {
   private String quizName;
   private String quizDescription;
   private boolean isPublic;
+  @Column(name = "image", nullable = true)
+  private String quizImage;
   @JsonIgnore
   @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "createdBy", referencedColumnName = "username")
@@ -187,6 +189,12 @@ public class QuizDAO {
     this.isPublic = isPublic;
   }
 
+  public String getQuizImage() {
+    return quizImage;
+  }
+  public void setQuizImage(String quizImage) {
+    this.quizImage = quizImage;
+  }
 }
 
 
