@@ -30,6 +30,7 @@ const deleteAccount = () => {
   width: 80%;
   margin: 0 auto;
   margin-top: 60px;
+  margin-bottom: 60px;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
