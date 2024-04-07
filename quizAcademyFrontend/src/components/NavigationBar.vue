@@ -3,192 +3,319 @@ import { RouterLink } from "vue-router";
 import { useRouter } from "vue-router";
 import { useTokenStore } from "../stores/token.js";
 import { ref, watch } from "vue";
+import { refresh } from "../utils/updateTokenUtil.js"
 
 const router = useRouter();
 const tokenStore = useTokenStore();
 
 const isLoggedIn = ref(tokenStore.loggedInUser !== null);
 const username = ref(tokenStore.getUsername);
+const searchInput = ref('');
 
-const logout = () => {
-    tokenStore.logout();
-    router.push("/login");
+const searchQuizzes = () => {
+router.push({ path: "/search", query: { search: searchInput.value } });
+closeDropdown();
 };
 
-const dropdownOpen = ref(false);
+const searchQuizzesButtons = (searchTerm) => {
+  searchInput.value = searchTerm;
+  router.push({ path: "/search", query: { search: searchTerm } });
+};
 
-const toggleDropdown = () => {
-    dropdownOpen.value = !dropdownOpen.value;
+const logout = () => {
+  tokenStore.logout();
+  router.push("/login");
+};
+
+const categoriesDropdownOpen = ref(false);
+const logoutDropdownOpen = ref(false);
+
+const toggleCategoriesDropdown = () => {
+  categoriesDropdownOpen.value = !categoriesDropdownOpen.value;
+};
+
+const toggleLogoutDropdown = () => {
+  logoutDropdownOpen.value = !logoutDropdownOpen.value;
 };
 
 const closeDropdown = () => {
-    dropdownOpen.value = false;
+  categoriesDropdownOpen.value = false;
+  logoutDropdownOpen.value = false;
+  refresh();
+};
+
+const closeDropdownAndSearch = (inputSearch) => {
+  categoriesDropdownOpen.value = false;
+  logoutDropdownOpen.value = false;
+  refresh();
+  searchQuizzesButtons(inputSearch);
 };
 
 watch(
     () => tokenStore.loggedInUser,
     () => {
-        isLoggedIn.value = tokenStore.loggedInUser !== null;
-        username.value = tokenStore.getUsername;
+      isLoggedIn.value = tokenStore.loggedInUser !== null;
+      username.value = tokenStore.getUsername;
     }
 );
+
 </script>
 
 <template>
-    <div id="navigation-bar">
-        <nav>
-            <RouterLink @click="closeDropdown" to="/" class="router-button">Home</RouterLink>
-            <RouterLink @click="closeDropdown" to="/quizzes" class="router-button">My Quizzes</RouterLink>
-            <RouterLink @click="closeDropdown" to="/create_quiz" class="router-button">Create Quiz</RouterLink>
-            <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/login" class="router-button">Log in</RouterLink>
-            <div v-else class="dropdown">
-                <button @click="toggleDropdown" class="router-button-loggedIn" :class="{ active: dropdownOpen }">
-                    {{ username }}
-                    <span class="arrow-icon" :class="{ 'arrow-rotate': dropdownOpen }">&#9662;</span>
-                </button>
-                <div class="dropdown-content" :class="{ show: dropdownOpen }">
-                    <a @click="logout">Logout</a>
-                </div>
-            </div>
-            <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/signup" class="router-button">Sign Up</RouterLink>
-        </nav>
-    </div>
+  <div id="navigation-bar">
+    <nav>
+      <RouterLink @click="closeDropdown" to="/" class="router-button">Home</RouterLink>
+      <div id="categoryDropdown">
+        <button @click="toggleCategoriesDropdown" class="router-button-loggedIn" :class="{ active: categoriesDropdownOpen }">
+          Search
+          <span class="arrow-icon" :class="{ 'arrow-rotate': categoriesDropdownOpen }">&#9662;</span>
+        </button>
+        <div class="dropdown-content-category" :class="{ show: categoriesDropdownOpen }">
+          <input id="categoryInput" v-model="searchInput" type="text" placeholder="Search category tag" />
+          <button id="categorySearch" @click="searchQuizzes">Submit search</button>
+          <RouterLink @click="closeDropdown" to="/" class="router-button-search">All Categories</RouterLink>
+          <button @click="closeDropdownAndSearch('Math')" class="router-button-search">Math</button>
+          <button @click="closeDropdownAndSearch('Science')" class="router-button-search">Science</button>
+          <button @click="closeDropdownAndSearch('History')" class="router-button-search">History</button>
+          <button @click="closeDropdownAndSearch('Geography')" class="router-button-search">Geography</button>
+          <button @click="closeDropdownAndSearch('Literature')" class="router-button-search">Literature</button>
+          <button @click="closeDropdownAndSearch('Music')" class="router-button-search">Music</button>
+          <button @click="closeDropdownAndSearch('Art')" class="router-button-search">Art</button>
+          <button @click="closeDropdownAndSearch('Sports')" class="router-button-search">Sports</button>
+          <button @click="closeDropdownAndSearch('Movies')" class="router-button-search">Movies</button>
+          <button @click="closeDropdownAndSearch('TV Shows')" class="router-button-search">TV Shows</button>
+        </div>
+      </div>
+      <RouterLink @click="closeDropdown" to="/quizzes" class="router-button">My Quizzes</RouterLink>
+      <RouterLink @click="closeDropdown" to="/create_quiz" class="router-button">Create Quiz</RouterLink>
+      <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/login" class="router-button">Log in</RouterLink>
+      <div v-else class="dropdown">
+        <button @click="toggleLogoutDropdown" class="router-button-loggedIn" :class="{ active: logoutDropdownOpen }">
+          {{ username }}
+          <span class="arrow-icon" :class="{ 'arrow-rotate': logoutDropdownOpen }">&#9662;</span>
+        </button>
+        <div class="dropdown-content" :class="{ show: logoutDropdownOpen }">
+          <a @click="logout">Logout</a>
+        </div>
+      </div>
+      <RouterLink v-if="!isLoggedIn" @click="closeDropdown" to="/signup" class="router-button">Sign Up</RouterLink>
+    </nav>
+  </div>
 </template>
 
 <style scoped>
 #navigation-bar {
-    position: sticky;
-    top: 0;
-    z-index: 999; /* Ensure the navigation bar is always on top */
-    background-color: var(--secondary-color);
-    font-size: calc(1.2vw + 1.2vh);
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    box-sizing: border-box; /* Add this line */
+  position: sticky;
+  top: 0;
+  z-index: 999; /* Ensure the navigation bar is always on top */
+  background-color: var(--secondary-color);
+  font-size: calc(1.2vw + 1.2vh);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 nav {
-    display: inline-flex;
-    justify-content: center;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    width: 100%;
-    align-content: center;
-    align-items: center;
-    align-self: center;
-}
-
-.dropdown-content a {
-    color: var(--fourth-color); /* Set the color of the anchor tags within the dropdown to black */
-    background-color: var(--tertiary-color);
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 100%;
+  align-content: center;
+  align-items: center;
 }
 
 .router-button {
-    color: var(--fourth-color);
-    text-decoration: none;
-    text-align: center;
-    padding: 10px;
-    margin: 0 10px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    transition: border-color 0.3s;
-    height: 70%;
-    position: relative;
+  color: var(--fourth-color);
+  text-decoration: none;
+  text-align: center;
+  padding: 10px;
+  margin: 0 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  height: 70%;
+  position: relative;
 }
 
 .router-button-loggedIn {
-    color: var(--fourth-color);
-    text-decoration: none;
-    text-align: center;
-    padding: 0 10px;
-    margin: 0 10px;
-    font-size: calc(1.2vw + 1.2vh);
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    transition: border-color 0.3s;
-    justify-content: center;
-    justify-items: center;
-    justify-self: center;
-    align-content: center;
-    align-items: center;
-    align-self: center;
+  color: var(--fourth-color);
+  text-decoration: none;
+  text-align: center;
+  padding: 0 10px;
+  margin: 0 10px;
+  font-size: calc(1.2vw + 1.2vh);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  justify-content: center;
+  justify-items: center;
+  justify-self: center;
+  align-content: center;
+  align-items: center;
+  align-self: center;
 }
 
 .router-button:hover {
-    color: var(--base-color);
-    border-color: transparent;
+  color: var(--base-color);
+  border-color: transparent;
 }
 
 .router-button-loggedIn:hover {
-    color: var(--base-color);
-    border-color: transparent;
+  color: var(--base-color);
+  border-color: transparent;
 }
 
 .active {
-    border-color: var(--tertiary-color);
+  border-color: var(--tertiary-color);
 }
 
 .dropdown {
-    position: relative;
-    overflow: visible;
-    font-size: calc(1.2vw + 1.2vh);
-    height: 100%;
+  position: relative;
+  overflow: visible;
+  font-size: calc(1.2vw + 1.2vh);
+  height: 100%;
 }
 
 .dropdown-content {
-    z-index: 999; /* Increase this value as needed */
-    position: absolute;
-    top: 100%; /* Position it right below the button */
-    display: none;
-    background: linear-gradient(to bottom, var(--secondary-color) 0%, var(--secondary-color) 70%, transparent 150%);
-    padding: 10px 12px;
-    font-size: calc(1.2vw + 1.2vh);
-    height: calc(2.2vw + 2.2vh);
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-    border-bottom-color: var(--tertiary-color);
-    box-shadow: 0 5px 4px rgba(0, 0, 0, 0.4);
+  z-index: 999; /* Increase this value as needed */
+  position: absolute;
+  top: 100%; /* Position it right below the button */
+  display: none;
+  background: linear-gradient(to bottom, var(--secondary-color) 0%, var(--secondary-color) 80%, transparent 150%);
+  padding: 10px 12px;
+  font-size: calc(1.2vw + 1.2vh);
+  height: calc(3.2vw + 3.2vh);
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-color: var(--tertiary-color);
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.4);
 }
 
 .dropdown-content a {
-    color: var(--fourth-color); /* Set the color of the anchor tags within the dropdown to black */
-    background-color: var(--secondary-color);
+  color: var(--fourth-color); /* Set the color of the anchor tags within the dropdown to black */
+  background-color: var(--secondary-color);
 }
 
 .arrow-icon {
-    font-size: calc(1.2vw + 1.2vh);
-    margin-left: 0px;
+  font-size: calc(1.2vw + 1.2vh);
+  margin-left: 0px;
 }
 
 .dropdownButton {
-    color: var(--fourth-color);
-    text-decoration: none;
-    text-align: center;
-    padding: 10px;
-    margin: 0 10px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-    transition: border-color 0.3s;
-    height: 100%;
+  color: var(--fourth-color);
+  text-decoration: none;
+  text-align: center;
+  padding: 10px;
+  margin: 0 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  height: 100%;
 }
 
 .arrow-rotate {
-    transform: rotate(180deg); /* Rotate arrow when dropdown is open */
+  transform: rotate(180deg); /* Rotate arrow when dropdown is open */
 }
 
 .dropdown-content.show {
-    display: block;
-    overflow: visible;
-    z-index: 999;
-    margin-left: 7px;
+  display: block;
+  overflow: visible;
+  z-index: 999;
+  margin-left: 7px;
 }
 
 .dropdown-content a:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
+.dropdown-content-category {
+  z-index: 999;
+  position: absolute;
+  top: calc(100%); /* Position it below the navbar */
+  left: -11vw;
+  display: none;
+  background: linear-gradient(to bottom, var(--secondary-color) 0%, var(--secondary-color) 80%, transparent 300%);
+  font-size: calc(1.2vw + 1.2vh);
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  border-bottom-color: var(--tertiary-color);
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  align-items: center;
+  overflow-y: scroll;
+}
+
+#categoryDropdown {
+  position: relative;
+  top: 0;
+  overflow: visible;
+}
+
+.dropdown-content-category.show {
+  margin: 0;
+  padding: 0;
+  display: inline-grid;
+  z-index: 999;
+  max-height: 250px;
+  min-width: calc(34vw - 1vw);
+}
+
+@media screen and (min-width: 768px) {
+  .dropdown-content-category.show {
+    display: inline-grid;
+    grid-template-columns: repeat(2, auto); /* Two columns */
+    grid-column-gap: 10px; /* Adjust the gap between columns */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .dropdown-content-category.show {
+    display: inline-grid;
+  }
+}
+
+#categoryInput {
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid var(--fourth-color);
+  margin: 5px 0;
+  width: 90%; /* Adjust as needed */
+  justify-self: center;
+}
+
+#categorySearch {
+  padding: 5px 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--fourth-color);
+  color: var(--secondary-color);
+  cursor: pointer;
+  margin: 5px 0;
+  width: 90%; /* Adjust as needed */
+  justify-self: center;
+}
+
+.router-button-search {
+  color: var(--fourth-color);
+  text-decoration: none;
+  text-align: center;
+  padding: 10px;
+  margin: 0 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  height: 100%;
+  font-size: calc(1.2vw + 1.2vh);
+}
+
+.router-button-search:hover {
+  color: var(--base-color);
+  border-color: transparent;
+}
 </style>

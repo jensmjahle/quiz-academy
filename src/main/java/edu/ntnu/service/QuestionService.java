@@ -21,6 +21,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for Question objects.
+ */
 @Service
 public class QuestionService {
   private final MultipleChoiceQuestionDAORepository multipleChoiceRepository;
@@ -31,6 +34,14 @@ public class QuestionService {
   private final QuestionMapper questionMapper;
   private final Logger logger = Logger.getLogger(QuestionService.class.getName());
 
+  /**
+   * Constructor for the QuestionService.
+   * @param multipleChoiceRepository the repository for MultipleChoiceQuestionDAO objects
+   * @param textInputRepository the repository for TextInputQuestionDAO objects
+   * @param dragDropRepository the repository for DragDropQuestionDAO objects
+   * @param trueFalseRepository the repository for TrueFalseQuestionDAO objects
+   * @param questionMapper the mapper for Question objects
+   */
   @Autowired
   public QuestionService(
       MultipleChoiceQuestionDAORepository multipleChoiceRepository,
@@ -46,7 +57,15 @@ public class QuestionService {
     this.questionMapper = questionMapper;
   }
 
-
+  /**
+   * Method to get a question by id from the database.
+   * If the question is found, the status code is 200.
+   * If the question is not found, the status code is 404.
+   * If an error occurs, the status code is 500.
+   *
+   * @param questionId The id of the question to get.
+   * @return ResponseEntity with the Question object and status code.
+   */
   public ResponseEntity<QuestionDTO> getQuestion(Long questionId) {
     try {
       // Get the question from the database
@@ -62,6 +81,15 @@ public class QuestionService {
     }
   }
 
+  /**
+   * Method to create a question from a QuestionDTO object.
+   * Saves the question to the database.
+   * If the question is created successfully, the status code is 200.
+   * If an error occurs, the status code is 500.
+   *
+   * @param questionDTO The QuestionDTO object to create the question from.
+   * @return ResponseEntity with the Question object and status code.
+   */
   public ResponseEntity<QuestionDTO> createQuestion(QuestionDTO questionDTO) {
     try {
       // Identify the question type
@@ -95,6 +123,14 @@ public class QuestionService {
   }
 }
 
+  /**
+   * Method to delete a question by id from the database.
+   * If the question is deleted successfully, the status code is 200.
+   * If an error occurs, the status code is 500.
+   *
+   * @param questionId The id of the question to delete.
+   * @return ResponseEntity with a message and status code.
+   */
   public ResponseEntity<String> deleteQuestion(Long questionId) {
     try {
       // Get the question from the database
@@ -128,6 +164,15 @@ public class QuestionService {
     }
   }
 
+  /**
+   * Method to update a question from a QuestionDTO object.
+   * Updates the question in the database.
+   * If the question is updated successfully, the status code is 200.
+   * If an error occurs, the status code is 500.
+   *
+   * @param newDTO The QuestionDTO object to update the question from.
+   * @return ResponseEntity with a message and status code.
+   */
   public ResponseEntity<String> updateQuestion(QuestionDTO newDTO) {
     try {
       QuestionType questionType = QuestionTypeIdentifier.identifyQuestionDTOType(newDTO);
@@ -179,6 +224,15 @@ public class QuestionService {
     return ResponseEntity.ok("Question updated successfully.");
   }
 
+  /**
+   * Method to get all questions from the database.
+   * If the questions are found, the status code is 200.
+   * If the questions are not found, the status code is 404.
+   * If an error occurs, the status code is 500.
+   *
+   * @param quizId The id of the quiz to get the questions from.
+   * @return ResponseEntity with the Question objects and status code.
+   */
   public  Iterable<QuestionDAO> getAllQuestions(Long quizId) {
     // Get all questions of each type
 
@@ -196,9 +250,17 @@ public class QuestionService {
 
     return combinedQuestionDAOS;
 
-
   }
 
+  /**
+   * Method to get a question by id from the database.
+   * If the question is found, the status code is 200.
+   * If the question is not found, the status code is 404.
+   * If an error occurs, the status code is 500.
+   *
+   * @param questionId The id of the question to get.
+   * @return ResponseEntity with the Question object and status code.
+   */
   public QuestionDAO getQuestionById(Long questionId) {
     QuestionDAO questionDAO = null;
 
