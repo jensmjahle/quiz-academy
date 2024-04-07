@@ -255,4 +255,16 @@ public class QuizService {
     }
   }
 
+ */
+  public ResponseEntity<QuizDTO> updateQuiz(QuizDTO quizDTO) {
+    try {
+      deleteQuizFromQuizId(quizDTO.getQuizId());
+      ResponseEntity<QuizDTO> response = createQuiz(quizDTO);
+      logger.info("Quiz with id " + quizDTO.getQuizId() + " updated successfully.");
+      return response;
+    } catch (Exception e) {
+      logger.severe("An error occurred while updating quiz with name " + quizDTO.getQuizName() + ": " + e.getMessage());
+      return ResponseEntity.status(500).build();
+    }
+  }
 }
