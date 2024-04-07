@@ -33,7 +33,7 @@ export const useTokenStore = defineStore("token", {
                     this.startTimer();
                 }
             } catch (err) {
-                console.log(err);
+                console.error(err);
             }
         },
         async logout() {
@@ -55,14 +55,13 @@ export const useTokenStore = defineStore("token", {
             try{
                 let response = await refreshJwtToken(this.jwtToken);
                 let data = response.data;
-                console.log(data);
                 if(data != null && data !== '' && data !== undefined){
                     this.jwtToken = data;
                     this.startTimer();
                 }
             } catch (err){
                 await router.push({name: "Login"})
-                console.log(err)
+                console.error(err)
             }
         },
         async deleteUser() {

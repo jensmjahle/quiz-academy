@@ -190,14 +190,13 @@ export default {
             if (this.tokenStore.jwtToken) {
               this.loginStatus = "Login successful!";
               await router.push("/");
-              console.log("Login successful!");
               sessionStorage.removeItem("signUpUser");
             } else {
               this.loginStatus = "Login failed!";
             }
           }
         } catch (error) {
-          console.log(error)
+          console.error(error)
           if (error.response && error.response.status === 409) {
             this.userNameExists = true;
           }

@@ -16,7 +16,6 @@ export default {
     },
     setup() {
         if (usePlayQuizStore().quiz == null) {
-            console.log("No quiz found");
             router.push("/");
         }
     },

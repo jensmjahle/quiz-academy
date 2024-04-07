@@ -80,7 +80,6 @@ if (multichoiceStore.questionId !== null) {
     question.value = multichoiceStore.questionText;
     alternatives.value = multichoiceStore.questionAlternatives;
     edit.value = true;
-    console.log("array in store: ", multichoiceStore.correctAlternatives);
     for (let i = 0; i < 4; i++) {
         if (multichoiceStore.correctAlternatives[i]  === "true") {
             correctAlternatives.value[i] = true;
@@ -92,7 +91,6 @@ if (multichoiceStore.questionId !== null) {
         questionPhoto.value = multichoiceStore.questionImage;
         imageUploaded.value = true;
     }
-    console.log(correctAlternatives.value);
 }
 
 const handleFileUpload = (event) => {
@@ -101,11 +99,8 @@ const handleFileUpload = (event) => {
 
     const reader = new FileReader();
     reader.onload = () => {
-        // `reader.result` contains the base64 string representation of the image
         questionPhoto.value = reader.result;
-        console.log("questionPhoto: ", questionPhoto.value);
     };
-    // Read the file as a data URL (base64)
     reader.readAsDataURL(file);
     imageUploaded.value = true;
 };
@@ -131,7 +126,6 @@ const submitForm = async () => {
             correctAsStrings[i] = "false";
         }
     }
-    console.log("correct alternatives: ", correctAsStrings);
 
     const questionData = {
         questionText: question.value,
@@ -142,7 +136,6 @@ const submitForm = async () => {
         correctAlternatives: correctAsStrings,
         imageBase64: questionPhoto.value
     };
-    console.log(questionData);
 
     quizStore.addQuestion(questionData);
 
@@ -163,7 +156,6 @@ const updateQuestion = () => {
         }
     }
 
-    console.log("correct alternatives: ", correctAsStrings);
     const questionData = {
         questionText: question.value,
         quizId: quizStore.quizId,

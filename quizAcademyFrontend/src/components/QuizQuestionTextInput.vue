@@ -15,7 +15,6 @@ const quizStore = useQuizStore();
 const textInputStore = useTextInputStore();
 
 if(textInputStore.questionId !== null) {
-    console.log("question id was found in store: ", textInputStore.questionId);
     edit.value = true;
     questionText.value = textInputStore.questionText;
     answerText.value = textInputStore.correctAnswers.join('*');
@@ -23,7 +22,6 @@ if(textInputStore.questionId !== null) {
     if (questionPhoto.value !== null) {
         imageUploaded.value = true;
     }
-    console.log("questionPhoto: ", questionPhoto.value);
 }
 
 const handleFileUpload = (event) => {
@@ -34,7 +32,6 @@ const handleFileUpload = (event) => {
     reader.onload = () => {
         // `reader.result` contains the base64 string representation of the image
         questionPhoto.value = reader.result;
-        console.log("questionPhoto: ", questionPhoto.value);
     };
     // Read the file as a data URL (base64)
     reader.readAsDataURL(file);
@@ -42,8 +39,6 @@ const handleFileUpload = (event) => {
 };
 
 const createQuestion = () => {
-
-    console.log("answerText: ", answerText.value);
 
     const questionData = {
         questionText: questionText.value,
@@ -57,7 +52,6 @@ const createQuestion = () => {
     quizStore.addQuestion(questionData);
     textInputStore.resetQuestionValues();
     try{
-        console.log("pushing to create_quiz");
         router.push('/create_quiz');
     } catch(error) {
         console.error("pushing to create_quiz failed with error: ", error);
@@ -75,7 +69,6 @@ const updateQuestion = ()=> {
     };
 
     const indexOfQuestion = quizStore.getIndexById(textInputStore.questionId);
-    console.log("index of question: ", indexOfQuestion);
     quizStore.swapQuestions(indexOfQuestion, questionData);
 
     textInputStore.resetQuestionValues();

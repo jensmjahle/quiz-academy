@@ -37,10 +37,8 @@ const removeCategory = (index) => {
 if (dragDropStore.questionId !== null) {
     edit.value = true;
     questionText.value = dragDropStore.questionText;
-    console.log("question id found");
     const updatedCategories = [];
     const categoriesFromStore = dragDropStore.questionCategories;
-    console.log("categories from store: ", categoriesFromStore);
     for (const key in categoriesFromStore) {
         updatedCategories.push({
             name: key,
@@ -62,7 +60,6 @@ const handleFileUpload = (event) => {
     reader.onload = () => {
         // `reader.result` contains the base64 string representation of the image
         questionPhoto.value = reader.result;
-        console.log("questionPhoto: ", questionPhoto.value);
     };
     // Read the file as a data URL (base64)
     reader.readAsDataURL(file);
@@ -77,8 +74,6 @@ const postDragDropQuestion = () => {
         formattedCategories[category.name] = items;
     });
 
-    console.log("quizId: ", quizStore.quizId);
-
     const dragDropQuestion = {
         questionText: questionText.value,
         quizId: quizStore.quizId,
@@ -86,8 +81,6 @@ const postDragDropQuestion = () => {
         categories: formattedCategories,
         imageBase64: questionPhoto.value
     };
-
-    console.log(dragDropQuestion);
     quizStore.addQuestion(dragDropQuestion);
 
     dragDropStore.resetQuestionValues();
@@ -111,7 +104,6 @@ const editQuestion = () => {
     }
 
     const indexOfQuestion = quizStore.getIndexById(dragDropStore.questionId);
-    console.log("index of question: ", indexOfQuestion);
     quizStore.swapQuestions(indexOfQuestion, dragDropQuestion);
 
     dragDropStore.resetQuestionValues();
