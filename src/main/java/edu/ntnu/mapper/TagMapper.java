@@ -9,7 +9,7 @@ public class TagMapper {
 
 
 
-    public  TagDTO toTagDTO(TagDAO tagDAO) {
+    public  TagDTO toDTO(TagDAO tagDAO) {
         return new TagDTO(
             tagDAO.getTagId(),
             tagDAO.getTagName()
