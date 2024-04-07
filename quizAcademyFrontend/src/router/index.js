@@ -7,11 +7,11 @@ import MultichoiceView from "../views/MultichoiceView.vue";
 import DragAndDropView from "../views/DragAndDropView.vue";
 import TextInputView from "../views/TextInputView.vue";
 import SigninWiew from "../views/QuizSigninView.vue";
-import * as path from "path";
 import PlayQuizView from "../views/PlayQuizView.vue";
 import { usePlayQuizStore } from "../stores/playQuizStore.js";
 import SearchpageView from "@/views/SearchpageView.vue";
 import MyPageView from "@/views/MyPageView.vue";
+import TrueFalseView from "@/views/TrueFalseView.vue";
 
 export default createRouter({
     history: createWebHistory(),
@@ -49,6 +49,11 @@ export default createRouter({
             path: "/create_quiz/drag_and_drop",
             name: "drag_and_drop",
             component: DragAndDropView
+        },
+        {
+            path: "/create_quiz/true_false",
+            name: "true_false",
+            component: TrueFalseView
         },
         {
             path: "/signup",

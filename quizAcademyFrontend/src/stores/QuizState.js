@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { useDragDropStore } from './dragAndDropQuestionStore.js';
 import { useMultichoiceStore } from './multichoideQuestionStore.js';
 import { useTextInputStore } from './textInputQuestionStore.js';
+import {useTrueFalseStore} from "@/stores/trueFalseQuestionStore.js";
 
 export const useQuizStore = defineStore({
     // unique id of the store across your application
@@ -102,6 +103,11 @@ export const useQuizStore = defineStore({
                 const questionState = useTextInputStore();
                 questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.answers, question.imageBase64);
                 return ("/create_quiz/text_input");
+            } else if(question.type === "TRUE_FALSE") {
+                console.log("id TRUE_FALSE found. correctAnswer: ", question.correctAnswer);
+                const questionState = useTrueFalseStore();
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.correctAnswer, question.imageBase64);
+                return("/create_quiz/true_false");
             } else {
                 console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question.questionType);
             }
