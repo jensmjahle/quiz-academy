@@ -26,7 +26,7 @@ public class SecurityConfig {
         .csrf().disable()
         .cors().and()
         .authorizeHttpRequests()
-        .requestMatchers("/token/new","/quiz/all", "/quiz/create", "/users/create", "/token/delete").permitAll()
+        .requestMatchers("/token/new","/quiz/public/all","/tag/all", "quiz/public/all/tags/{tagId}", "/users/create", "/token/delete").permitAll()
         .anyRequest().authenticated().and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .addFilterBefore(new JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

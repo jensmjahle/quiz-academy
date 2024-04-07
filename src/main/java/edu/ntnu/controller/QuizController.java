@@ -34,8 +34,8 @@ public class QuizController {
 
   @GetMapping("/all/{username}")
   public ResponseEntity<Iterable<QuizDTO>> getAllQuizzes(@PathVariable String username) {
-    logger.info("Received request to get all quizzes for user: " + username + ".");
-    return quizService.getAllQuizzes(username);
+      logger.info("Received request to get all quizzes for user: " + username + ".");
+      return quizService.getAllQuizzes(username);
   }
 
   @DeleteMapping("/delete/{quizId}")
@@ -49,19 +49,17 @@ public class QuizController {
     logger.info("Received request to create quiz with title: " + quizDTO.getQuizName() + ".");
     return quizService.createQuiz(quizDTO);
   }
-  @GetMapping("/all")
+  @GetMapping("/public/all")
   public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzes() {
     logger.info("Received request to get all quizzes.");
     return quizService.getAllPublicQuizzes();
   }
 
-  /*
-  @GetMapping("/all/{tag}")
-  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(@PathVariable String tag) {
-    logger.info("Received request to get all quizzes with tag: " + tag + ".");
-    return quizService.getAllPublicQuizzesByTag(tag);
-  }
 
-*/
+  @GetMapping("public/all/tags/{tagId}")
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(@PathVariable Long tagId) {
+    logger.info("Received request to get all quizzes with tag: " + tagId + ".");
+    return quizService.getAllPublicQuizzesByTag(tagId);
+  }
 
 }

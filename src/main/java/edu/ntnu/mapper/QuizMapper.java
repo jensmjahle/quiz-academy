@@ -48,7 +48,7 @@ public class QuizMapper {
         quizDTO.setQuizDescription(quizDAO.getQuizDescription());
         quizDTO.setUser(quizDAO.getUser().getUsername());
         quizDTO.setIsPublic(quizDAO.isPublic());
-        quizDTO.setTags(quizDAO.getTags().stream().map(tagMapper::toTagDTO).collect(Collectors.toList()));
+        quizDTO.setTags(quizDAO.getTags().stream().map(tagMapper::toDTO).collect(Collectors.toList()));
         quizDTO.setQuizCreationDate(quizDAO.getQuizCreationDate());
         return quizDTO;
     } catch (Exception e) {
