@@ -111,6 +111,7 @@ const updateQuiz = async () => {
         quizTags.value = [quizTags.value];
     }
 
+    quizStore.setQuizPhoto(quizPhoto.value);
     const date = new Date();
 
     const quizData = {
