@@ -173,7 +173,7 @@ public class QuizService {
    * If the quiz is updated successfully, the status code is 200.
    * If an error occurs, the status code is 500.
    *
-   * @param quizDTO The QuizDTO object to update the quiz from.
+   * @param quizId The quizId of the quiz to delete.
    * @return ResponseEntity with the Quiz object and status code.
    */
   public ResponseEntity<String> deleteQuiz(Long quizId) {
@@ -255,7 +255,15 @@ public class QuizService {
     }
   }
 
- */
+  /**
+   * Method to update a quiz from a QuizDTO object.
+   * Updates the quiz in the database.
+   * If the quiz is updated successfully, the status code is 200.
+   * If an error occurs, the status code is 500.
+   *
+   * @param quizDTO The QuizDTO object to update the quiz from.
+   * @return ResponseEntity with the Quiz object and status code.
+   */
   public ResponseEntity<QuizDTO> updateQuiz(QuizDTO quizDTO) {
     try {
       deleteQuizFromQuizId(quizDTO.getQuizId());
