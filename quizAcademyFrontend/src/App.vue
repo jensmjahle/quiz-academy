@@ -81,8 +81,20 @@ const bodyClass = computed(() => {
         </div>
         <div id="footer">
             <p>Quiz Academy 2024</p>
+            <div class="contact">
+            <p>Contact Us:</p>
+            <a href="mailto:jens.postkasse52@gmail.com" class="email-button">Send mail</a>
+            </div>
         </div>
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.contact {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+</style>

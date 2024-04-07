@@ -40,8 +40,9 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    height: 10vh;
+    height: 20vh;
     width: 100vw;
+    gap: 20px;
     background-color: var(--secondary-color);
     overflow-x: clip;
 }
