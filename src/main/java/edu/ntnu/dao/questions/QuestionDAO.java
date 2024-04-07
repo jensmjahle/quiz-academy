@@ -1,6 +1,7 @@
 package edu.ntnu.dao.questions;
 
 import edu.ntnu.dao.QuizDAO;
+import jakarta.persistence.Lob;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
@@ -28,9 +29,9 @@ public abstract class QuestionDAO {
   @JoinColumn(name = "quizId")
   private QuizDAO quizDAO;
 
-
+@Lob
   @Column(name = "image", nullable = true)
-  private String questionImage;
+  private byte[] questionImage;
 
   /**
    * Creates a new instance of the Question class.
@@ -99,20 +100,12 @@ public abstract class QuestionDAO {
     this.questionId = questionId;
   }
 
-  /**
-   * Gets the image of the question.
-   * @return the image of the question
-   */
-  public String getImage() {
+ public byte[] getQuestionImage() {
     return questionImage;
   }
 
-  /**
-   * Sets the image of the question.
-   * @param image the image of the question
-   */
-  public void setImage(String image) {
-    this.questionImage = image;
+  public void setQuestionImage(byte[] questionImage) {
+    this.questionImage = questionImage;
   }
 }
 

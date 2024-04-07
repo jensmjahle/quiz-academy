@@ -1,5 +1,6 @@
 package edu.ntnu.mapper;
 
+import com.fasterxml.jackson.databind.ser.Serializers.Base;
 import edu.ntnu.dto.QuizDTO;
 import edu.ntnu.dto.TagDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
@@ -65,7 +66,7 @@ public class QuizMapper {
         quizDTO.setQuizDescription(quizDAO.getQuizDescription());
         quizDTO.setUser(quizDAO.getUser().getUsername());
         quizDTO.setIsPublic(quizDAO.isPublic());
-        quizDTO.setQuizImage(quizDAO.getQuizImage());
+        quizDTO.setQuizImage(Base64Mapper.convertImageToBase64(quizDAO.getQuizImage()));
         if (quizDAO.getTags() == null) {
             logger.warning("No tags found for quiz with id " + quizDAO.getQuizId() + ". Setting tags to null.");
             quizDTO.setTags(null);
@@ -103,7 +104,7 @@ public class QuizMapper {
 
     /**
      * Maps a QuizDAO object to a QuizDTO object.
-     * @param quizDAO The QuizDAO object to map.
+     * @param quizDTO The QuizDAO object to map.
      * @return The QuizDTO object.
      */
     public QuizDAO toDAOWithoutId(QuizDTO quizDTO) {
@@ -111,7 +112,7 @@ public class QuizMapper {
         quizDAO.setQuizName(quizDTO.getQuizName());
         quizDAO.setQuizDescription(quizDTO.getQuizDescription());
         quizDAO.setIsPublic(quizDTO.isPublic());
-        quizDAO.setQuizImage(quizDTO.getQuizImage());
+        quizDAO.setQuizImage(Base64Mapper.convertBase64ToImage(quizDTO.getQuizImage()));
         if (quizDTO.getQuizCreationDate() == null) {
             logger.warning("No creation date found for quiz with id " + quizDTO.getQuizId() + ". Setting creation date to current date.");
             quizDAO.setQuizCreationDate(new Date());
