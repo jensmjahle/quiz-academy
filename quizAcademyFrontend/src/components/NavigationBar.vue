@@ -281,6 +281,12 @@ nav {
   z-index: 999;
   max-height: 250px;
   min-width: calc(34vw - 1vw);
+  .router-button {
+    padding: 10px;
+    width: 100%;
+    justify-self: center;
+    font-size: calc(1.2vw + 1.2vh);;
+  }
 }
 
 @media screen and (min-width: 768px) {
