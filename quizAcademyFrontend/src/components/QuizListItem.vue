@@ -20,11 +20,10 @@
             <h5 class="quiz-description" >{{ quiz.quizDescription }}</h5>
         </div>
         <h5 :class=" {
-        'always-visible': quiz.tags.length>0,
         'tags': true,
         'quiz-content': true
         } " >
-            Tags: {{quiz.tags.length}}
+            Tags: {{quiz.tags ? quiz.tags.length : 0 }}
         </h5>
 
 
