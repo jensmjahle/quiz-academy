@@ -21,7 +21,7 @@ export const useTokenStore = defineStore("token", {
             this.timer = setTimeout(() => {
                 alert("Session timed out. Please log in again.");
                 this.logout();
-            }, 300000);
+            }, 340000);
         },
         async getTokenAndSaveInStore(username, password) {
             try {
