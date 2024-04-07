@@ -8,7 +8,7 @@ describe('Log in form end to end', () => {
 
         // Check if the button is disabled when the form is invalid
         cy.get('button').should('not.be.disabled');
-        cy.get('button').click();
+        cy.contains('button', 'Login').click();
 
         cy.contains('Username and password is incorrect');
 
@@ -22,7 +22,7 @@ describe('Log in form end to end', () => {
 
         // Check if the button is disabled when the form is invalid
         cy.get('button').should('not.be.disabled');
-        cy.get('button').click();
+        cy.contains('button', 'Login').click();
 
         cy.contains('Username and password is incorrect');
     });
@@ -35,7 +35,7 @@ describe('Log in form end to end', () => {
 
         // Check if the button is disabled when the form is invalid
         cy.get('button').should('not.be.disabled');
-        cy.get('button').click();
+        cy.contains('button', 'Login').click();
 
         cy.contains('Welcome to Quiz Academy! Here you can take quizzes, create your own quizzes and much more!');
     });
@@ -49,7 +49,7 @@ describe('Log in form end to end', () => {
 
         // Check if the button is disabled when the form is invalid
         cy.get('button').should('not.be.disabled');
-        cy.get('button').click();
+        cy.contains('button', 'Login').click();
 
         cy.contains('Welcome to Quiz Academy! Here you can take quizzes, create your own quizzes and much more!');
         // Find and click the button with the text "johndoe"
