@@ -7,7 +7,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Column;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 
@@ -29,9 +28,9 @@ public abstract class QuestionDAO {
   @JoinColumn(name = "quizId")
   private QuizDAO quizDAO;
 
-  @Lob
+
   @Column(name = "image", nullable = true)
-  private byte[] questionImage;
+  private String questionImage;
 
   /**
    * Creates a new instance of the Question class.
@@ -104,7 +103,7 @@ public abstract class QuestionDAO {
    * Gets the image of the question.
    * @return the image of the question
    */
-  public byte[] getImage() {
+  public String getImage() {
     return questionImage;
   }
 
@@ -112,7 +111,7 @@ public abstract class QuestionDAO {
    * Sets the image of the question.
    * @param image the image of the question
    */
-  public void setImage(byte[] image) {
+  public void setImage(String image) {
     this.questionImage = image;
   }
 }
