@@ -21,9 +21,7 @@ export const usePlayQuizStore = defineStore("playQuiz", {
         },
         nextQuestion(score) {
             this.progress++;
-            console.log("score", score)
             this.score += score;
-            console.log("this.score", this.score)
             this.currentQuestion = this.quiz.questions[this.progress];
         },
         lastQuestion(score) {

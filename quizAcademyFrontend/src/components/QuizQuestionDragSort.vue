@@ -41,7 +41,6 @@ export default {
         };
 
         const dragStart = (event, item) => {
-            console.log(item);
             event.dataTransfer.dropEffect = "move";
             event.dataTransfer.effectAllowed = "move";
             event.dataTransfer.setData("itemID", item.id);
@@ -52,7 +51,6 @@ export default {
             const item = items.value.find((item) => item.id === itemID);
             if (item) {
                 item.list = list;
-                console.log(itemID);
             } else {
                 console.error(`Item with ID ${itemID} not found.`);
             }

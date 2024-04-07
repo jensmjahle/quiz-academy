@@ -5,8 +5,7 @@ import { useTextInputStore } from './textInputQuestionStore.js';
 import {useTrueFalseStore} from "@/stores/trueFalseQuestionStore.js";
 
 export const useQuizStore = defineStore({
-    // unique id of the store across your application
-    id: 'main',
+    id: 'quizStore',
     state: () => ({
         quizId: null,
         quizName: null,
@@ -33,17 +32,13 @@ export const useQuizStore = defineStore({
         setQuizQuestions(questions) {
             if(Array.isArray(questions)){
                 this.quizQuestions = questions;
-            } else {
-                console.log("setQuizQuestions was called when questions was not an array. Value of questions: ", questions);
             }
         },
         addQuestion(question) {
             if(Array.isArray(this.quizQuestions)) {
             this.quizQuestions.push(question);
             } else {
-                console.log("quizQuestions in addQuestion was called when not an array. Value of quizQuestions: ", this.quizQuestions);
                 this.quizQuestions = [question];
-                console.log("quizQuestions was reset to: ", this.quizQuestions);
             }
         },
         resetQuizQuestions() {
@@ -98,27 +93,21 @@ export const useQuizStore = defineStore({
         fromQuestionToQuestionState(questionIndex) {
             const question = this.quizQuestions[questionIndex];
             if(question.type === "DRAG_AND_DROP") {
-                console.log("id DRAG_AND_DROP found");
                 const questionState = useDragDropStore();
                 questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.categories, question.imageBase64);
                 return("/create_quiz/drag_and_drop");
             } else if(question.type === "MULTIPLE_CHOICE") {
-                console.log("id MULTIPLE_CHOICE found");
                 const questionState = useMultichoiceStore();
                 questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.alternatives, question.correctAlternatives, question.imageBase64);
                 return("/create_quiz/multichoice");
             } else if(question.type === "TEXT_INPUT") {
-                console.log("id TEXT_INPUT found");
                 const questionState = useTextInputStore();
                 questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.answers, question.imageBase64);
                 return ("/create_quiz/text_input");
             } else if(question.type === "TRUE_FALSE") {
-                console.log("id TRUE_FALSE found. correctAnswer: ", question.correctAnswer);
                 const questionState = useTrueFalseStore();
                 questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.correctAnswer, question.imageBase64);
                 return("/create_quiz/true_false");
-            } else {
-                console.log("fromQuestionToQuestionState was called with an invalid question type. Value of question type: ", question.questionType);
             }
         },
         swapQuestions(index1, question) {

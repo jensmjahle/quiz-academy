@@ -15,7 +15,6 @@ const quizStore = useQuizStore();
 const trueFalseStore = useTrueFalseStore()
 
 if(trueFalseStore.questionId !== null) {
-    console.log("question id was found in store: ", trueFalseStore.questionId);
     edit.value = true;
     questionText.value = trueFalseStore.questionText;
     answer.value = trueFalseStore.questionAnswer;
@@ -23,7 +22,6 @@ if(trueFalseStore.questionId !== null) {
     if (questionPhoto.value !== null) {
         imageUploaded.value = true;
     }
-    console.log("questionPhoto: ", questionPhoto.value);
 }
 
 const handleFileUpload = (event) => {
@@ -34,7 +32,6 @@ const handleFileUpload = (event) => {
     reader.onload = () => {
         // `reader.result` contains the base64 string representation of the image
         questionPhoto.value = reader.result;
-        console.log("questionPhoto: ", questionPhoto.value);
     };
     // Read the file as a data URL (base64)
     reader.readAsDataURL(file);
@@ -54,12 +51,7 @@ const createQuestion = () => {
 
     quizStore.addQuestion(questionData);
     trueFalseStore.resetQuestionValues();
-    try{
-        console.log("pushing to create_quiz");
-        router.push('/create_quiz');
-    } catch(error) {
-        console.error("pushing to create_quiz failed with error: ", error);
-    }
+    router.push('/create_quiz');
 }
 
 const updateQuestion = ()=> {
@@ -73,7 +65,6 @@ const updateQuestion = ()=> {
     };
 
     const indexOfQuestion = quizStore.getIndexById(trueFalseStore.questionId);
-    console.log("index of question: ", indexOfQuestion);
     quizStore.swapQuestions(indexOfQuestion, questionData);
     trueFalseStore.resetQuestionValues();
     router.push('/create_quiz');

@@ -63,7 +63,6 @@ export default {
             if (this.tokenStore.jwtToken) {
                 this.loginStatus = "Login successful!";
                 await router.push("/");
-                console.log("Login successful!");
                 sessionStorage.removeItem("loginUser");
             } else {
                 this.loginStatus = "Login failed!";

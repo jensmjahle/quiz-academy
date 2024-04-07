@@ -43,11 +43,8 @@ const initializeData = async () => {
             if (Array.isArray(quizStore.quizQuestions)) {
                 questions.value = quizStore.quizQuestions;
             } else {
-                console.log("No questions in store or not an array. Value: ", quizStore.quizQuestions);
                 questions.value = [];
             }
-        } else {
-            console.log("No quiz name");
         }
     } catch (error) {
         console.error("Error fetching tags:", error);
@@ -91,9 +88,8 @@ const createQuiz = async () => {
     };
 
     try {
-        console.log(quizData);
         const response = await axios.post('http://localhost:8080/quiz/create', quizData);
-        console.log(response.data);
+
         quizId.value = response.data.quizId;
         quizDescription.value = response.data.quizDescription;
         quizCreated.value = true;
@@ -109,7 +105,6 @@ const updateQuiz = async () => {
     if (Array.isArray(quizStore.quizQuestions)) {
         questions.value = quizStore.quizQuestions;
     } else {
-        console.log("no questions in store or not an array. value of questions: ", questions.value);
         questions.value = [];
     }
     if (!Array.isArray(quizTags.value)) {
@@ -132,14 +127,12 @@ const updateQuiz = async () => {
 
     try {
         const response = await axios.post('http://localhost:8080/quiz/update', quizData);
-        console.log(response.data);
         quizId.value = response.data.quizId;
         showSavedMessage.value = true;
         setTimeout(() => {
             showSavedMessage.value = false;
         }, 5000);
     } catch (error) {
-        console.log("error in updateQuiz with values: ", quizData);
         console.error(error);
     }
 }

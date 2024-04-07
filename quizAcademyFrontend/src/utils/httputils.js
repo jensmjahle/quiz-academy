@@ -18,6 +18,7 @@ export const getJwtToken = async (username, password) => {
         return axios.post("http://localhost:8080/token/new", JSON.stringify({username, password}), config);
     }
     catch (error) {
+        console.error("An error occurred during token retrieval:", error);
         await useTokenStore().logout();
         await router.push("/login");
     }
@@ -62,6 +63,7 @@ export const getUserInfo = async (username, token) => {
         return axios.get("http://localhost:8080/users/" + username, config);
     }
     catch (error) {
+        console.error("An error occurred during user info retrieval:", error);
         await useTokenStore().logout();
         await router.push("/login");
     }
@@ -72,7 +74,6 @@ export const getUserInfo = async (username, token) => {
  * @returns {Promise<axios.AxiosResponse<any>>}
  */
 export const deleteToken = () => {
-    console.log()
     const config = {
         headers: {
             "Content-type": "application/json",
@@ -96,11 +97,10 @@ export const signUpUser = (firstName, lastName, username, password, email) => {
         config
     ).then((response) => {
         if (response.status === 409) {
-            console.log("User already exists");
         }
         return response;
     }).catch((error) => {
-        console.log("An error occurred during sign up:", error);
+        console.error("An error occurred during sign up:", error);
         throw error;
     });
 }
@@ -115,7 +115,7 @@ export const deleteUser = (username) => {
     return axios.delete("http://localhost:8080/users/delete/" + username, config).then((response) => {
         return response;
     }).catch((error) => {
-        console.log("An error occurred during deletion:", error);
+        console.error("An error occurred during deletion:", error);
         throw error;
     });
 }
