@@ -3,7 +3,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useQuizStore } from '../stores/QuizState.js';
 import { useDragDropStore} from "../stores/dragAndDropQuestionStore.js";
-import axios from 'axios';
 
 let router = useRouter();
 let edit = ref(false);
@@ -11,7 +10,7 @@ let edit = ref(false);
 const quizStore = useQuizStore();
 const dragDropStore = useDragDropStore();
 
-const questionText = "Drag the correct answer to the correct box.";
+const questionText = ref('');
 const categories = ref([{ name: '', items: '' }]);
 
 const addCategory = () => {
@@ -35,6 +34,7 @@ const removeCategory = (index) => {
 
 if (dragDropStore.questionId !== null) {
     edit.value = true;
+    questionText.value = dragDropStore.questionText;
     console.log("question id found");
     const updatedCategories = [];
     const categoriesFromStore = dragDropStore.questionCategories;
@@ -68,7 +68,7 @@ function postDragDropQuestion() {
     console.log("formatted categories when posting: ", formattedCategories);
 
     const dragDropQuestion = {
-        questionText: questionText,
+        questionText: questionText.value,
         quizId: quizStore.quizId,
         type: "DRAG_AND_DROP",
         categories: formattedCategories
@@ -79,12 +79,13 @@ function postDragDropQuestion() {
 }
 
 const editQuestion = () => {
+    const formattedCategories = {};
 
     const dragDropQuestion = {
-        questionText: questionText,
+        questionText: questionText.value,
         quizId: quizStore.quizId,
         type: "DRAG_AND_DROP",
-        categories: categories.value
+        categories: formattedCategories
     }
     const indexOfQuestion = quizStore.getIndexById(dragDropStore.questionId);
     console.log("index of question: ", indexOfQuestion);
@@ -99,6 +100,7 @@ const editQuestion = () => {
 <template>
     <div id="drag-and-drop-question">
         <h4>Drag and Drop Question</h4>
+        <input id="question_text" class="box_label" placeholder="Question Name" v-model="questionText" />
         <h5>Write all correct responses in each box. Separated by: *</h5>
         <h5>They will be displayed in a single box to be sorted.</h5>
 
@@ -149,13 +151,10 @@ const editQuestion = () => {
     background-color: var(--fifth-color);
     border-radius: 5px;
     width: 60vw;
-}
-
-.box_label::placeholder {
     text-align: center;
 }
 
-#box_label_category {
+.box_label::placeholder {
     text-align: center;
 }
 
@@ -163,5 +162,9 @@ const editQuestion = () => {
     display: flex;
     flex-flow: row;
     justify-content: center;
+}
+
+#remove_category {
+
 }
 </style>

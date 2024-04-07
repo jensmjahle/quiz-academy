@@ -141,9 +141,9 @@ const resetWithConfirm = () => {
         </div>
     </div>
     <div id="question_list" v-if="quizCreated">
-        <h5>Questions:</h5>
+        <h5>Questions (click to edit):</h5>
         <ul>
-            <li v-for="(question, index) in questions" :key="question.id" @click="editQuestion(index)">
+            <li v-for="(question, index) in questions" :key="question.id" @click="editQuestion(index)" id="question_in_list" >
                 {{ question.type }}: {{ index + 1 }}. {{ question.questionText }}
             </li>
         </ul>
@@ -244,5 +244,10 @@ const resetWithConfirm = () => {
     background-color: var(--fourth-color); /* Adjust the color as per your needs */
     border-radius: 50%; /* This will make the circle completely round */
     margin: 5px; /* Adjust the value as per your needs */
+}
+
+#question_in_list:hover {
+    cursor: pointer;
+    text-underline-color: var(--fourth-color);
 }
 </style>

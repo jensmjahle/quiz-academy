@@ -74,13 +74,19 @@ if (multichoiceStore.questionId !== null) {
     edit.value = true;
 }
 
-const statifyQuestionAndStore = () => {
-    const questionStateId = quizStore.quizQuestions.length;
-    multichoiceStore.setQuestionValues(quizStore.quizId, questionStateId, question.value, alternatives, correctAlternatives);
-    console.log("alternatives: ", alternatives, "\ncorrect alternatives: ", correctAlternatives);
+function oneCorrectCheck() {
+    // Use Array.prototype.some() to check if at least one correct alternative is selected
+    return correctAlternatives.value.some((correct) => {
+        return !!correct;
+    });
 }
 
 const submitForm = async () => {
+    const hasCorrect = oneCorrectCheck();
+    if (!hasCorrect) {
+        alert('You need to select one correct alternative');
+        return;
+    }
     const questionData = {
         questionText: question.value,
         quizId: quizStore.quizId,
