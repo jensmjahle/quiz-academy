@@ -12,7 +12,6 @@ export default {
 
             const allTags = await fetchPublicTags();
 
-
             tags.value = allTags;
             for (let i = 0; i < allTags.length; i++) {
                 const tag = allTags[i];

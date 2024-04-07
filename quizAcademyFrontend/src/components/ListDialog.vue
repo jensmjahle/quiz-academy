@@ -4,6 +4,12 @@
             <div class="dialog-header">
                 <h2 class="title">{{ selectedQuiz.quizName }}</h2>
                 <h5 class="description">{{ selectedQuiz.quizDescription }}</h5>
+                <div class="tagContainer">
+                <h5>Tags: </h5>
+                    <div v-for="tag in selectedQuiz.tags" :key="tag.tagId">
+                        <h5>{{ tag.tagName }},</h5>
+                    </div>
+                </div>
 
                 <div class="info">
                     <h5>Questions:</h5>
@@ -67,6 +73,17 @@ export default {
     display: flex;
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
+    z-index: 1000; /* Ensure dialog is on top of other content */
+}
+.tagContainer {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    word-break: break-word;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .dialog {
