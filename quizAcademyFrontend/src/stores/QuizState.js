@@ -86,7 +86,7 @@ export const useQuizStore = defineStore({
             } else if(question.type === "MULTIPLE_CHOICE") {
                 console.log("id MULTIPLE_CHOICE found");
                 const questionState = useMultichoiceStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.alternatives, question.correctAlternatives);
+                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.alternatives, question.correctAlternatives, question.imageBase64);
                 return("/create_quiz/multichoice");
             } else if(question.type === "TEXT_INPUT") {
                 console.log("id TEXT_INPUT found");

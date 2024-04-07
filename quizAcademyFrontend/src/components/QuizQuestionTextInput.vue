@@ -38,6 +38,7 @@ const handleFileUpload = (event) => {
     };
     // Read the file as a data URL (base64)
     reader.readAsDataURL(file);
+    imageUploaded.value = true;
 };
 
 const createQuestion = () => {
@@ -98,12 +99,12 @@ const cancelPressed = () => {
         <div>
             <h5>Separate correct answers with: *</h5>
         </div>
-        <div v-if="imageUploaded">
-            <h5 >Current image</h5>
-            <img :src="questionPhoto" alt="Question image"/>
-        </div>
         <div id="add_picture">
-            <h5>Add a picture to your quiz:</h5>
+            <h5>Add or change picture for your question:</h5>
+            <div v-if="imageUploaded">
+                <h5 >Current image</h5>
+                <img :src="questionPhoto" alt="Question image"/>
+            </div>
             <input type="file" @change="handleFileUpload" accept="image/*" />
         </div>
         <div>
