@@ -98,4 +98,10 @@ public class QuizController {
     logger.info("Received request to update quiz with id: " + quizDTO.getQuizId() + ".");
     return quizService.updateQuiz(quizDTO);
     }
+
+  @GetMapping("public/all/tags/{tagId}")
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesByTag(@PathVariable Long tagId) {
+    logger.info("Received request to get all quizzes with tag: " + tagId + ".");
+    return quizService.getAllPublicQuizzesByTag(tagId);
+  }
 }
