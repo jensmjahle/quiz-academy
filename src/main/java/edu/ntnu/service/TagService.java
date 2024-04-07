@@ -32,7 +32,7 @@ public class TagService {
 
       List<TagDTO> tagDTOs= new ArrayList<>();
       for (TagDAO tag : tags) {
-        tagDTOs.add(tagMapper.toDTO(tag));
+        tagDTOs.add(tagMapper.toTagDTO(tag));
       }
       return ResponseEntity.ok(tagDTOs);
     } catch (Exception e) {

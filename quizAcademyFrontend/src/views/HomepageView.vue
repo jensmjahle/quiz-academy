@@ -27,11 +27,7 @@ export default {
     },
 
 
-const quizzes = ref([]);
-onMounted(async () => {
-    quizzes.value = await fetchPublicQuizzes();
-});
-
+};
 </script>
 
 <template>
