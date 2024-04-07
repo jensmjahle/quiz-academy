@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * Mapper class for the Quiz entity.
+ */
 @Component
 public class QuizMapper {
   private final Logger logger = Logger.getLogger(QuizMapper.class.getName());
@@ -27,6 +30,14 @@ public class QuizMapper {
   private final TagMapper tagMapper;
 
 
+  /**
+   * Constructor for the QuizMapper class.
+   * @param userService The UserService object.
+   * @param tagMapper The TagMapper object.
+   * @param questionService The QuestionService object.
+   * @param tagRepository The TagRepository object.
+   * @param questionMapper The QuestionMapper object.
+   */
   @Autowired
   public QuizMapper(
       UserService userService,
@@ -41,6 +52,11 @@ public class QuizMapper {
     this.questionMapper = questionMapper;
   }
 
+    /**
+     * Maps a QuizDAO object to a QuizDTO object without the questions.
+     * @param quizDAO The QuizDAO object to map.
+     * @return The QuizDTO object.
+     */
     public QuizDTO toQuizDTOWithoutQuestions(QuizDAO quizDAO) {
     try {
         QuizDTO quizDTO = new QuizDTO();
@@ -63,6 +79,11 @@ public class QuizMapper {
     }
     }
 
+    /**
+     * Maps a QuizDAO object to a QuizDTO object.
+     * @param quizDAO The QuizDAO object to map.
+     * @return The QuizDTO object.
+     */
     public QuizDTO toQuizDTO(QuizDAO quizDAO) {
         QuizDTO quizDTO = toQuizDTOWithoutQuestions(quizDAO);
 
@@ -79,6 +100,11 @@ public class QuizMapper {
         return quizDTO;
     }
 
+    /**
+     * Maps a QuizDAO object to a QuizDTO object.
+     * @param quizDAO The QuizDAO object to map.
+     * @return The QuizDTO object.
+     */
     public QuizDAO toDAOWithoutId(QuizDTO quizDTO) {
         QuizDAO quizDAO = new QuizDAO();
         quizDAO.setQuizName(quizDTO.getQuizName());
@@ -114,6 +140,11 @@ public class QuizMapper {
         return quizDAO;
     }
 
+    /**
+     * Maps a QuizDTO object to a QuizDAO object.
+     * @param quizDTO The QuizDTO object to map.
+     * @return The QuizDAO object.
+     */
     public QuizDAO toDAO(QuizDTO quizDTO) {
         QuizDAO quizDAO = toDAOWithoutId(quizDTO);
         quizDAO.setQuizId(quizDTO.getQuizId());

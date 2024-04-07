@@ -10,6 +10,17 @@ const tokenStore = useTokenStore();
 
 const isLoggedIn = ref(tokenStore.loggedInUser !== null);
 const username = ref(tokenStore.getUsername);
+const searchInput = ref('');
+
+const searchQuizzes = () => {
+router.push({ path: "/search", query: { search: searchInput.value } });
+closeDropdown();
+};
+
+const searchQuizzesButtons = (searchTerm) => {
+  searchInput.value = searchTerm;
+  router.push({ path: "/search", query: { search: searchTerm } });
+};
 
 const logout = () => {
   tokenStore.logout();
@@ -33,6 +44,13 @@ const closeDropdown = () => {
   refresh();
 };
 
+const closeDropdownAndSearch = (inputSearch) => {
+  categoriesDropdownOpen.value = false;
+  logoutDropdownOpen.value = false;
+  refresh();
+  searchQuizzesButtons(inputSearch);
+};
+
 watch(
     () => tokenStore.loggedInUser,
     () => {
@@ -40,6 +58,7 @@ watch(
       username.value = tokenStore.getUsername;
     }
 );
+
 </script>
 
 <template>
@@ -52,19 +71,19 @@ watch(
           <span class="arrow-icon" :class="{ 'arrow-rotate': categoriesDropdownOpen }">&#9662;</span>
         </button>
         <div class="dropdown-content-category" :class="{ show: categoriesDropdownOpen }">
-          <input id="categoryInput" placeholder="Search here">
-          <button id="categorySearch">Submit search</button>
-          <RouterLink @click="closeDropdown" to="/" class="router-button">All Categories</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/1" class="router-button">Math</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/2" class="router-button">Science</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/3" class="router-button">History</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/4" class="router-button">Geography</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/5" class="router-button">Literature</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/6" class="router-button">Music</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/7" class="router-button">Art</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/8" class="router-button">Sports</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/9" class="router-button">Movies</RouterLink>
-          <RouterLink @click="closeDropdown" to="/categories/10" class="router-button">TV Shows</RouterLink>
+          <input id="categoryInput" v-model="searchInput" type="text" placeholder="Search category tag" />
+          <button id="categorySearch" @click="searchQuizzes">Submit search</button>
+          <RouterLink @click="closeDropdown" to="/" class="router-button-search">All Categories</RouterLink>
+          <button @click="closeDropdownAndSearch('Math')" class="router-button-search">Math</button>
+          <button @click="closeDropdownAndSearch('Science')" class="router-button-search">Science</button>
+          <button @click="closeDropdownAndSearch('History')" class="router-button-search">History</button>
+          <button @click="closeDropdownAndSearch('Geography')" class="router-button-search">Geography</button>
+          <button @click="closeDropdownAndSearch('Literature')" class="router-button-search">Literature</button>
+          <button @click="closeDropdownAndSearch('Music')" class="router-button-search">Music</button>
+          <button @click="closeDropdownAndSearch('Art')" class="router-button-search">Art</button>
+          <button @click="closeDropdownAndSearch('Sports')" class="router-button-search">Sports</button>
+          <button @click="closeDropdownAndSearch('Movies')" class="router-button-search">Movies</button>
+          <button @click="closeDropdownAndSearch('TV Shows')" class="router-button-search">TV Shows</button>
         </div>
       </div>
       <RouterLink @click="closeDropdown" to="/quizzes" class="router-button">My Quizzes</RouterLink>
@@ -166,10 +185,10 @@ nav {
   position: absolute;
   top: 100%; /* Position it right below the button */
   display: none;
-  background: linear-gradient(to bottom, var(--secondary-color) 0%, var(--secondary-color) 70%, transparent 150%);
+  background: linear-gradient(to bottom, var(--secondary-color) 0%, var(--secondary-color) 80%, transparent 150%);
   padding: 10px 12px;
   font-size: calc(1.2vw + 1.2vh);
-  height: calc(3.2vw + 2.2vh);
+  height: calc(3.2vw + 3.2vh);
   border-bottom-right-radius: 20px;
   border-bottom-left-radius: 20px;
   border-bottom-color: var(--tertiary-color);
@@ -242,7 +261,7 @@ nav {
   padding: 0;
   display: inline-grid;
   z-index: 999;
-  max-height: 300px;
+  max-height: 250px;
   min-width: calc(34vw - 1vw);
 }
 
@@ -279,5 +298,24 @@ nav {
   margin: 5px 0;
   width: 90%; /* Adjust as needed */
   justify-self: center;
+}
+
+.router-button-search {
+  color: var(--fourth-color);
+  text-decoration: none;
+  text-align: center;
+  padding: 10px;
+  margin: 0 10px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  height: 100%;
+  font-size: calc(1.2vw + 1.2vh);
+}
+
+.router-button-search:hover {
+  color: var(--base-color);
+  border-color: transparent;
 }
 </style>

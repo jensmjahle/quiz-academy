@@ -22,6 +22,7 @@ public class UserInfoResponse {
   @JsonIgnore
   private String password;
 
+
   public UserInfoResponse(@JsonProperty("firstName") String firstName,
       @JsonProperty("lastName") String lastName,
       @JsonProperty("email") String email) {
