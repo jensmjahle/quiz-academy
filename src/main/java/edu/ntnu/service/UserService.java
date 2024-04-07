@@ -90,4 +90,18 @@ public class UserService {
   public UserDAO getUserObjectByUsername(String username) {
     return userRepository.findByUsername(username);
   }
+
+  public ResponseEntity<String> deleteUser(String username) {
+    try {
+      UserDAO userDAO = userRepository.findByUsername(username);
+      if (userDAO != null) {
+        userRepository.delete(userDAO);
+        return new ResponseEntity<>("User deleted successfully", HttpStatus.OK);
+      } else {
+        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+      }
+    } catch (Exception e) {
+      return new ResponseEntity<>("Error deleting user", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
 }
