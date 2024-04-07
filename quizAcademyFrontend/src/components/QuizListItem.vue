@@ -4,7 +4,9 @@
         @click="openDialog"
         @mouseenter="hovering = true"
         @mouseleave="hovering = false"
-        :style="{ backgroundImage: 'url(' + imageUrl + ')' }"
+        :style="{
+            backgroundImage: base64Image ? 'url(' + base64Image + ')' : 'url(' + imageUrl + ')'
+        }"
     >
         <div class="quiz-content">
             <div class="always-visible">
@@ -43,8 +45,28 @@ export default {
         return {
             hovering: false,
             showDescription: false,
-            imageUrl: "src/assets/logo.png"
+            imageUrl: "src/assets/logo.png",
+            base64Image: ''
         };
+    },
+    mounted() {
+        const base64Image = this.quiz.quizImage;
+        this.displayImage(base64Image);
+    },
+    methods: {
+        displayImage(base64String) {
+            const validBase64Regex = /^[A-Za-z0-9+/=]+$/;
+            if (base64String && validBase64Regex.test(base64String)) {
+                const binaryString = window.atob(base64String);
+                const len = binaryString.length;
+                const bytes = new Uint8Array(len);
+                for (let i = 0; i < len; i++) {
+                    bytes[i] = binaryString.charCodeAt(i);
+                }
+                const blob = new Blob([bytes], { type: 'image/jpeg' });
+                this.base64Image = URL.createObjectURL(blob);
+            }
+        },
     }
 };
 </script>
