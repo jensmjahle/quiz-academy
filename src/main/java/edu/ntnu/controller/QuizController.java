@@ -104,4 +104,10 @@ public class QuizController {
     logger.info("Received request to get all quizzes with tag: " + tagId + ".");
     return quizService.getAllPublicQuizzesByTag(tagId);
   }
+
+  @GetMapping("public/all/{searchString}")
+  public ResponseEntity<Iterable<QuizDTO>> getAllPublicQuizzesBySearchString(@PathVariable String searchString) {
+    logger.info("Received request to get all quizzes with search string: " + searchString + ".");
+    return quizService.getAllPublicQuizzesBySearchString(searchString);
+  }
 }
