@@ -137,6 +137,11 @@ export default {
         transition: 0.3s;
         opacity: 100;
     }
+    .tags {
+        transition: 0.3s;
+        margin-top: -200px;
+        background-color: transparent;
+    }
 }
 
 
