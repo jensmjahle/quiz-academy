@@ -20,7 +20,6 @@ describe('Sign up form end to end', () => {
 
     // Check if the button is disabled when the form is invalid
     cy.get('button').should('not.be.disabled');
-    cy.get('button').click();
 
   });
   it('It cant create a user when the user already exists', () => {
@@ -38,7 +37,7 @@ describe('Sign up form end to end', () => {
 
     // Check if the button is disabled when the form is invalid
     cy.get('button').should('not.be.disabled');
-    cy.get('button').click();
+    cy.contains('button', 'Sign up').click();
     cy.contains('Username already exists');
 
   });
