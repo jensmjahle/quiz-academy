@@ -1,7 +1,7 @@
 <script setup>
 import {RouterLink, useRouter} from "vue-router";
 import {useTokenStore} from "../stores/token.js";
-import {onMounted, ref} from "vue";
+import {onMounted, ref, watch} from "vue";
 import {refresh} from "../utils/updateTokenUtil.js";
 import {fetchPublicTags} from "../utils/tagUtils.js";
 
@@ -55,6 +55,15 @@ const closeDropdownAndSearch = (inputSearch) => {
 onMounted(async () => {
   tags.value = await fetchPublicTags();
 });
+
+watch(
+    () => tokenStore.loggedInUser,
+    () => {
+      isLoggedIn.value = tokenStore.loggedInUser !== null;
+      username.value = tokenStore.getUsername;
+    }
+);
+
 </script>
 
 <template>
@@ -101,6 +110,7 @@ onMounted(async () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: visible;
 }
 
 nav {
@@ -111,6 +121,7 @@ nav {
   width: 100%;
   align-content: center;
   align-items: center;
+  overflow-x: visible;
 }
 
 .router-button {

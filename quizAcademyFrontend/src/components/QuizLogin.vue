@@ -11,7 +11,7 @@
                 <input type="password" id="password" v-model="password" required />
             </div>
             <p v-if="loginError" class="error-message">Username and password is incorrect</p>
-          <button type="submit">Login</button>
+          <button type="submit" id="submit-login">Login</button>
         </form>
     </div>
 </template>
@@ -124,4 +124,9 @@ button:hover {
   color: red;
   margin-bottom: 10px;
 }
+
+#submit-login {
+    width: 100%;
+}
+
 </style>
