@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import {getJwtToken, getUserInfo, refreshJwtToken, deleteToken} from "../utils/httputils.js"
+import {getJwtToken, getUserInfo, refreshJwtToken, deleteToken, deleteUser} from "../utils/httputils.js"
 import router from "../router/index.js";
 
 export const useTokenStore = defineStore("token", {
@@ -64,6 +64,18 @@ export const useTokenStore = defineStore("token", {
                 await router.push({name: "Login"})
                 console.log(err)
             }
+        },
+        async deleteUser() {
+            deleteUser(this.loggedInUser.data.username)
+            await deleteToken();
+            this.jwtToken = null;
+            this.loggedInUser = null;
+            sessionStorage.clear();
+            if (this.timer) {
+                clearTimeout(this.timer);
+                this.timer = null;
+            }
+            await router.push("/login");
         }
     },
     getters: {
@@ -79,6 +91,27 @@ export const useTokenStore = defineStore("token", {
             state.jwtToken = useTokenStore().refreshToken();
             if (state.loggedInUser != null) {
                 return state.loggedInUser.data.username;
+            }
+            return null;
+        },
+        getFirstName: (state) => {
+            state.jwtToken = useTokenStore().refreshToken();
+            if (state.loggedInUser != null) {
+                return state.loggedInUser.data.firstName;
+            }
+            return null;
+        },
+        getLastName: (state) => {
+            state.jwtToken = useTokenStore().refreshToken();
+            if (state.loggedInUser != null) {
+                return state.loggedInUser.data.lastName;
+            }
+            return null;
+        },
+        getEmail: (state) => {
+            state.jwtToken = useTokenStore().refreshToken();
+            if (state.loggedInUser != null) {
+                return state.loggedInUser.data.email;
             }
             return null;
         },
