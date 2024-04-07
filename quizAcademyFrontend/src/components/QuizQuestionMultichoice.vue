@@ -79,12 +79,20 @@ let imageUploaded = ref(false);
 if (multichoiceStore.questionId !== null) {
     question.value = multichoiceStore.questionText;
     alternatives.value = multichoiceStore.questionAlternatives;
-    correctAlternatives.value = multichoiceStore.correctAlternatives;
     edit.value = true;
+    console.log("array in store: ", multichoiceStore.correctAlternatives);
+    for (let i = 0; i < 4; i++) {
+        if (multichoiceStore.correctAlternatives[i]  === "true") {
+            correctAlternatives.value[i] = true;
+        } else {
+            correctAlternatives.value[i] = false;
+        }
+    }
     if(multichoiceStore.questionImage !== null) {
         questionPhoto.value = multichoiceStore.questionImage;
         imageUploaded.value = true;
     }
+    console.log(correctAlternatives.value);
 }
 
 const handleFileUpload = (event) => {
@@ -115,13 +123,23 @@ const submitForm = async () => {
         alert('You need to select one correct alternative');
         return;
     }
+    const correctAsStrings = [];
+    for (let i = 0; i < 4; i++) {
+        if (correctAlternatives.value[i] === true) {
+            correctAsStrings[i] = "true";
+        } else {
+            correctAsStrings[i] = "false";
+        }
+    }
+    console.log("correct alternatives: ", correctAsStrings);
+
     const questionData = {
         questionText: question.value,
         quizId: quizStore.quizId,
         questionId: quizStore.quizQuestions.length,
         type: 'MULTIPLE_CHOICE',
         alternatives: alternatives.value,
-        correctAlternatives: correctAlternatives.value,
+        correctAlternatives: correctAsStrings,
         imageBase64: questionPhoto.value
     };
     console.log(questionData);
@@ -134,13 +152,25 @@ const submitForm = async () => {
 }
 
 const updateQuestion = () => {
+
+    const correctAsStrings = [];
+
+    for (let i = 0; i < 4; i++) {
+        if (correctAlternatives.value[i] === true) {
+            correctAsStrings[i] = "true";
+        } else {
+            correctAsStrings[i] = "false";
+        }
+    }
+
+    console.log("correct alternatives: ", correctAsStrings);
     const questionData = {
         questionText: question.value,
         quizId: quizStore.quizId,
         questionId: multichoiceStore.questionId,
         type: 'MULTIPLE_CHOICE',
         alternatives: alternatives.value,
-        correctAlternatives: correctAlternatives.value,
+        correctAlternatives: correctAsStrings,
         imageBase64: questionPhoto.value
     };
 

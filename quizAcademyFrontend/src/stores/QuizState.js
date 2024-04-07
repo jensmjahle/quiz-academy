@@ -11,6 +11,7 @@ export const useQuizStore = defineStore({
         quizName: null,
         quizDescription: null,
         quizPublicStatus: false,
+        quizTags: [],
     }),
     actions: {
         quizQuestions: [],
@@ -58,12 +59,19 @@ export const useQuizStore = defineStore({
         resetQuizPublicStatus() {
             this.quizPublicStatus = false;
         },
-        initializeQuiz(quizId, quizName, questions, quizDescription, status) {
+        setQuizTags(tags) {
+            this.quizTags = tags;
+        },
+        resetQuizTags() {
+            this.quizTags = [];
+        },
+        initializeQuiz(quizId, quizName, questions, quizDescription, status, tags) {
             this.setQuizId(quizId);
             this.setQuizName(quizName);
             this.setQuizDescription(quizDescription);
             this.setQuizQuestions(questions);
-            this.setQuizPublicStatus(status)
+            this.setQuizPublicStatus(status);
+            this.setQuizTags(tags);
         },
         resetQuiz() {
             this.resetQuizId();
@@ -72,6 +80,7 @@ export const useQuizStore = defineStore({
             this.resetQuizDescription();
             this.resetQuestionStates();
             this.resetQuizPublicStatus();
+            this.resetQuizTags();
         },
         resetQuestionStates() {
             this.quizQuestionStates = [];
