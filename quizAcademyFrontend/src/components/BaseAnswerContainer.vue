@@ -60,6 +60,8 @@ export default {
 
         },
         displayImage(base64String) {
+            const validBase64Regex = /^[A-Za-z0-9+/=]+$/;
+            if (base64String && validBase64Regex.test(base64String)) {
             const binaryString = window.atob(base64String);
             const len = binaryString.length;
             const bytes = new Uint8Array(len);
@@ -68,6 +70,7 @@ export default {
             }
             const blob = new Blob([bytes], { type: 'image/jpeg' });
             this.base64Image = URL.createObjectURL(blob);
+            }
         },
 
     }
