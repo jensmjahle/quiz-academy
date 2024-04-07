@@ -110,4 +110,6 @@ public class QuizController {
     logger.info("Received request to get all quizzes with search string: " + searchString + ".");
     return quizService.getAllPublicQuizzesBySearchString(searchString);
   }
+
+
 }
