@@ -83,7 +83,7 @@ const bodyClass = computed(() => {
             <p>Quiz Academy 2024</p>
             <div class="contact">
             <p>Contact Us:</p>
-            <a href="mailto:jens.postkasse52@gmail.com" class="email-button">Send mail</a>
+            <a href="mailto:quiz.academy@gmail.com" class="email-button">Send mail</a>
             </div>
         </div>
     </div>
