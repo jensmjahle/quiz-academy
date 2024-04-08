@@ -17,8 +17,6 @@ platform for creating, managing and taking quizzes for educational, training, or
 
 To run this program you need:
 
-- JDK 17
-- Maven
 - Docker
 - Node version 16 or higher
 - npm
@@ -32,7 +30,7 @@ To run this program you need:
 
 #### Running the backend
 
-The backend can be run through a dockerfile:
+The backend can be ran through a dockerfile (Docker engine must be running in the background):
 
 1. Build the dockerfile
    ```sh
@@ -84,6 +82,7 @@ The application can be used without already having an account created
 ## Contact us
 
 Ari Maman - arim@stud.ntnu.no (scrum master)
+Jens Martin Jahle - jensmj@stud.ntnu.no (supreme scrum master)
 
 
 
