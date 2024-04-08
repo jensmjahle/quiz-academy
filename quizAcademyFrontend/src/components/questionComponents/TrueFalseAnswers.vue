@@ -1,3 +1,27 @@
+<template>
+  <div class="alternative-buttons">
+    <button
+        :disabled="hasAnswered"
+        :class="{
+        'trueButton': true,
+        'correct': hasAnswered && (question.correctAnswer === true),
+        'incorrect': hasAnswered && (question.correctAnswer === false),
+        'selectedAnswer':hasAnswered && (true === answer),
+        'notSelected': hasAnswered && (false === answer)}"
+        @click="checkAnswer(true)">True</button>
+
+    <button
+        :disabled="hasAnswered"
+        :class="{
+        'falseButton': true,
+        'correct': hasAnswered && (question.correctAnswer === false),
+        'incorrect': hasAnswered && (question.correctAnswer === true),
+        'selectedAnswer': hasAnswered && (false === answer),
+        'notSelected': hasAnswered && (true === answer)}" @click="checkAnswer(false)">False</button>
+
+  </div>
+</template>
+
 <script>
 
 export default {
@@ -29,29 +53,6 @@ export default {
     }
 }
 </script>
-<template>
-    <div class="alternative-buttons">
-        <button
-            :disabled="hasAnswered"
-            :class="{
-        'trueButton': true,
-        'correct': hasAnswered && (question.correctAnswer === true),
-        'incorrect': hasAnswered && (question.correctAnswer === false),
-        'selectedAnswer':hasAnswered && (true === answer),
-        'notSelected': hasAnswered && (false === answer)}"
-        @click="checkAnswer(true)">True</button>
-
-        <button
-            :disabled="hasAnswered"
-            :class="{
-        'falseButton': true,
-        'correct': hasAnswered && (question.correctAnswer === false),
-        'incorrect': hasAnswered && (question.correctAnswer === true),
-        'selectedAnswer': hasAnswered && (false === answer),
-        'notSelected': hasAnswered && (true === answer)}" @click="checkAnswer(false)">False</button>
-
-    </div>
-</template>
 
 <style scoped>
 

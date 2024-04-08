@@ -1,3 +1,16 @@
+<template>
+  <div class="container">
+    <h2 class="title">My Page</h2>
+    <div class="info">
+      <p><span class="label">Username:</span> {{ username }}</p>
+      <p><span class="label">First Name:</span> {{ firstName }}</p>
+      <p><span class="label">Last Name:</span> {{ lastName }}</p>
+      <p><span class="label">Email:</span> {{ email }}</p>
+    </div>
+    <button @click="deleteAccount" class="btn">Delete user</button>
+  </div>
+</template>
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useTokenStore } from '../stores/token.js';
@@ -11,19 +24,6 @@ const deleteAccount = () => {
   useTokenStore().deleteUser();
 };
 </script>
-
-<template>
-  <div class="container">
-    <h2 class="title">My Page</h2>
-    <div class="info">
-      <p><span class="label">Username:</span> {{ username }}</p>
-      <p><span class="label">First Name:</span> {{ firstName }}</p>
-      <p><span class="label">Last Name:</span> {{ lastName }}</p>
-      <p><span class="label">Email:</span> {{ email }}</p>
-    </div>
-    <button @click="deleteAccount" class="btn">Delete user</button>
-  </div>
-</template>
 
 <style scoped>
 .container {

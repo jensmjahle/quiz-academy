@@ -1,3 +1,28 @@
+<template>
+  <div id="full_question">
+    <div id="text_response_question">
+      <input id="input" type="text" v-model="questionText" placeholder="Question" />
+      <input id="input" type="text" v-model="answerText" placeholder="Answer" />
+    </div>
+    <div>
+      <h5>Separate correct answers with: *</h5>
+    </div>
+    <div id="add_picture">
+      <h5>Add or change picture for your question:</h5>
+      <div v-if="imageUploaded">
+        <h5 >Current image</h5>
+        <img :src="questionPhoto" alt="Question image"/>
+      </div>
+      <input type="file" @change="handleFileUpload" accept="image/*" />
+    </div>
+    <div>
+      <button @click="createQuestion" v-if="!edit">Submit</button>
+      <button @click="updateQuestion" v-if="edit">Update</button>
+      <button id="cancel" @click="cancelPressed">Cancel</button>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/QuizStore.js';
@@ -83,37 +108,13 @@ const cancelPressed = () => {
 }
 </script>
 
-<template>
-    <div id="full_question">
-        <div id="text_response_question">
-            <input id="input" type="text" v-model="questionText" placeholder="Question" />
-            <input id="input" type="text" v-model="answerText" placeholder="Answer" />
-        </div>
-        <div>
-            <h5>Separate correct answers with: *</h5>
-        </div>
-        <div id="add_picture">
-            <h5>Add or change picture for your question:</h5>
-            <div v-if="imageUploaded">
-                <h5 >Current image</h5>
-                <img :src="questionPhoto" alt="Question image"/>
-            </div>
-            <input type="file" @change="handleFileUpload" accept="image/*" />
-        </div>
-        <div>
-            <button @click="createQuestion" v-if="!edit">Submit</button>
-            <button @click="updateQuestion" v-if="edit">Update</button>
-            <button id="cancel" @click="cancelPressed">Cancel</button>
-        </div>
-    </div>
-</template>
-
 <style scoped>
 #full_question {
     margin-top: 3vw;
     display: flex;
     flex-flow: column;
     align-items: center;
+    padding: 15px;
 }
 
 #text_response_question {
@@ -134,5 +135,13 @@ const cancelPressed = () => {
 
 #input::placeholder {
     text-align: center;
+}
+
+#add_picture {
+    margin-top: 15px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 }
 </style>

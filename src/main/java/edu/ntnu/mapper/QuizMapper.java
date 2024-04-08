@@ -1,22 +1,22 @@
 package edu.ntnu.mapper;
 
-import com.fasterxml.jackson.databind.ser.Serializers.Base;
-import edu.ntnu.dto.QuizDTO;
-import edu.ntnu.dto.TagDTO;
-import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.dao.QuizDAO;
 import edu.ntnu.dao.TagDAO;
 import edu.ntnu.dao.questions.QuestionDAO;
+import edu.ntnu.dto.QuizDTO;
+import edu.ntnu.dto.TagDTO;
+import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.repository.TagRepository;
 import edu.ntnu.service.QuestionService;
 import edu.ntnu.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * Mapper class for the Quiz entity.

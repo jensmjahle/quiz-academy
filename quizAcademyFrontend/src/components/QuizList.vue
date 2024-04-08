@@ -16,7 +16,6 @@
 import { ref } from "vue";
 import QuizItem from "./QuizListItem.vue";
 import ListDialog from "./ListDialog.vue";
-import axios from "axios";
 
 const selectedQuiz = ref(null);
 

@@ -1,3 +1,14 @@
+<template>
+  <div id="body">
+    <div v-for="(tag , index) in tags" :key="tag" class="container">
+      <h2>{{ tag.tagName }}</h2>
+      <H4 v-if="quizzesByTags[index].length === 0">No quizzes found</H4>
+      <QuizList :quizzes="quizzesByTags[index]"></QuizList>
+
+    </div>
+  </div>
+</template>
+
 <script>
 import { onMounted, ref } from "vue";
 import QuizList from "../components/QuizList.vue";
@@ -28,18 +39,6 @@ export default {
 
 };
 </script>
-
-<template>
-
-    <div id="body">
-        <div v-for="(tag , index) in tags" :key="tag" class="container">
-            <h2>{{ tag.tagName }}</h2>
-            <H4 v-if="quizzesByTags[index].length === 0">No quizzes found</H4>
-            <QuizList :quizzes="quizzesByTags[index]"></QuizList>
-
-        </div>
-    </div>
-</template>
 
 <style scoped>
 #body {
