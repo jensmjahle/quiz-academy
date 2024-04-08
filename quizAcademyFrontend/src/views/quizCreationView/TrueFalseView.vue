@@ -1,11 +1,12 @@
 <template>
     <div>
-        <QuizQuestionTrueFalse />
+        <TrueFalseQuestionCreation />
     </div>
 </template>
 
 <script setup>
-import QuizQuestionTrueFalse from "../components/TrueFalseQuestionCreation.vue";
+import TrueFalseQuestionCreation
+    from "@/components/questionCreationComponents/TrueFalseQuestionCreation.vue";
 </script>
 
 <style scoped></style>

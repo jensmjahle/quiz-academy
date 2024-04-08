@@ -3,15 +3,15 @@ import HomepageView from "../views/HomepageView.vue";
 import QuizzesView from "../views/QuizzesView.vue";
 import LoginView from "../views/QuizLoginView.vue";
 import CreateQuizzesView from "../views/CreateQuizzesView.vue";
-import MultichoiceView from "../views/MultichoiceView.vue";
-import DragAndDropView from "../views/DragAndDropView.vue";
-import TextInputView from "../views/TextInputView.vue";
 import SigninWiew from "../views/QuizSigninView.vue";
 import PlayQuizView from "../views/PlayQuizView.vue";
 import { usePlayQuizStore } from "../stores/playQuizStore.js";
 import SearchpageView from "@/views/SearchpageView.vue";
 import MyPageView from "@/views/MyPageView.vue";
-import TrueFalseView from "@/views/TrueFalseView.vue";
+import TrueFalseView from "@/views/quizCreationView/TrueFalseView.vue";
+import MultichoiceView from "@/views/quizCreationView/MultichoiceView.vue";
+import TextInputView from "@/views/quizCreationView/TextInputView.vue";
+import DragAndDropView from "@/views/quizCreationView/DragAndDropView.vue";
 
 export default createRouter({
     history: createWebHistory(),

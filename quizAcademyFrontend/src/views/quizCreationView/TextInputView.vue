@@ -1,11 +1,13 @@
 <template>
     <div>
-        <QuizQuestionTextInput />
+        <TextInputQuestionCreation />
     </div>
 </template>
 
 <script setup>
-import QuizQuestionTextInput from "../components/TextInputQuestionCreation.vue";
+
+import TextInputQuestionCreation
+    from "@/components/questionCreationComponents/TextInputQuestionCreation.vue";
 </script>
 
 <style scoped></style>

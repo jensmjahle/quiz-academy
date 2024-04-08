@@ -1,11 +1,12 @@
 <template>
     <div>
-        <QuizQuestionDragAndDrop />
+        <DragAndDropQuestionCreation />
     </div>
 </template>
 
 <script setup>
-import QuizQuestionDragAndDrop from "../components/DragAndDropQuestionCreation.vue";
+import DragAndDropQuestionCreation
+    from "@/components/questionCreationComponents/DragAndDropQuestionCreation.vue";
 </script>
 
 <style scoped></style>

@@ -25,9 +25,11 @@
 
 <script setup>
 import { ref } from "vue";
-import { useQuizStore } from "../stores/QuizStore.js";
-import { useTextInputStore } from "../stores/textInputQuestionStore.js";
+
+
 import { useRouter } from "vue-router";
+import { useQuizStore } from "@/stores/QuizStore.js";
+import { useTextInputStore } from "@/stores/textInputQuestionStore.js";
 
 let edit = ref(false);
 let questionText = ref("");

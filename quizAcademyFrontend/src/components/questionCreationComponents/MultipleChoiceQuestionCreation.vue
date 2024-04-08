@@ -65,8 +65,8 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useQuizStore } from "../stores/QuizStore.js";
-import { useMultichoiceStore } from "../stores/multichoideQuestionStore.js";
+import { useQuizStore } from "@/stores/QuizStore.js";
+import { useMultichoiceStore } from "@/stores/multichoideQuestionStore.js";
 
 const router = useRouter();
 const quizStore = useQuizStore();

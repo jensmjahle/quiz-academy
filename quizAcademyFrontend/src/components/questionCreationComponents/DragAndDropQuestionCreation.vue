@@ -47,8 +47,8 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { useQuizStore } from "../stores/QuizStore.js";
-import { useDragDropStore } from "../stores/dragAndDropQuestionStore.js";
+import { useQuizStore } from "@/stores/QuizStore.js";
+import { useDragDropStore } from "@/stores/dragAndDropQuestionStore.js";
 
 const router = useRouter();
 let edit = ref(false);

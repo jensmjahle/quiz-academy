@@ -26,9 +26,9 @@
 
 <script setup>
 import { ref } from "vue";
-import { useQuizStore } from "../stores/QuizStore.js";
-import { useTrueFalseStore } from "../stores/trueFalseQuestionStore.js";
 import { useRouter } from "vue-router";
+import { useQuizStore } from "@/stores/QuizStore.js";
+import { useTrueFalseStore } from "@/stores/trueFalseQuestionStore.js";
 
 let edit = ref(false);
 let questionText = ref("");

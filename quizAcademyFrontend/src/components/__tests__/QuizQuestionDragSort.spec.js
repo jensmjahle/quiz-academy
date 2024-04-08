@@ -1,17 +1,17 @@
 import { mount } from "@vue/test-utils";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
-import QuizQuestionDragSort from "@/components/DragAndDropQuestionPlaythrough.vue";
+import DragAndDropQuestionPlaythrough from "@/components/questionPlaythroughComponets/DragAndDropQuestionPlaythrough.vue";
 import { describe, it, expect, beforeEach } from "vitest";
 
-describe("QuizQuestionDragSort", () => {
+describe("DragAndDropQuestionPlaythrough", () => {
     let wrapper;
     let app;
 
     beforeEach(() => {
-        app = createApp(QuizQuestionDragSort);
+        app = createApp(DragAndDropQuestionPlaythrough);
         app.use(createPinia());
-        wrapper = mount(QuizQuestionDragSort);
+        wrapper = mount(DragAndDropQuestionPlaythrough);
     });
 
     it("renders correctly", () => {

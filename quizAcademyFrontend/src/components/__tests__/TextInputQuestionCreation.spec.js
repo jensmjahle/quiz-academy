@@ -1,17 +1,17 @@
 import { mount } from "@vue/test-utils";
 import { createPinia } from "pinia";
 import { createApp } from "vue";
-import QuizQuestionTextInput from "@/components/TextInputQuestionCreation.vue";
+import TextInputQuestionCreation from "@/components/questionCreationComponents/TextInputQuestionCreation.vue";
 import { describe, it, expect, beforeEach } from "vitest";
 
-describe("QuizQuestionTextInput", () => {
+describe("TextInputQuestionCreation", () => {
     let wrapper;
     let app;
 
     beforeEach(() => {
-        app = createApp(QuizQuestionTextInput);
+        app = createApp(TextInputQuestionCreation);
         app.use(createPinia());
-        wrapper = mount(QuizQuestionTextInput);
+        wrapper = mount(TextInputQuestionCreation);
     });
 
     it("renders correctly", () => {
