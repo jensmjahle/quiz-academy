@@ -3,6 +3,7 @@ import MultipleChoiceAnswers from '../components/questionComponents/MultipleChoi
 import logo from "../assets/logo.png";
 import TextInputAnswers from "./questionComponents/TextInputAnswers.vue";
 import TrueFalseAnswers from "./questionComponents/TrueFalseAnswers.vue";
+import DragDropAnswers from "@/components/questionComponents/DragDropAnswers.vue";
 
 export default {
     props: {
@@ -33,7 +34,7 @@ export default {
                 case 'TEXT_INPUT':
                     return TextInputAnswers
                 case 'DRAG_AND_DROP':
-                    return 'BaseInputNumber'
+                    return DragDropAnswers
                 case 'TRUE_FALSE':
                     return TrueFalseAnswers
                 default:
