@@ -67,6 +67,7 @@ export default {
 #okay-button {
     display: block;
     margin: 20px auto 0;
+    margin-bottom: 20px;
     padding: 10px 20px;
     background-color: var(--primary-color);
     color: white;

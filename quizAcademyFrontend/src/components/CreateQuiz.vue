@@ -328,4 +328,5 @@ const resetWithConfirm = () => {
     cursor: pointer;
     text-underline-color: var(--fourth-color);
 }
+
 </style>
