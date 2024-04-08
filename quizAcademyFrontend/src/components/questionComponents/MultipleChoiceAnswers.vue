@@ -1,5 +1,4 @@
 <script>
-import { ref } from "vue";
 
 export default {
     props: {
@@ -17,21 +16,17 @@ export default {
         return {
             correctAnswers: [],
             isCorrect: false,
-            selectedAnswer: null
+            alternatives: [],
+            selectedPosition: null,
         }
     },
     methods: {
-        checkAnswer(selectedAlternative, index) {
-            const alternatives = this.question.alternatives;
-            const correctAlternatives = this.question.correctAlternatives;
-            this.selectedAnswer = selectedAlternative;
-            this.isCorrect = correctAlternatives[index];
+        checkAnswer(index) {
+            this.alternatives = this.question.alternatives;
+            this.correctAnswers = this.question.correctAlternatives;
 
-
-            for (let i = 0; i < this.question.alternatives.length; i++) {
-                this.correctAnswers[i] = this.question.correctAlternatives.includes(alternatives[i]);
-            }
-
+            this.selectedPosition = index;
+            this.isCorrect = this.correctAnswers[index] === 'true';
             this.$emit('displayResults', this.isCorrect);
         }
     }
@@ -43,12 +38,12 @@ export default {
     <div class="alternative-buttons">
         <button v-for="(alternative, index) in question.alternatives"
                 :key="alternative"
-                @click="checkAnswer(alternative, index)"
+                @click="checkAnswer(index)"
                 :disabled="hasAnswered"
-                :class="{ 'correct': hasAnswered && correctAnswers[index],
-                           'incorrect': hasAnswered && !correctAnswers[index],
-                            'selectedAnswer': alternative === selectedAnswer,
-                            'notSelected': hasAnswered&&(alternative !== selectedAnswer)}">
+                :class="{ 'correct': hasAnswered && (correctAnswers[index] === 'true'),
+                           'incorrect': hasAnswered && (correctAnswers[index] === 'false'),
+                            'selectedAnswer': hasAnswered && (index === selectedPosition),
+                            'notSelected': hasAnswered&&(index !== selectedPosition)}">
             {{ alternative }}
         </button>
     </div>
@@ -106,9 +101,7 @@ button.incorrect {
     border-style: dotted;
     transition: 0.3s;
 }
-button.selectedAnswer {
 
-}
 button.notSelected {
     opacity: 0.3;
 }

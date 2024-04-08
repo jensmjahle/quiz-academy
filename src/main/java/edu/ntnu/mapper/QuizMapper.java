@@ -91,10 +91,10 @@ public class QuizMapper {
 
         // Get all questions for the quiz from the database
         Iterable<QuestionDAO> questions = questionService.getAllQuestions(quizDAO.getQuizId());
-
         // Map the questions to QuestionDTO objects
         List<QuestionDTO> questionDTOs = new ArrayList<>();
         for (QuestionDAO questionDAO : questions) {
+          logger.info("Mapping question with id " + questionDAO.getQuestionId() + " to QuestionDTO.");
           questionDTOs.add(questionMapper.toDTO(questionDAO));
         }
         quizDTO.setQuestions(questionDTOs);

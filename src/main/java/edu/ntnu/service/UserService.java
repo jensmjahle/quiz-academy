@@ -44,7 +44,6 @@ public class UserService {
     UserDAO userDAO = userRepository.findByUsername(username);
     UserDTO userDTO = modelMapper.map(userDAO, UserDTO.class);
     if (userDTO != null) {
-      userDTO.setPassword(null);
       logger.info("User with username " + username + " found. Returning user.");
       return new ResponseEntity<>(userDTO, HttpStatus.OK);
     } else {

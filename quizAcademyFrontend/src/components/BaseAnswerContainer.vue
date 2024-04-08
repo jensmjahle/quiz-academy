@@ -47,6 +47,7 @@ export default {
         displayResults(isCorrect) {
             this.hasAnswered = true
             this.isCorrect = isCorrect
+            console.log("isCorrectzxczxcsc: ", isCorrect)
             if(isCorrect){
                 this.score = 1
             } else {
