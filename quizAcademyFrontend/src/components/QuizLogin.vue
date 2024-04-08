@@ -1,7 +1,7 @@
 <template>
     <div class="login-form">
         <h2>Login</h2>
-        <form @submit.prevent="login">
+        <form @submit.prevent="login" @keypress.enter="login">
             <BaseInput id="username" v-model="username" label="Username" class="field" />
             <BaseInput id="password" v-model="password" label="Password" class="field" type="password" />
             <p v-if="loginError" class="error-message">Username and password is incorrect</p>

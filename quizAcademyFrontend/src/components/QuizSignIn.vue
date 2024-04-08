@@ -1,7 +1,7 @@
 <template>
     <div class="signUp-form">
         <h2>Sign up</h2>
-        <form @submit.prevent="signup">
+        <form @submit.prevent="signup" @keypress.enter="login">
             <BaseInput
                 id="first_name"
                 v-model="firstName"

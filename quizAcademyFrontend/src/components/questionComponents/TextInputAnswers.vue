@@ -19,7 +19,7 @@
                    'incorrect': hasAnswered && !isCorrect}"
         data-cy="answer-input"
     />
-    <button class="submitButton" @click="checkAnswer(answer)" :disabled="hasAnswered">Submit</button>
+    <button class="submitButton" @click="checkAnswer(answer)" @keypress.enter="checkAnswer(answer)" :disabled="hasAnswered">Submit</button>
   </div>
 </template>
 
