@@ -11,7 +11,6 @@ public class QuizAcademyApplication {
 
 	/**
 	 * The main method of the application.
-	 * @param args the command line arguments
 	 */
 	@GetMapping("/")
 	public String home() {

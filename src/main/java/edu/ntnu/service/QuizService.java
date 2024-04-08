@@ -1,27 +1,27 @@
 package edu.ntnu.service;
 
+import edu.ntnu.dao.QuizDAO;
 import edu.ntnu.dao.questions.DragDropQuestionDAO;
 import edu.ntnu.dao.questions.MultipleChoiceQuestionDAO;
+import edu.ntnu.dao.questions.TextInputQuestionDAO;
 import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
 import edu.ntnu.dto.QuizDTO;
-import edu.ntnu.dto.TagDTO;
 import edu.ntnu.dto.questions.QuestionDTO;
 import edu.ntnu.mapper.QuizMapper;
-import edu.ntnu.dao.QuizDAO;
-import edu.ntnu.dao.questions.TextInputQuestionDAO;
 import edu.ntnu.repository.QuizRepository;
 import edu.ntnu.repository.questions.DragDropQuestionDAORepository;
 import edu.ntnu.repository.questions.MultipleChoiceQuestionDAORepository;
 import edu.ntnu.repository.questions.TextInputQuestionDAORepository;
 import edu.ntnu.repository.questions.TrueFalseQuestionDAORepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Service class for Quiz objects.

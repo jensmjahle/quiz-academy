@@ -1,25 +1,13 @@
 package edu.ntnu.mapper;
 
-import edu.ntnu.dao.questions.DragDropQuestionDAO;
-import edu.ntnu.dao.questions.MultipleChoiceQuestionDAO;
-import edu.ntnu.dao.questions.TrueFalseQuestionDAO;
-import edu.ntnu.dto.questions.DragDropQuestionDTO;
-import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
-import edu.ntnu.dto.questions.QuestionDTO;
-import edu.ntnu.dto.questions.TextInputQuestionDTO;
-import edu.ntnu.dto.questions.TrueFalseQuestionDTO;
+import edu.ntnu.dao.questions.*;
+import edu.ntnu.dto.questions.*;
 import edu.ntnu.enums.QuestionType;
-import edu.ntnu.dao.questions.QuestionDAO;
-import edu.ntnu.dao.questions.TextInputQuestionDAO;
 import edu.ntnu.utils.QuestionTypeIdentifier;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 import org.springframework.stereotype.Component;
+
+import java.util.*;
+import java.util.logging.Logger;
 
 @Component
 public class QuestionMapper {

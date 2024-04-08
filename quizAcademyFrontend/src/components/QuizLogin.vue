@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import { useTokenStore } from "../stores/token.js";
 import router from "../router/index.js";
 

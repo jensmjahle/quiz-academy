@@ -42,11 +42,10 @@ public class TokenController {
    * Generate a JWT token for the given user.
    * @param loginRequest the login request containing the username and password
    * @return the generated token
-   * @throws Exception if the username and password are invalid
    */
   @PostMapping(value = "/new")
   @ResponseStatus(value = HttpStatus.CREATED)
-  public String generateToken(final @RequestBody LoginRequest loginRequest) throws Exception {
+  public String generateToken(final @RequestBody LoginRequest loginRequest) {
     logger.info("Received request to generate token for user: " + loginRequest.getUsername() + ".");
     if (securityService.correctPassword(loginRequest.getUsername(), loginRequest.getPassword())) {
       String generatedToken = generateToken(loginRequest.getUsername());

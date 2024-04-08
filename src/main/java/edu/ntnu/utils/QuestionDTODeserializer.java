@@ -4,20 +4,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import edu.ntnu.dto.questions.DragDropQuestionDTO;
-import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
-import edu.ntnu.dto.questions.QuestionDTO;
-import edu.ntnu.dto.questions.TextInputQuestionDTO;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
-import edu.ntnu.dto.questions.MultipleChoiceQuestionDTO;
-import edu.ntnu.dto.questions.QuestionDTO;
-import edu.ntnu.dto.questions.TextInputQuestionDTO;
+import edu.ntnu.dto.questions.*;
 
-import edu.ntnu.dto.questions.TrueFalseQuestionDTO;
 import java.io.IOException;
 
 public class QuestionDTODeserializer extends StdDeserializer<QuestionDTO> {

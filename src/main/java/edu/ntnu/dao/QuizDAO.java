@@ -54,19 +54,20 @@ public class QuizDAO {
   public QuizDAO() {
   }
 
+  public Long getQuizId() {
+    return quizId;
+  }
+
   /**
    * Creates a new instance of the Quiz class.
    *
    * @param quizName the name of the quiz
    * @param quizDescription the description of the quiz
    * @param userDAO the user that created the quiz
-   * @param tags the tags of the quiz
+   * @param tagDAOs the tags of the quiz
    * @param quizCreationDate the creation date of the quiz
+   * @param isPublic whether the quiz is public or not
    */
-  public Long getQuizId() {
-    return quizId;
-  }
-
   public QuizDAO(String quizName, String quizDescription, UserDAO userDAO, List<TagDAO> tagDAOs, Date quizCreationDate, boolean isPublic) {
     this.quizName = quizName;
     this.quizDescription = quizDescription;

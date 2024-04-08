@@ -16,7 +16,6 @@
 
 <script lang="ts">
 import { useTokenStore } from "../stores/token.js";
-import {getUserInfo} from "../utils/httputils.js"
 import CreateQuiz from "../components/CreateQuiz.vue";
 import sadImage from "../assets/sad.svg";
 
