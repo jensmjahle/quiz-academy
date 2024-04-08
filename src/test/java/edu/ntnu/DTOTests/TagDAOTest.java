@@ -1,4 +1,4 @@
-package edu.ntnu.modelTests;
+package edu.ntnu.DTOTests;
 
 
 import static org.assertj.core.api.Assertions.assertThat;

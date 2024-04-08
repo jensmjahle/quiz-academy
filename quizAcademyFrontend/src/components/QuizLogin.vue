@@ -60,7 +60,7 @@ export default {
     methods: {
         async login() {
             await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
-            if (this.tokenStore.jwtToken) {
+            if (this.tokenStore.loggedInUser) {
                 this.loginStatus = "Login successful!";
                 await router.push("/");
                 sessionStorage.removeItem("loginUser");
