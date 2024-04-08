@@ -1,3 +1,25 @@
+<template>
+  <div id="app">
+    <div v-if="!isPlayQuizPage" id="header">
+      <h1 :style="{ fontSize: headerSize }">Quiz Academy</h1>
+      <h5>{{ welcomeMessage }}</h5>
+    </div>
+
+    <navigation-bar @link-clicked="(args) => handleLinkClicked(args)" />
+
+    <div id="body" :class="bodyClass">
+      <router-view />
+    </div>
+    <div id="footer">
+      <p>Quiz Academy 2024</p>
+      <div class="contact">
+        <p>Contact Us:</p>
+        <a href="mailto:quiz.academy@gmail.com" class="email-button">Send mail</a>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { RouterView, useRoute } from "vue-router";
 import { ref, onMounted, computed, watch } from "vue";
@@ -66,28 +88,6 @@ const bodyClass = computed(() => {
     return "";
 });
 </script>
-
-<template>
-    <div id="app">
-        <div v-if="!isPlayQuizPage" id="header">
-            <h1 :style="{ fontSize: headerSize }">Quiz Academy</h1>
-            <h5>{{ welcomeMessage }}</h5>
-        </div>
-
-        <navigation-bar @link-clicked="(args) => handleLinkClicked(args)" />
-
-        <div id="body" :class="bodyClass">
-            <router-view />
-        </div>
-        <div id="footer">
-            <p>Quiz Academy 2024</p>
-            <div class="contact">
-            <p>Contact Us:</p>
-            <a href="mailto:quiz.academy@gmail.com" class="email-button">Send mail</a>
-            </div>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 .contact {

@@ -1,3 +1,28 @@
+<template>
+  <div class="container">
+    <div class="correctAnswers" v-if="hasAnswered">
+
+      <h4>Accepted answers:</h4>
+      <ul>
+        <li
+            v-for="answer in question.answers"
+            :key="answer.id">
+          <h5>{{answer}}</h5>
+        </li>
+      </ul>
+    </div>
+    <input
+        v-model="answer"
+        :placeholder="'Answer here...'"
+        class="field"
+        :class="{ 'correct': hasAnswered && isCorrect,
+                   'incorrect': hasAnswered && !isCorrect}"
+        data-cy="answer-input"
+    />
+    <button class="submitButton" @click="checkAnswer(answer)" :disabled="hasAnswered">Submit</button>
+  </div>
+</template>
+
 <script>
 
 export default {
@@ -29,34 +54,6 @@ export default {
     }
 }
 </script>
-
-<template>
-<div class="container">
-<div class="correctAnswers" v-if="hasAnswered">
-
-    <h4>Accepted answers:</h4>
-    <ul>
-    <li
-        v-for="answer in question.answers"
-        :key="answer.id">
-        <h5>{{answer}}</h5>
-    </li>
-        </ul>
-</div>
-
-
-
-    <input
-        v-model="answer"
-        :placeholder="'Answer here...'"
-        class="field"
-        :class="{ 'correct': hasAnswered && isCorrect,
-                   'incorrect': hasAnswered && !isCorrect}"
-        data-cy="answer-input"
-    />
-    <button class="submitButton" @click="checkAnswer(answer)" :disabled="hasAnswered">Submit</button>
-</div>
-</template>
 
 <style scoped>
 .container {

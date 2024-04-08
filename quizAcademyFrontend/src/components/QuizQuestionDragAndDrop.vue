@@ -1,3 +1,44 @@
+<template>
+  <div id="drag-and-drop-question">
+    <h4>Drag and Drop Question</h4>
+    <input id="question_text" class="box_label" placeholder="Question Name" v-model="questionText" />
+    <div id="add_picture">
+      <h5>Add or change picture for your question:</h5>
+      <div v-if="imageUploaded">
+        <h5 >Current image</h5>
+        <img :src="questionPhoto" alt="Question image"/>
+      </div>
+      <input type="file" @change="handleFileUpload" accept="image/*" />
+    </div>
+    <h5>Write all correct responses in each box. Separated by: *</h5>
+    <h5>They will be displayed in a single box to be sorted.</h5>
+
+    <div v-for="(category, index) in categories" :key="index" id="category_with_answers">
+      <input
+          class="box_label"
+          id="box_label_category"
+          type="text"
+          v-model="category.name"
+          placeholder="Category"
+      />
+      <input
+          class="box_label"
+          id="box_label_answers"
+          type="text"
+          v-model="category.items"
+          placeholder="Enter correct items here, separated by: *"
+      />
+      <button id="remove_category" @click="removeCategory(index)">Remove category</button>
+    </div>
+    <div id="buttons">
+      <button id="add_category" @click="addCategory">Add a category</button>
+      <button id="submit_question" v-if="!edit" @click="postDragDropQuestion">Submit</button>
+      <button id="update_question" v-if="edit" @click="editQuestion">Update</button>
+      <button id="cancel" @click="cancelPressed">Cancel</button>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import {useRouter} from "vue-router";
@@ -118,47 +159,6 @@ const cancelPressed = () => {
 }
 
 </script>
-
-<template>
-    <div id="drag-and-drop-question">
-        <h4>Drag and Drop Question</h4>
-        <input id="question_text" class="box_label" placeholder="Question Name" v-model="questionText" />
-        <div id="add_picture">
-            <h5>Add or change picture for your question:</h5>
-            <div v-if="imageUploaded">
-                <h5 >Current image</h5>
-                <img :src="questionPhoto" alt="Question image"/>
-            </div>
-            <input type="file" @change="handleFileUpload" accept="image/*" />
-        </div>
-        <h5>Write all correct responses in each box. Separated by: *</h5>
-        <h5>They will be displayed in a single box to be sorted.</h5>
-
-        <div v-for="(category, index) in categories" :key="index" id="category_with_answers">
-            <input
-                class="box_label"
-                id="box_label_category"
-                type="text"
-                v-model="category.name"
-                placeholder="Category"
-            />
-            <input
-                class="box_label"
-                id="box_label_answers"
-                type="text"
-                v-model="category.items"
-                placeholder="Enter correct items here, separated by: *"
-            />
-            <button id="remove_category" @click="removeCategory(index)">Remove category</button>
-        </div>
-        <div id="buttons">
-            <button id="add_category" @click="addCategory">Add a category</button>
-            <button id="submit_question" v-if="!edit" @click="postDragDropQuestion">Submit</button>
-            <button id="update_question" v-if="edit" @click="editQuestion">Update</button>
-            <button id="cancel" @click="cancelPressed">Cancel</button>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 #drag-and-drop-question {

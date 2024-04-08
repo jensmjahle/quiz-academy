@@ -1,3 +1,19 @@
+<template>
+
+  <div class="alternative-buttons">
+    <button v-for="(alternative, index) in question.alternatives"
+            :key="alternative"
+            @click="checkAnswer(alternative, index)"
+            :disabled="hasAnswered"
+            :class="{ 'correct': hasAnswered && correctAnswers[index],
+                           'incorrect': hasAnswered && !correctAnswers[index],
+                            'selectedAnswer': alternative === selectedAnswer,
+                            'notSelected': hasAnswered&&(alternative !== selectedAnswer)}">
+      {{ alternative }}
+    </button>
+  </div>
+</template>
+
 <script>
 import { ref } from "vue";
 
@@ -37,22 +53,6 @@ export default {
     }
 }
 </script>
-
-<template>
-
-    <div class="alternative-buttons">
-        <button v-for="(alternative, index) in question.alternatives"
-                :key="alternative"
-                @click="checkAnswer(alternative, index)"
-                :disabled="hasAnswered"
-                :class="{ 'correct': hasAnswered && correctAnswers[index],
-                           'incorrect': hasAnswered && !correctAnswers[index],
-                            'selectedAnswer': alternative === selectedAnswer,
-                            'notSelected': hasAnswered&&(alternative !== selectedAnswer)}">
-            {{ alternative }}
-        </button>
-    </div>
-</template>
 
 <style scoped>
 .alternative-buttons {

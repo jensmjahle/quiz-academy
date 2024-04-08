@@ -1,3 +1,14 @@
+<template>
+  <div class="container">
+    <h2>Quiz Finished</h2>
+    <h3>You got {{score}} correct out of {{totalScore}} total</h3>
+    <div class="buttons">
+      <button @click="finishQuiz">Finish</button>
+      <button @click="resetQuiz">Try Again</button>
+    </div>
+  </div>
+</template>
+
 <script>
 export default {
   props: {
@@ -21,17 +32,6 @@ export default {
 }
 }
 </script>
-
-<template>
-<div class="container">
-    <h2>Quiz Finished</h2>
-    <h3>You got {{score}} correct out of {{totalScore}} total</h3>
-    <div class="buttons">
-        <button @click="finishQuiz">Finish</button>
-        <button @click="resetQuiz">Try Again</button>
-    </div>
-</div>
-</template>
 
 <style scoped>
 .container {

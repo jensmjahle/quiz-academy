@@ -1,3 +1,27 @@
+<template>
+  <div id="full_question">
+    <p id="info-text">True or False question <br>
+      Check circle if question is true</p>
+    <div id="text_response_question">
+      <input id="input" type="text" v-model="questionText" placeholder="Question" />
+      <input id="checkbox" type="checkbox" v-model="answer"/>
+    </div>
+    <div id="add_picture">
+      <h5>Add or change picture for your question:</h5>
+      <div v-if="imageUploaded">
+        <h5 >Current image</h5>
+        <img :src="questionPhoto" alt="Question image"/>
+      </div>
+      <input type="file" @change="handleFileUpload" accept="image/*" />
+    </div>
+    <div>
+      <button @click="createQuestion" v-if="!edit">Submit</button>
+      <button @click="updateQuestion" v-if="edit">Update</button>
+      <button id="cancel" @click="cancelPressed">Cancel</button>
+    </div>
+  </div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import { useQuizStore } from '../stores/QuizStore.js';
@@ -77,30 +101,6 @@ const cancelPressed = () => {
     }
 }
 </script>
-
-<template>
-    <div id="full_question">
-      <p id="info-text">True or False question <br>
-        Check circle if question is true</p>
-        <div id="text_response_question">
-            <input id="input" type="text" v-model="questionText" placeholder="Question" />
-            <input id="checkbox" type="checkbox" v-model="answer"/>
-        </div>
-        <div id="add_picture">
-            <h5>Add or change picture for your question:</h5>
-            <div v-if="imageUploaded">
-                <h5 >Current image</h5>
-                <img :src="questionPhoto" alt="Question image"/>
-            </div>
-            <input type="file" @change="handleFileUpload" accept="image/*" />
-        </div>
-        <div>
-            <button @click="createQuestion" v-if="!edit">Submit</button>
-            <button @click="updateQuestion" v-if="edit">Update</button>
-            <button id="cancel" @click="cancelPressed">Cancel</button>
-        </div>
-    </div>
-</template>
 
 <style scoped>
 #full_question {
