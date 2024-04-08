@@ -80,6 +80,8 @@ const cancelPressed = () => {
 
 <template>
     <div id="full_question">
+      <p id="info-text">True or False question <br>
+        Check circle if question is true</p>
         <div id="text_response_question">
             <input id="input" type="text" v-model="questionText" placeholder="Question" />
             <input id="checkbox" type="checkbox" v-model="answer"/>
@@ -106,11 +108,16 @@ const cancelPressed = () => {
     display: flex;
     flex-flow: column;
     align-items: center;
+    padding: 15px;
 }
 
 #text_response_question {
     display: flex;
-    flex-flow: column;
+    flex-flow: row-reverse;
+    align-items: center;
+    #checkbox {
+        margin-top: 15px;
+    }
 }
 
 #input {
@@ -151,5 +158,21 @@ const cancelPressed = () => {
     background-color: var(--fourth-color); /* Adjust the color as per your needs */
     border-radius: 50%; /* This will make the circle completely round */
     margin: 5px; /* Adjust the value as per your needs */
+}
+
+#info-text {
+  font-size: 30px;
+  margin-bottom: 10px;
+  padding: 10px;
+  justify-self: center;
+  text-align: center; /* Add this line */
+}
+
+#add_picture {
+  margin-top: 15px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>

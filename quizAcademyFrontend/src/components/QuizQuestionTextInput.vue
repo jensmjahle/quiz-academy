@@ -114,6 +114,7 @@ const cancelPressed = () => {
     display: flex;
     flex-flow: column;
     align-items: center;
+    padding: 15px;
 }
 
 #text_response_question {
@@ -134,5 +135,13 @@ const cancelPressed = () => {
 
 #input::placeholder {
     text-align: center;
+}
+
+#add_picture {
+    margin-top: 15px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 }
 </style>

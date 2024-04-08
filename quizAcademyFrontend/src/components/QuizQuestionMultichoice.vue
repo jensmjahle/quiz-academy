@@ -1,62 +1,67 @@
 <template>
-    <div id="QuizQuestionMultichoice">
-        <h5 id="currently_editing" v-if="edit">Editing question</h5>
-        <div id="question">
-            <h5 id="quiz_question">Q.1</h5>
-            <input
-                id="input"
-                v-model="question"
-                type="text"
-                placeholder="Enter your question here"
-            />
-        </div>
-        <div id="add_picture">
-            <h5>Add or change picture for your question:</h5>
-            <div v-if="imageUploaded">
-                <h5 >Current image</h5>
-                <img :src="questionPhoto" alt="Question image"/>
-            </div>
-            <input type="file" @change="handleFileUpload" accept="image/*" />
-        </div>
-        <div id="alternatives">
-            <div>
-                <input
-                    id="input"
-                    v-model="alternatives[0]"
-                    type="text"
-                    placeholder="alternative one"
-                />
-                <input id="checkbox" v-model="correctAlternatives[0]" type="checkbox" />
-                <input
-                    id="input"
-                    v-model="alternatives[1]"
-                    type="text"
-                    placeholder="alternative two"
-                />
-                <input id="checkbox" v-model="correctAlternatives[1]" type="checkbox" />
-                <input
-                    id="input"
-                    v-model="alternatives[2]"
-                    type="text"
-                    placeholder="alternative three"
-                />
-                <input id="checkbox" v-model="correctAlternatives[2]" type="checkbox" />
-                <input
-                    id="input"
-                    v-model="alternatives[3]"
-                    type="text"
-                    placeholder="alternative four"
-                />
-                <input id="checkbox" v-model="correctAlternatives[3]" type="checkbox" />
-            </div>
-        </div>
-        <div>
-            <button @click="submitForm" v-if="!edit">Submit</button>
-            <button @click="updateQuestion" v-if="edit">Update</button>
-            <button id="cancel" @click="cancelPressed">Cancel</button>
-
-        </div>
+  <div id="QuizQuestionMultichoice">
+    <h5 id="currently_editing" v-if="edit">Editing question</h5>
+    <div id="question">
+      <h5 id="quiz_question">Q.1</h5>
+      <input
+          id="input"
+          v-model="question"
+          type="text"
+          placeholder="Enter your question here"
+      />
     </div>
+    <div id="add_picture">
+      <h5>Add or change picture for your question:</h5>
+      <div v-if="imageUploaded">
+        <h5 >Current image</h5>
+        <img :src="questionPhoto" alt="Question image"/>
+      </div>
+      <input type="file" @change="handleFileUpload" accept="image/*" />
+    </div>
+    <div id="alternatives">
+      <div id="alternativesMulti">
+        <input
+            id="input"
+            v-model="alternatives[0]"
+            type="text"
+            placeholder="alternative one"
+        />
+        <label for="checkbox">Check for correct alternative</label>
+        <input id="checkbox" v-model="correctAlternatives[0]" type="checkbox" />
+        <input
+            id="input"
+            v-model="alternatives[1]"
+            type="text"
+            placeholder="alternative two"
+        />
+        <label for="checkbox">Check for correct alternative</label>
+        <input id="checkbox" v-model="correctAlternatives[1]" type="checkbox" />
+        <input
+            id="input"
+            v-model="alternatives[2]"
+            type="text"
+            placeholder="alternative three"
+        />
+        <label for="checkbox">Check for correct alternative</label>
+        <input id="checkbox" v-model="correctAlternatives[2]" type="checkbox" />
+        <input
+            id="input"
+            v-model="alternatives[3]"
+            type="text"
+            placeholder="alternative four"
+        />
+        <label for="checkbox">Check for correct alternative</label>
+        <input id="checkbox" v-model="correctAlternatives[3]" type="checkbox" />
+      </div>
+    </div>
+    <div>
+      <button @click="submitForm" v-if="!edit">Submit</button>
+      <button @click="updateQuestion" v-if="edit">Update</button>
+      <button id="cancel" @click="cancelPressed">Cancel</button>
+
+    </div>
+  </div>
+
 </template>
 
 <script setup>
@@ -269,4 +274,52 @@ const cancelPressed = () => {
     border-radius: 50%; /* This will make the circle completely round */
     margin: 5px; /* Adjust the value as per your needs */
 }
+
+#QuizQuestionMultichoice {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 3vw;
+    justify-content: center;
+    #checkbox {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 10px;
+    }
+    #input {
+        margin-top: 15px;
+        font-size: 30px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 10px;
+        background-color: var(--fifth-color);
+        border-radius: 5px;
+        width: 60vw;
+        text-align: center;
+    }
+  #alternativesMulti {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    #input {
+        margin-top: 5px;
+        font-size: 30px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 10px;
+        background-color: var(--fifth-color);
+        border-radius: 5px;
+        width: 60vw;
+    }
+  }
+}
+ .checkbox-label {
+   display: inline-block;
+   margin-right: 10px; /* Adjust spacing as needed */
+ }
+
+#checkbox {
+  vertical-align: middle; /* Align checkbox with label vertically */
+}
+
 </style>

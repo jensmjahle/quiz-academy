@@ -198,4 +198,12 @@ const cancelPressed = () => {
 #remove_category {
 
 }
+
+#add_picture {
+  margin-top: 15px;
+  display: flex;
+  flex-flow: column;
+  justify-content: center;
+  align-items: center;
+}
 </style>
