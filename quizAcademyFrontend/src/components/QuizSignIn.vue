@@ -2,30 +2,10 @@
     <div class="signUp-form">
         <h2>Sign up</h2>
         <form @submit.prevent="signup" @keypress.enter="login">
-            <BaseInput
-                id="first_name"
-                v-model="firstName"
-                label="First Name"
-                class="field"
-            />
-            <BaseInput
-                id="last_name"
-                v-model="lastName"
-                label="Last Name"
-                class="field"
-            />
-            <BaseInput
-                id="username"
-                v-model="username"
-                label="Username"
-                class="field"
-            />
-            <BaseInput
-                id="email"
-                v-model="email"
-                label="Email"
-                class="field"
-            />
+            <BaseInput id="first_name" v-model="firstName" label="First Name" class="field" />
+            <BaseInput id="last_name" v-model="lastName" label="Last Name" class="field" />
+            <BaseInput id="username" v-model="username" label="Username" class="field" />
+            <BaseInput id="email" v-model="email" label="Email" class="field" />
             <BaseInput
                 id="password"
                 v-model="password"
@@ -50,7 +30,6 @@
             >
                 Sign up
             </button>
-
         </form>
         <div>
             <p>Already have an account? <router-link to="/login">Log in</router-link></p>
@@ -59,7 +38,7 @@
 </template>
 
 <script>
-import {signUpUser} from "../utils/httputils.js";
+import { signUpUser } from "../utils/httputils.js";
 import router from "../router/index.js";
 import { useTokenStore } from "../stores/token.js";
 import BaseInput from "@/components/BaseInput.vue";
@@ -67,10 +46,10 @@ import BaseInput from "@/components/BaseInput.vue";
 export default {
     components: { BaseInput },
 
-  setup() {
-    const tokenStore = useTokenStore();
-    return { tokenStore };
-  },
+    setup() {
+        const tokenStore = useTokenStore();
+        return { tokenStore };
+    },
     data() {
         return {
             firstName: "",
@@ -191,32 +170,32 @@ export default {
         }
     },
     methods: {
-      async signup() {
-        try {
-          const response = await signUpUser(
-              this.firstName,
-              this.lastName,
-              this.username,
-              this.password,
-              this.email
-          );
-          if (response.status === 201) {
-            await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
-            if (this.tokenStore.jwtToken) {
-              this.loginStatus = "Login successful!";
-              await router.push("/");
-              sessionStorage.removeItem("signUpUser");
-            } else {
-              this.loginStatus = "Login failed!";
+        async signup() {
+            try {
+                const response = await signUpUser(
+                    this.firstName,
+                    this.lastName,
+                    this.username,
+                    this.password,
+                    this.email
+                );
+                if (response.status === 201) {
+                    await this.tokenStore.getTokenAndSaveInStore(this.username, this.password);
+                    if (this.tokenStore.jwtToken) {
+                        this.loginStatus = "Login successful!";
+                        await router.push("/");
+                        sessionStorage.removeItem("signUpUser");
+                    } else {
+                        this.loginStatus = "Login failed!";
+                    }
+                }
+            } catch (error) {
+                console.error(error);
+                if (error.response && error.response.status === 409) {
+                    this.userNameExists = true;
+                }
             }
-          }
-        } catch (error) {
-          console.error(error)
-          if (error.response && error.response.status === 409) {
-            this.userNameExists = true;
-          }
         }
-      }
     },
     beforeDestroy() {
         // Clear local storage when the component is destroyed
@@ -237,7 +216,6 @@ window.addEventListener("beforeunload", function (event) {
     padding: 50px;
     border: 1px solid #ccc;
     border-radius: 5px;
-
 }
 
 .form-group {

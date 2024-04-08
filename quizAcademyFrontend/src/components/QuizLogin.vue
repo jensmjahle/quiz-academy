@@ -3,7 +3,13 @@
         <h2>Login</h2>
         <form @submit.prevent="login" @keypress.enter="login">
             <BaseInput id="username" v-model="username" label="Username" class="field" />
-            <BaseInput id="password" v-model="password" label="Password" class="field" type="password" />
+            <BaseInput
+                id="password"
+                v-model="password"
+                label="Password"
+                class="field"
+                type="password"
+            />
             <p v-if="loginError" class="error-message">Username and password is incorrect</p>
             <button type="submit" id="submit-login">Login</button>
         </form>
@@ -40,9 +46,8 @@ export default {
                 this.loginError = true;
             }
         }
-    },
+    }
 };
-
 </script>
 
 <style scoped>
@@ -54,7 +59,6 @@ export default {
     margin-top: 100px;
     margin-bottom: 100px;
 }
-
 
 button {
     width: calc(100% - 5px); /* Adjust button width to account for border */
@@ -71,12 +75,11 @@ button:hover {
 }
 
 .error-message {
-  color: var(--wrong-answer-border-color);
-  margin-bottom: 10px;
+    color: var(--wrong-answer-border-color);
+    margin-bottom: 10px;
 }
 
 #submit-login {
     width: 100%;
 }
-
 </style>

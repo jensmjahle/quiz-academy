@@ -1,12 +1,12 @@
 <template>
     <div class="container">
-    <label v-if="props.label"> {{ props.label }}</label>
-    <input
-        v-bind="$attrs"
-        :value="props.modelValue"
-        :placeholder="props.label"
-        @input="$emit('update:modelValue', $event.target.value)"
-    />
+        <label v-if="props.label"> {{ props.label }}</label>
+        <input
+            v-bind="$attrs"
+            :value="props.modelValue"
+            :placeholder="props.label"
+            @input="$emit('update:modelValue', $event.target.value)"
+        />
     </div>
 </template>
 
@@ -14,12 +14,12 @@
 const props = defineProps({
     label: {
         type: String,
-        default: "",
+        default: ""
     },
     modelValue: {
         type: [String, Number],
-        default: "",
-    },
+        default: ""
+    }
 });
 </script>
 

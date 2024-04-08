@@ -1,17 +1,19 @@
 <template>
-  <div>
-    <div v-if="user" id="mainContainer">
-      <h1>Create a new quiz</h1>
-      <CreateQuiz />
+    <div>
+        <div v-if="user" id="mainContainer">
+            <h1>Create a new quiz</h1>
+            <CreateQuiz />
+        </div>
+        <div v-if="!user">
+            <img :src="sadImage" alt="Hallo" id="sad-face" />
+            <p id="not-logged-in-message">
+                Please log in to continue<br />
+                as you have be a user<br />
+                to create quizzes
+            </p>
+            <button @click="$router.push('/login')" id="okay-button">Okay</button>
+        </div>
     </div>
-    <div v-if="!user">
-      <img :src="sadImage" alt="Hallo" id="sad-face">
-      <p id="not-logged-in-message">Please log in to continue<br>
-        as you have be a user<br>
-        to create quizzes</p>
-      <button @click="$router.push('/login')" id="okay-button">Okay</button>
-    </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -36,13 +38,12 @@ export default {
         return {
             user: null,
             sadImage: sadImage
-        }
+        };
     }
 };
 </script>
 
 <style scoped>
-
 #mainContainer {
     display: flex;
     flex-direction: column;
@@ -74,5 +75,4 @@ export default {
     border-radius: 5px;
     cursor: pointer;
 }
-
 </style>

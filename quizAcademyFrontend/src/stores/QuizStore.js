@@ -1,11 +1,11 @@
-import { defineStore } from 'pinia';
-import { useDragDropStore } from './dragAndDropQuestionStore.js';
-import { useMultichoiceStore } from './multichoideQuestionStore.js';
-import { useTextInputStore } from './textInputQuestionStore.js';
-import {useTrueFalseStore} from "@/stores/trueFalseQuestionStore.js";
+import { defineStore } from "pinia";
+import { useDragDropStore } from "./dragAndDropQuestionStore.js";
+import { useMultichoiceStore } from "./multichoideQuestionStore.js";
+import { useTextInputStore } from "./textInputQuestionStore.js";
+import { useTrueFalseStore } from "@/stores/trueFalseQuestionStore.js";
 
 export const useQuizStore = defineStore({
-    id: 'quizStore',
+    id: "quizStore",
     state: () => ({
         quizId: null,
         quizName: null,
@@ -30,13 +30,13 @@ export const useQuizStore = defineStore({
             this.quizName = null;
         },
         setQuizQuestions(questions) {
-            if(Array.isArray(questions)){
+            if (Array.isArray(questions)) {
                 this.quizQuestions = questions;
             }
         },
         addQuestion(question) {
-            if(Array.isArray(this.quizQuestions)) {
-            this.quizQuestions.push(question);
+            if (Array.isArray(this.quizQuestions)) {
+                this.quizQuestions.push(question);
             } else {
                 this.quizQuestions = [question];
             }
@@ -92,31 +92,56 @@ export const useQuizStore = defineStore({
         },
         fromQuestionToQuestionState(questionIndex) {
             const question = this.quizQuestions[questionIndex];
-            if(question.type === "DRAG_AND_DROP") {
+            if (question.type === "DRAG_AND_DROP") {
                 const questionState = useDragDropStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.categories, question.imageBase64);
-                return("/create_quiz/drag_and_drop");
-            } else if(question.type === "MULTIPLE_CHOICE") {
+                questionState.setQuestionValues(
+                    question.quizId,
+                    question.questionId,
+                    question.questionText,
+                    question.categories,
+                    question.imageBase64
+                );
+                return "/create_quiz/drag_and_drop";
+            } else if (question.type === "MULTIPLE_CHOICE") {
                 const questionState = useMultichoiceStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.alternatives, question.correctAlternatives, question.imageBase64);
-                return("/create_quiz/multichoice");
-            } else if(question.type === "TEXT_INPUT") {
+                questionState.setQuestionValues(
+                    question.quizId,
+                    question.questionId,
+                    question.questionText,
+                    question.alternatives,
+                    question.correctAlternatives,
+                    question.imageBase64
+                );
+                return "/create_quiz/multichoice";
+            } else if (question.type === "TEXT_INPUT") {
                 const questionState = useTextInputStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.answers, question.imageBase64);
-                return ("/create_quiz/text_input");
-            } else if(question.type === "TRUE_FALSE") {
+                questionState.setQuestionValues(
+                    question.quizId,
+                    question.questionId,
+                    question.questionText,
+                    question.answers,
+                    question.imageBase64
+                );
+                return "/create_quiz/text_input";
+            } else if (question.type === "TRUE_FALSE") {
                 const questionState = useTrueFalseStore();
-                questionState.setQuestionValues(question.quizId, question.questionId, question.questionText, question.correctAnswer, question.imageBase64);
-                return("/create_quiz/true_false");
+                questionState.setQuestionValues(
+                    question.quizId,
+                    question.questionId,
+                    question.questionText,
+                    question.correctAnswer,
+                    question.imageBase64
+                );
+                return "/create_quiz/true_false";
             }
         },
         swapQuestions(index1, question) {
             this.quizQuestions.splice(index1, 1);
             this.quizQuestions[index1] = question;
         },
-        getIndexById(questionId){
-            for(let i = 0; i < this.quizQuestions.length; i++) {
-                if(this.quizQuestions[i].questionId === questionId) {
+        getIndexById(questionId) {
+            for (let i = 0; i < this.quizQuestions.length; i++) {
+                if (this.quizQuestions[i].questionId === questionId) {
                     return i;
                 }
             }

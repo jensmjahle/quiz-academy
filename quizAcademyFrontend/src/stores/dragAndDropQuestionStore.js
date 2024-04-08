@@ -1,14 +1,14 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
 export const useDragDropStore = defineStore({
-    id: 'dragAndDropQuestion',
+    id: "dragAndDropQuestion",
     state: () => ({
         questionType: "DD",
         quizId: null,
         questionId: null,
         questionText: null,
         questionCategories: [],
-        questionImage: null,
+        questionImage: null
     }),
     actions: {
         setQuestionValues(quizId, questionId, questionText, questionCategories, questionImage) {
@@ -23,6 +23,6 @@ export const useDragDropStore = defineStore({
             this.questionId = null;
             this.questionText = null;
             this.questionCategories = [];
-        },
+        }
     }
 });

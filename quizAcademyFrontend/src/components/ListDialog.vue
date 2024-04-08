@@ -5,7 +5,7 @@
                 <h2 class="title">{{ selectedQuiz.quizName }}</h2>
                 <h5 class="description">{{ selectedQuiz.quizDescription }}</h5>
                 <div class="tagContainer">
-                <h5>Tags: </h5>
+                    <h5>Tags:</h5>
                     <div v-for="tag in selectedQuiz.tags" :key="tag.tagId">
                         <h5>{{ tag.tagName }},</h5>
                     </div>

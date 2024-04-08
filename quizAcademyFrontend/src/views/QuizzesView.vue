@@ -1,16 +1,18 @@
 <template>
-  <div>
-    <div v-if="user" id="mainContainer">
-      <h1>My Quizzes</h1>
-      <QuizList :quizzes="quizzes" />
+    <div>
+        <div v-if="user" id="mainContainer">
+            <h1>My Quizzes</h1>
+            <QuizList :quizzes="quizzes" />
+        </div>
+        <div v-if="!user">
+            <img :src="sadImage" alt="Hallo" id="sad-face" />
+            <p id="not-logged-in-message">
+                Please log in to<br />
+                view your quizzes
+            </p>
+            <button @click="$router.push('/login')" id="okay-button">Okay</button>
+        </div>
     </div>
-    <div v-if="!user">
-      <img :src="sadImage" alt="Hallo" id="sad-face">
-      <p id="not-logged-in-message">Please log in to<br>
-        view your quizzes</p>
-      <button @click="$router.push('/login')" id="okay-button">Okay</button>
-    </div>
-  </div>
 </template>
 
 <script>
@@ -32,7 +34,6 @@ export default {
             let response = this.tokenStore.loggedInUser;
             this.user = response.data;
             this.quizzes = await fetchAllQuizzesByUser(this.user.username);
-
         }
     },
     data() {
@@ -40,10 +41,9 @@ export default {
             user: null,
             sadImage: sadImage,
             quizzes: []
-        }
+        };
     }
 };
-
 </script>
 
 <style scoped>

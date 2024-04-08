@@ -1,6 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach } from "vitest";
 
-it('should ', function () {
+it("should ", function () {
     expect(1).toBe(1);
-
 });

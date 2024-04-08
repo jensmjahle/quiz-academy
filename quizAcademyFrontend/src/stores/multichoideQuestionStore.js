@@ -1,7 +1,7 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
 export const useMultichoiceStore = defineStore({
-    id: 'multiChoiceQuestion',
+    id: "multiChoiceQuestion",
     state: () => ({
         questionType: "MC",
         quizId: null,
@@ -9,10 +9,17 @@ export const useMultichoiceStore = defineStore({
         questionText: null,
         questionAlternatives: [],
         correctAlternatives: [],
-        questionImage: null,
+        questionImage: null
     }),
     actions: {
-        setQuestionValues(quizId, questionId, questionText, questionAlternatives, correctAlternatives, questionPhoto) {
+        setQuestionValues(
+            quizId,
+            questionId,
+            questionText,
+            questionAlternatives,
+            correctAlternatives,
+            questionPhoto
+        ) {
             this.quizId = quizId;
             this.questionId = questionId;
             this.questionText = questionText;
@@ -27,6 +34,6 @@ export const useMultichoiceStore = defineStore({
             this.questionAlternatives = [];
             this.correctAlternatives = [];
             this.questionImage = null;
-        },
+        }
     }
 });

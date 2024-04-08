@@ -5,7 +5,7 @@ export const usePlayQuizStore = defineStore("playQuiz", {
         quiz: null,
         progress: 0,
         currentQuestion: null,
-        score: 0,
+        score: 0
     }),
 
     persist: {
@@ -55,7 +55,7 @@ export const usePlayQuizStore = defineStore("playQuiz", {
             }
 
             return questions;
-        },
+        }
     },
     getters: {
         getQuiz: (state) => {
@@ -71,4 +71,4 @@ export const usePlayQuizStore = defineStore("playQuiz", {
             return state.score;
         }
     }
-})
+});

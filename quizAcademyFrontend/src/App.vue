@@ -1,23 +1,23 @@
 <template>
-  <div id="app">
-    <div v-if="!isPlayQuizPage" id="header">
-      <h1 :style="{ fontSize: headerSize }">Quiz Academy</h1>
-      <h5>{{ welcomeMessage }}</h5>
-    </div>
+    <div id="app">
+        <div v-if="!isPlayQuizPage" id="header">
+            <h1 :style="{ fontSize: headerSize }">Quiz Academy</h1>
+            <h5>{{ welcomeMessage }}</h5>
+        </div>
 
-    <navigation-bar @link-clicked="(args) => handleLinkClicked(args)" />
+        <navigation-bar @link-clicked="(args) => handleLinkClicked(args)" />
 
-    <div id="body" :class="bodyClass">
-      <router-view />
+        <div id="body" :class="bodyClass">
+            <router-view />
+        </div>
+        <div id="footer">
+            <p>Quiz Academy 2024</p>
+            <div class="contact">
+                <p>Contact Us:</p>
+                <a href="mailto:quiz.academy@gmail.com" class="email-button">Send mail</a>
+            </div>
+        </div>
     </div>
-    <div id="footer">
-      <p>Quiz Academy 2024</p>
-      <div class="contact">
-        <p>Contact Us:</p>
-        <a href="mailto:quiz.academy@gmail.com" class="email-button">Send mail</a>
-      </div>
-    </div>
-  </div>
 </template>
 
 <script setup>
@@ -62,8 +62,6 @@ const handleLinkClicked = (args) => {
 const headerHeight = ref(0);
 const footerHeight = ref(0);
 const isPlayQuizPage = ref(false);
-
-
 
 onMounted(() => {
     headerHeight.value = document.getElementById("header").offsetHeight;

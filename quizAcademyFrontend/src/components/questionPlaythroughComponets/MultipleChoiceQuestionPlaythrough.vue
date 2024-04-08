@@ -1,28 +1,30 @@
 <template>
-
-  <div class="alternative-buttons">
-    <button v-for="(alternative, index) in question.alternatives"
+    <div class="alternative-buttons">
+        <button
+            v-for="(alternative, index) in question.alternatives"
             :key="alternative"
             @click="checkAnswer(alternative, index)"
             :disabled="hasAnswered"
-            :class="{ 'correct': hasAnswered && correctAnswers[index],
-                           'incorrect': hasAnswered && !correctAnswers[index],
-                            'selectedAnswer': alternative === selectedAnswer,
-                            'notSelected': hasAnswered&&(alternative !== selectedAnswer)}">
-      {{ alternative }}
-    </button>
-  </div>
+            :class="{
+                correct: hasAnswered && correctAnswers[index],
+                incorrect: hasAnswered && !correctAnswers[index],
+                selectedAnswer: alternative === selectedAnswer,
+                notSelected: hasAnswered && alternative !== selectedAnswer
+            }"
+        >
+            {{ alternative }}
+        </button>
+    </div>
 </template>
 
 <script>
-
 export default {
     props: {
         question: {
             type: Object,
             required: true
         },
-      hasAnswered: {
+        hasAnswered: {
             type: Boolean,
             required: true
         }
@@ -33,7 +35,7 @@ export default {
             correctAnswers: [],
             isCorrect: false,
             selectedAnswer: null
-        }
+        };
     },
     methods: {
         checkAnswer(selectedAlternative, index) {
@@ -42,15 +44,16 @@ export default {
             this.selectedAnswer = selectedAlternative;
             this.isCorrect = correctAlternatives[index];
 
-
             for (let i = 0; i < this.question.alternatives.length; i++) {
-                this.correctAnswers[i] = this.question.correctAlternatives.includes(alternatives[i]);
+                this.correctAnswers[i] = this.question.correctAlternatives.includes(
+                    alternatives[i]
+                );
             }
 
-            this.$emit('displayResults', this.isCorrect);
+            this.$emit("displayResults", this.isCorrect);
         }
     }
-}
+};
 </script>
 
 <style scoped>
@@ -96,7 +99,6 @@ button.correct {
     background-color: var(--correct-answer-color);
     border-color: var(--correct-answer-border-color);
     transition: 0.3s;
-
 }
 
 button.incorrect {
@@ -106,7 +108,6 @@ button.incorrect {
     transition: 0.3s;
 }
 button.selectedAnswer {
-
 }
 button.notSelected {
     opacity: 0.3;

@@ -8,4 +8,4 @@ export const fetchPublicTags = async () => {
         console.error("Error fetching all tags:", error);
         return [];
     }
-}
+};

@@ -1,5 +1,11 @@
 import { defineStore } from "pinia";
-import {getJwtToken, getUserInfo, refreshJwtToken, deleteToken, deleteUser} from "../utils/httputils.js"
+import {
+    getJwtToken,
+    getUserInfo,
+    refreshJwtToken,
+    deleteToken,
+    deleteUser
+} from "../utils/httputils.js";
 import router from "../router/index.js";
 
 export const useTokenStore = defineStore("token", {
@@ -27,7 +33,7 @@ export const useTokenStore = defineStore("token", {
             try {
                 let response = await getJwtToken(username, password);
                 let data = response.data;
-                if(data !== '' && data !== undefined){
+                if (data !== "" && data !== undefined) {
                     this.jwtToken = data;
                     this.loggedInUser = await getUserInfo(username, this.jwtToken);
                     this.startTimer();
@@ -49,23 +55,23 @@ export const useTokenStore = defineStore("token", {
         },
         async refreshToken() {
             if (!this.loggedInUser || !this.jwtToken) {
-                console.error('loggedInUser or jwtToken is undefined or null');
+                console.error("loggedInUser or jwtToken is undefined or null");
                 return;
             }
-            try{
+            try {
                 let response = await refreshJwtToken(this.jwtToken);
                 let data = response.data;
-                if(data != null && data !== '' && data !== undefined){
+                if (data != null && data !== "" && data !== undefined) {
                     this.jwtToken = data;
                     this.startTimer();
                 }
-            } catch (err){
-                await router.push({name: "Login"})
-                console.error(err)
+            } catch (err) {
+                await router.push({ name: "Login" });
+                console.error(err);
             }
         },
         async deleteUser() {
-            deleteUser(this.loggedInUser.data.username)
+            deleteUser(this.loggedInUser.data.username);
             await deleteToken();
             this.jwtToken = null;
             this.loggedInUser = null;

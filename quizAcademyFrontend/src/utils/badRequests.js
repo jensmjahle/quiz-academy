@@ -14,12 +14,12 @@ export async function handleErrors(error) {
         try {
             await tokenStore.getTokenAndSaveInStore(username, password);
         } catch (err) {
-            await router.push({name: "login"});
+            await router.push({ name: "login" });
             console.error(err);
         }
     }
     if (useTokenStore().getJwtToken == null) {
-        await router.push({name: "login"});
+        await router.push({ name: "login" });
     }
     if (error.response && error.response.status === 400) {
         let tokenStore = useTokenStore();
@@ -28,8 +28,8 @@ export async function handleErrors(error) {
         try {
             await tokenStore.getTokenAndSaveInStore(username, password);
         } catch (err) {
-            await router.push({name: "login"});
-            console.error("Error during tokenStore.getTokenAndSaveInStore: ",err);
+            await router.push({ name: "login" });
+            console.error("Error during tokenStore.getTokenAndSaveInStore: ", err);
         }
     }
     if (error.response && error.response.status === 403) {
@@ -37,13 +37,13 @@ export async function handleErrors(error) {
         let username = tokenStore.getUsername;
         let password = tokenStore.getPassword;
         if (username == null || password == null) {
-            await router.push({name: "login"});
+            await router.push({ name: "login" });
         }
         try {
             await tokenStore.getTokenAndSaveInStore(username, password);
         } catch (err) {
-            await router.push({name: "login"});
-            console.error("Error during tokenStore.getTokenAndSaveInStore: ",err);
+            await router.push({ name: "login" });
+            console.error("Error during tokenStore.getTokenAndSaveInStore: ", err);
         }
     }
 }

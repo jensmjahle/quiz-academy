@@ -1,14 +1,14 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
 export const useTextInputStore = defineStore({
-    id: 'textInputQuestion',
+    id: "textInputQuestion",
     state: () => ({
         questionType: "TI",
         quizId: null,
         questionId: null,
         questionText: null,
         correctAnswers: [],
-        questionImage: null,
+        questionImage: null
     }),
     actions: {
         setQuestionValues(quizId, questionStateId, questionText, correctAnswers, questionImage) {
@@ -16,7 +16,7 @@ export const useTextInputStore = defineStore({
             this.questionId = questionStateId;
             this.questionText = questionText;
             this.questionImage = questionImage;
-            if(Array.isArray(correctAnswers)){
+            if (Array.isArray(correctAnswers)) {
                 this.correctAnswers = correctAnswers;
             } else {
                 this.correctAnswers = [correctAnswers];
@@ -28,6 +28,6 @@ export const useTextInputStore = defineStore({
             this.questionText = null;
             this.correctAnswers = [];
             this.questionImage = null;
-        },
+        }
     }
 });

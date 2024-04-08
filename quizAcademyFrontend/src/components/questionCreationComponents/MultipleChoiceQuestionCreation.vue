@@ -1,81 +1,79 @@
 <template>
-  <div id="QuizQuestionMultichoice">
-    <h5 id="currently_editing" v-if="edit">Editing question</h5>
-    <div id="question">
-      <h5 id="quiz_question">Q.1</h5>
-      <input
-          id="input"
-          v-model="question"
-          type="text"
-          placeholder="Enter your question here"
-      />
+    <div id="QuizQuestionMultichoice">
+        <h5 id="currently_editing" v-if="edit">Editing question</h5>
+        <div id="question">
+            <h5 id="quiz_question">Q.1</h5>
+            <input
+                id="input"
+                v-model="question"
+                type="text"
+                placeholder="Enter your question here"
+            />
+        </div>
+        <div id="add_picture">
+            <h5>Add or change picture for your question:</h5>
+            <div v-if="imageUploaded">
+                <h5>Current image</h5>
+                <img :src="questionPhoto" alt="Question image" />
+            </div>
+            <input type="file" @change="handleFileUpload" accept="image/*" />
+        </div>
+        <div id="alternatives">
+            <div id="alternativesMulti">
+                <input
+                    id="input"
+                    v-model="alternatives[0]"
+                    type="text"
+                    placeholder="alternative one"
+                />
+                <label for="checkbox">Check for correct alternative</label>
+                <input id="checkbox" v-model="correctAlternatives[0]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[1]"
+                    type="text"
+                    placeholder="alternative two"
+                />
+                <label for="checkbox">Check for correct alternative</label>
+                <input id="checkbox" v-model="correctAlternatives[1]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[2]"
+                    type="text"
+                    placeholder="alternative three"
+                />
+                <label for="checkbox">Check for correct alternative</label>
+                <input id="checkbox" v-model="correctAlternatives[2]" type="checkbox" />
+                <input
+                    id="input"
+                    v-model="alternatives[3]"
+                    type="text"
+                    placeholder="alternative four"
+                />
+                <label for="checkbox">Check for correct alternative</label>
+                <input id="checkbox" v-model="correctAlternatives[3]" type="checkbox" />
+            </div>
+        </div>
+        <div>
+            <button @click="submitForm" v-if="!edit">Submit</button>
+            <button @click="updateQuestion" v-if="edit">Update</button>
+            <button id="cancel" @click="cancelPressed">Cancel</button>
+        </div>
     </div>
-    <div id="add_picture">
-      <h5>Add or change picture for your question:</h5>
-      <div v-if="imageUploaded">
-        <h5 >Current image</h5>
-        <img :src="questionPhoto" alt="Question image"/>
-      </div>
-      <input type="file" @change="handleFileUpload" accept="image/*" />
-    </div>
-    <div id="alternatives">
-      <div id="alternativesMulti">
-        <input
-            id="input"
-            v-model="alternatives[0]"
-            type="text"
-            placeholder="alternative one"
-        />
-        <label for="checkbox">Check for correct alternative</label>
-        <input id="checkbox" v-model="correctAlternatives[0]" type="checkbox" />
-        <input
-            id="input"
-            v-model="alternatives[1]"
-            type="text"
-            placeholder="alternative two"
-        />
-        <label for="checkbox">Check for correct alternative</label>
-        <input id="checkbox" v-model="correctAlternatives[1]" type="checkbox" />
-        <input
-            id="input"
-            v-model="alternatives[2]"
-            type="text"
-            placeholder="alternative three"
-        />
-        <label for="checkbox">Check for correct alternative</label>
-        <input id="checkbox" v-model="correctAlternatives[2]" type="checkbox" />
-        <input
-            id="input"
-            v-model="alternatives[3]"
-            type="text"
-            placeholder="alternative four"
-        />
-        <label for="checkbox">Check for correct alternative</label>
-        <input id="checkbox" v-model="correctAlternatives[3]" type="checkbox" />
-      </div>
-    </div>
-    <div>
-      <button @click="submitForm" v-if="!edit">Submit</button>
-      <button @click="updateQuestion" v-if="edit">Update</button>
-      <button id="cancel" @click="cancelPressed">Cancel</button>
-
-    </div>
-  </div>
-
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useQuizStore } from '../stores/QuizStore.js';
-import { useMultichoiceStore} from "../stores/multichoideQuestionStore.js";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useQuizStore } from "../stores/QuizStore.js";
+import { useMultichoiceStore } from "../stores/multichoideQuestionStore.js";
 
 const router = useRouter();
 const quizStore = useQuizStore();
 const multichoiceStore = useMultichoiceStore();
 
 let edit = ref(false);
-let question = ref('');
+let question = ref("");
 let alternatives = ref([]);
 let correctAlternatives = ref([]);
 let questionPhoto = ref(null);
@@ -86,13 +84,13 @@ if (multichoiceStore.questionId !== null) {
     alternatives.value = multichoiceStore.questionAlternatives;
     edit.value = true;
     for (let i = 0; i < 4; i++) {
-        if (multichoiceStore.correctAlternatives[i]  === "true") {
+        if (multichoiceStore.correctAlternatives[i] === "true") {
             correctAlternatives.value[i] = true;
         } else {
             correctAlternatives.value[i] = false;
         }
     }
-    if(multichoiceStore.questionImage !== null) {
+    if (multichoiceStore.questionImage !== null) {
         questionPhoto.value = multichoiceStore.questionImage;
         imageUploaded.value = true;
     }
@@ -120,7 +118,7 @@ function oneCorrectCheck() {
 const submitForm = async () => {
     const hasCorrect = oneCorrectCheck();
     if (!hasCorrect) {
-        alert('You need to select one correct alternative');
+        alert("You need to select one correct alternative");
         return;
     }
     const correctAsStrings = [];
@@ -136,7 +134,7 @@ const submitForm = async () => {
         questionText: question.value,
         quizId: quizStore.quizId,
         questionId: quizStore.quizQuestions.length,
-        type: 'MULTIPLE_CHOICE',
+        type: "MULTIPLE_CHOICE",
         alternatives: alternatives.value,
         correctAlternatives: correctAsStrings,
         imageBase64: questionPhoto.value
@@ -146,11 +144,10 @@ const submitForm = async () => {
 
     multichoiceStore.resetQuestionValues();
 
-    await router.push('/create_quiz');
-}
+    await router.push("/create_quiz");
+};
 
 const updateQuestion = () => {
-
     const correctAsStrings = [];
 
     for (let i = 0; i < 4; i++) {
@@ -165,7 +162,7 @@ const updateQuestion = () => {
         questionText: question.value,
         quizId: quizStore.quizId,
         questionId: multichoiceStore.questionId,
-        type: 'MULTIPLE_CHOICE',
+        type: "MULTIPLE_CHOICE",
         alternatives: alternatives.value,
         correctAlternatives: correctAsStrings,
         imageBase64: questionPhoto.value
@@ -176,15 +173,15 @@ const updateQuestion = () => {
 
     multichoiceStore.resetQuestionValues();
 
-    router.push('/create_quiz');
-}
+    router.push("/create_quiz");
+};
 
 const cancelPressed = () => {
-    if(confirm('Are you sure you want to cancel?')) {
+    if (confirm("Are you sure you want to cancel?")) {
         multichoiceStore.resetQuestionValues();
-        router.push('/create_quiz');
+        router.push("/create_quiz");
     }
-}
+};
 </script>
 
 <style scoped>
@@ -297,25 +294,24 @@ const cancelPressed = () => {
         width: 60vw;
         text-align: center;
     }
-  #alternativesMulti {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    #input {
-        margin-top: 5px;
-        font-size: 30px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        padding-left: 10px;
-        background-color: var(--fifth-color);
-        border-radius: 5px;
-        width: 60vw;
+    #alternativesMulti {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        #input {
+            margin-top: 5px;
+            font-size: 30px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            background-color: var(--fifth-color);
+            border-radius: 5px;
+            width: 60vw;
+        }
     }
-  }
 }
 
 #checkbox {
-  vertical-align: middle; /* Align checkbox with label vertically */
+    vertical-align: middle; /* Align checkbox with label vertically */
 }
-
 </style>

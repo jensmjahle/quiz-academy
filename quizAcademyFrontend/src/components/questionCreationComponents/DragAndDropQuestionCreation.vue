@@ -1,49 +1,54 @@
 <template>
-  <div id="drag-and-drop-question">
-    <h4>Drag and Drop Question</h4>
-    <input id="question_text" class="box_label" placeholder="Question Name" v-model="questionText" />
-    <div id="add_picture">
-      <h5>Add or change picture for your question:</h5>
-      <div v-if="imageUploaded">
-        <h5 >Current image</h5>
-        <img :src="questionPhoto" alt="Question image"/>
-      </div>
-      <input type="file" @change="handleFileUpload" accept="image/*" />
-    </div>
-    <h5>Write all correct responses in each box. Separated by: *</h5>
-    <h5>They will be displayed in a single box to be sorted.</h5>
+    <div id="drag-and-drop-question">
+        <h4>Drag and Drop Question</h4>
+        <input
+            id="question_text"
+            class="box_label"
+            placeholder="Question Name"
+            v-model="questionText"
+        />
+        <div id="add_picture">
+            <h5>Add or change picture for your question:</h5>
+            <div v-if="imageUploaded">
+                <h5>Current image</h5>
+                <img :src="questionPhoto" alt="Question image" />
+            </div>
+            <input type="file" @change="handleFileUpload" accept="image/*" />
+        </div>
+        <h5>Write all correct responses in each box. Separated by: *</h5>
+        <h5>They will be displayed in a single box to be sorted.</h5>
 
-    <div v-for="(category, index) in categories" :key="index" id="category_with_answers">
-      <input
-          class="box_label"
-          id="box_label_category"
-          type="text"
-          v-model="category.name"
-          placeholder="Category"
-      />
-      <input
-          class="box_label"
-          id="box_label_answers"
-          type="text"
-          v-model="category.items"
-          placeholder="Enter correct items here, separated by: *"
-      />
-      <button id="remove_category" @click="removeCategory(index)">Remove category</button>
+        <div v-for="(category, index) in categories" :key="index" id="category_with_answers">
+            <input
+                class="box_label"
+                id="box_label_category"
+                type="text"
+                v-model="category.name"
+                placeholder="Category"
+            />
+            <input
+                class="box_label"
+                id="box_label_answers"
+                type="text"
+                v-model="category.items"
+                placeholder="Enter correct items here, separated by: *"
+            />
+            <button id="remove_category" @click="removeCategory(index)">Remove category</button>
+        </div>
+        <div id="buttons">
+            <button id="add_category" @click="addCategory">Add a category</button>
+            <button id="submit_question" v-if="!edit" @click="postDragDropQuestion">Submit</button>
+            <button id="update_question" v-if="edit" @click="editQuestion">Update</button>
+            <button id="cancel" @click="cancelPressed">Cancel</button>
+        </div>
     </div>
-    <div id="buttons">
-      <button id="add_category" @click="addCategory">Add a category</button>
-      <button id="submit_question" v-if="!edit" @click="postDragDropQuestion">Submit</button>
-      <button id="update_question" v-if="edit" @click="editQuestion">Update</button>
-      <button id="cancel" @click="cancelPressed">Cancel</button>
-    </div>
-  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import {useRouter} from "vue-router";
-import { useQuizStore } from '../stores/QuizStore.js';
-import { useDragDropStore} from "../stores/dragAndDropQuestionStore.js";
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { useQuizStore } from "../stores/QuizStore.js";
+import { useDragDropStore } from "../stores/dragAndDropQuestionStore.js";
 
 const router = useRouter();
 let edit = ref(false);
@@ -52,12 +57,12 @@ const imageUploaded = ref(false);
 const quizStore = useQuizStore();
 const dragDropStore = useDragDropStore();
 
-const questionText = ref('');
-const categories = ref([{ name: '', items: '' }]);
+const questionText = ref("");
+const categories = ref([{ name: "", items: "" }]);
 const questionPhoto = ref(null);
 
 const addCategory = () => {
-    if(categories.value.length >= 3) {
+    if (categories.value.length >= 3) {
         alert("You can't have more than 3 categories.");
         return;
     }
@@ -83,7 +88,7 @@ if (dragDropStore.questionId !== null) {
     for (const key in categoriesFromStore) {
         updatedCategories.push({
             name: key,
-            items: categoriesFromStore[key].join('*')
+            items: categoriesFromStore[key].join("*")
         });
     }
     categories.value = updatedCategories;
@@ -108,10 +113,9 @@ const handleFileUpload = (event) => {
 };
 
 const postDragDropQuestion = () => {
-
     const formattedCategories = {};
-    categories.value.forEach(category => {
-        const items = category.items.split('*');
+    categories.value.forEach((category) => {
+        const items = category.items.split("*");
         formattedCategories[category.name] = items;
     });
 
@@ -125,14 +129,14 @@ const postDragDropQuestion = () => {
     quizStore.addQuestion(dragDropQuestion);
 
     dragDropStore.resetQuestionValues();
-    router.push('/create_quiz');
-}
+    router.push("/create_quiz");
+};
 
 const editQuestion = () => {
     const formattedCategories = {};
 
-    categories.value.forEach(category => {
-        const items = category.items.split('*');
+    categories.value.forEach((category) => {
+        const items = category.items.split("*");
         formattedCategories[category.name] = items;
     });
 
@@ -142,22 +146,21 @@ const editQuestion = () => {
         type: "DRAG_AND_DROP",
         categories: formattedCategories,
         imageBase64: questionPhoto.value
-    }
+    };
 
     const indexOfQuestion = quizStore.getIndexById(dragDropStore.questionId);
     quizStore.swapQuestions(indexOfQuestion, dragDropQuestion);
 
     dragDropStore.resetQuestionValues();
-    router.push('/create_quiz');
-}
+    router.push("/create_quiz");
+};
 
 const cancelPressed = () => {
-    if(confirm('Are you sure you want to cancel?')) {
+    if (confirm("Are you sure you want to cancel?")) {
         dragDropStore.resetQuestionValues();
-        router.push('/create_quiz');
+        router.push("/create_quiz");
     }
-}
-
+};
 </script>
 
 <style scoped>
@@ -196,14 +199,13 @@ const cancelPressed = () => {
 }
 
 #remove_category {
-
 }
 
 #add_picture {
-  margin-top: 15px;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  align-items: center;
+    margin-top: 15px;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
 }
 </style>

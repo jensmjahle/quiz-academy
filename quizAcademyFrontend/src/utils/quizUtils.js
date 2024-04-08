@@ -21,21 +21,20 @@ export const fetchQuizById = async (quizId) => {
         console.error("Error fetching quiz by ID:", error);
         return null;
     }
-}
+};
 export const fetchAllQuizzesByUser = async (userId) => {
     try {
-        const response = await axios.get(`http://localhost:8080/quiz/all/${userId}`,
-            {
-                headers: {
-                    "Authorization": "Bearer " + useTokenStore().jwtToken
-                }
-            });
+        const response = await axios.get(`http://localhost:8080/quiz/all/${userId}`, {
+            headers: {
+                Authorization: "Bearer " + useTokenStore().jwtToken
+            }
+        });
         return response.data;
     } catch (error) {
         console.error("Error fetching quizzes by user:", error);
         return [];
     }
-}
+};
 
 export const fetchAllQuizzesByTag = async (tag) => {
     try {
@@ -45,7 +44,7 @@ export const fetchAllQuizzesByTag = async (tag) => {
         console.error("Error fetching quizzes by tag:", error);
         return [];
     }
-}
+};
 
 export const fetchAllQuizzesBySearch = async (searchString) => {
     try {
@@ -55,4 +54,4 @@ export const fetchAllQuizzesBySearch = async (searchString) => {
         console.error("Error fetching quizzes by title:", error);
         return [];
     }
-}
+};

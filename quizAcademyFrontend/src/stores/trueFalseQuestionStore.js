@@ -1,14 +1,14 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
 export const useTrueFalseStore = defineStore({
-    id: 'trueFalseQuestion',
+    id: "trueFalseQuestion",
     state: () => ({
         questionType: "TF",
         quizId: null,
         questionId: null,
         questionText: null,
         questionAnswer: null,
-        questionImage: null,
+        questionImage: null
     }),
     actions: {
         setQuestionValues(quizId, questionStateId, questionText, correctAnswer, questionImage) {
@@ -24,6 +24,6 @@ export const useTrueFalseStore = defineStore({
             this.questionText = null;
             this.questionAnswer = null;
             this.questionImage = null;
-        },
+        }
     }
 });

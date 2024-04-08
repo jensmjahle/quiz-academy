@@ -48,8 +48,6 @@ const props = defineProps({
     padding: 15px;
     column-gap: 10px;
 
-
-
     /* Default to single column on narrow screens */
     grid-template-columns: repeat(1, minmax(0, 1fr));
     width: 100%;

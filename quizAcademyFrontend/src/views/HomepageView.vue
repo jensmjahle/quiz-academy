@@ -1,12 +1,11 @@
 <template>
-  <div id="body">
-    <div v-for="(tag , index) in tags" :key="tag" class="container">
-      <h2>{{ tag.tagName }}</h2>
-      <H4 v-if="quizzesByTags[index].length === 0">No quizzes found</H4>
-      <QuizList :quizzes="quizzesByTags[index]"></QuizList>
-
+    <div id="body">
+        <div v-for="(tag, index) in tags" :key="tag" class="container">
+            <h2>{{ tag.tagName }}</h2>
+            <H4 v-if="quizzesByTags[index].length === 0">No quizzes found</H4>
+            <QuizList :quizzes="quizzesByTags[index]"></QuizList>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -20,7 +19,6 @@ export default {
         const quizzesByTags = ref({});
         const tags = ref([]);
         onMounted(async () => {
-
             const allTags = await fetchPublicTags();
 
             tags.value = allTags;
@@ -28,15 +26,11 @@ export default {
                 const tag = allTags[i];
                 const quizzes = await fetchAllQuizzesByTag(tag.tagId);
 
-                    quizzesByTags.value[i] = quizzes;
-
+                quizzesByTags.value[i] = quizzes;
             }
-
         });
         return { quizzesByTags, tags };
-    },
-
-
+    }
 };
 </script>
 

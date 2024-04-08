@@ -10,28 +10,23 @@
     >
         <div class="quiz-content">
             <div class="always-visible">
-
-
-            <h3 class="quiz-name">{{ quiz.quizName }}</h3>
-            <h5 v-if="quiz.questions" class="number-of-questions">
-                {{ quiz.questions.length }} question(s)
-            </h5>
-            <h5 v-else class="number-of-questions">Number of questions not available</h5>
+                <h3 class="quiz-name">{{ quiz.quizName }}</h3>
+                <h5 v-if="quiz.questions" class="number-of-questions">
+                    {{ quiz.questions.length }} question(s)
+                </h5>
+                <h5 v-else class="number-of-questions">Number of questions not available</h5>
             </div>
 
-            <h5 class="quiz-description" >{{ quiz.quizDescription }}</h5>
+            <h5 class="quiz-description">{{ quiz.quizDescription }}</h5>
         </div>
-        <h5 :class=" {
-        'tags': true,
-        'quiz-content': true
-        } " >
-            Tags: {{quiz.tags ? quiz.tags.length : 0}}
+        <h5
+            :class="{
+                tags: true,
+                'quiz-content': true
+            }"
+        >
+            Tags: {{ quiz.tags ? quiz.tags.length : 0 }}
         </h5>
-
-
-
-
-
     </li>
 </template>
 
@@ -46,7 +41,7 @@ export default {
             hovering: false,
             showDescription: false,
             imageUrl: "src/assets/logo.png",
-            base64Image: ''
+            base64Image: ""
         };
     },
     mounted() {
@@ -63,10 +58,10 @@ export default {
                 for (let i = 0; i < len; i++) {
                     bytes[i] = binaryString.charCodeAt(i);
                 }
-                const blob = new Blob([bytes], { type: 'image/jpeg' });
+                const blob = new Blob([bytes], { type: "image/jpeg" });
                 this.base64Image = URL.createObjectURL(blob);
             }
-        },
+        }
     }
 };
 </script>
@@ -92,24 +87,17 @@ export default {
     background-image: none;
     overflow: visible;
 
-
     @media screen and (min-width: 768px) {
         column-gap: 20px;
         aspect-ratio: 1;
         background-size: cover;
-
     }
 
     @media screen and (min-width: 1024px) {
         column-gap: 30px;
         aspect-ratio: 1;
         background-size: cover;
-
     }
-
-
-
-
 
     h3 {
         color: var(--fourth-color);
@@ -118,7 +106,6 @@ export default {
 .quiz-content {
     border-radius: 10px;
     transition: 0.3s;
-
 }
 .always-visible {
     background-color: rgba(var(--base-contrast-color-rgb), 0.8);
@@ -136,8 +123,6 @@ export default {
     margin: -10px;
     background-color: rgba(var(--primary-color-rgb), 0.8);
     font-size: calc(1.2vw + 1.5vh);
-
-
 }
 
 .quiz-item:hover {
@@ -164,12 +149,10 @@ export default {
     }
 }
 
-
 .quiz-description {
     overflow: hidden; /* Hide overflow */
     text-overflow: ellipsis; /* Add ellipsis (...) if text overflows */
     opacity: 0;
-
 }
 .quiz-name {
     line-height: 1;
@@ -182,5 +165,4 @@ export default {
         font-size: calc(1vw + 1vh);
     }
 }
-
 </style>

@@ -1,29 +1,36 @@
 <template>
-  <div class="alternative-buttons">
-    <button
-        :disabled="hasAnswered"
-        :class="{
-        'trueButton': true,
-        'correct': hasAnswered && (question.correctAnswer === true),
-        'incorrect': hasAnswered && (question.correctAnswer === false),
-        'selectedAnswer':hasAnswered && (true === answer),
-        'notSelected': hasAnswered && (false === answer)}"
-        @click="checkAnswer(true)">True</button>
+    <div class="alternative-buttons">
+        <button
+            :disabled="hasAnswered"
+            :class="{
+                trueButton: true,
+                correct: hasAnswered && question.correctAnswer === true,
+                incorrect: hasAnswered && question.correctAnswer === false,
+                selectedAnswer: hasAnswered && true === answer,
+                notSelected: hasAnswered && false === answer
+            }"
+            @click="checkAnswer(true)"
+        >
+            True
+        </button>
 
-    <button
-        :disabled="hasAnswered"
-        :class="{
-        'falseButton': true,
-        'correct': hasAnswered && (question.correctAnswer === false),
-        'incorrect': hasAnswered && (question.correctAnswer === true),
-        'selectedAnswer': hasAnswered && (false === answer),
-        'notSelected': hasAnswered && (true === answer)}" @click="checkAnswer(false)">False</button>
-
-  </div>
+        <button
+            :disabled="hasAnswered"
+            :class="{
+                falseButton: true,
+                correct: hasAnswered && question.correctAnswer === false,
+                incorrect: hasAnswered && question.correctAnswer === true,
+                selectedAnswer: hasAnswered && false === answer,
+                notSelected: hasAnswered && true === answer
+            }"
+            @click="checkAnswer(false)"
+        >
+            False
+        </button>
+    </div>
 </template>
 
 <script>
-
 export default {
     props: {
         question: {
@@ -40,7 +47,7 @@ export default {
         return {
             isCorrect: false,
             answer: null
-        }
+        };
     },
     methods: {
         checkAnswer(answer) {
@@ -48,14 +55,13 @@ export default {
             this.answer = answer;
             this.isCorrect = correctAnswers === answer;
 
-            this.$emit('displayResults', this.isCorrect);
+            this.$emit("displayResults", this.isCorrect);
         }
     }
-}
+};
 </script>
 
 <style scoped>
-
 button {
     width: 100%;
     font-weight: bold;
@@ -63,8 +69,7 @@ button {
     transition: 0.3s;
 }
 
-button.trueButton
- {
+button.trueButton {
     background-color: var(--correct-answer-color);
     border-color: var(--correct-answer-border-color);
 }
@@ -103,11 +108,9 @@ button.correct:hover {
 }
 button.selectedAnswer:disabled {
     color: var(--base-color);
-
 }
 button.notSelected {
     color: var(--base-color);
     opacity: 0.3;
 }
-
 </style>

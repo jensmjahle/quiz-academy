@@ -1,30 +1,32 @@
 <template>
-  <div class="container">
-    <div class="correctAnswers" v-if="hasAnswered">
-
-      <h4>Accepted answers:</h4>
-      <ul>
-        <li
-            v-for="answer in question.answers"
-            :key="answer.id">
-          <h5>{{answer}}</h5>
-        </li>
-      </ul>
+    <div class="container">
+        <div class="correctAnswers" v-if="hasAnswered">
+            <h4>Accepted answers:</h4>
+            <ul>
+                <li v-for="answer in question.answers" :key="answer.id">
+                    <h5>{{ answer }}</h5>
+                </li>
+            </ul>
+        </div>
+        <input
+            v-model="answer"
+            :placeholder="'Answer here...'"
+            class="field"
+            :class="{ correct: hasAnswered && isCorrect, incorrect: hasAnswered && !isCorrect }"
+            data-cy="answer-input"
+        />
+        <button
+            class="submitButton"
+            @click="checkAnswer(answer)"
+            @keypress.enter="checkAnswer(answer)"
+            :disabled="hasAnswered"
+        >
+            Submit
+        </button>
     </div>
-    <input
-        v-model="answer"
-        :placeholder="'Answer here...'"
-        class="field"
-        :class="{ 'correct': hasAnswered && isCorrect,
-                   'incorrect': hasAnswered && !isCorrect}"
-        data-cy="answer-input"
-    />
-    <button class="submitButton" @click="checkAnswer(answer)" @keypress.enter="checkAnswer(answer)" :disabled="hasAnswered">Submit</button>
-  </div>
 </template>
 
 <script>
-
 export default {
     props: {
         question: {
@@ -41,7 +43,7 @@ export default {
         return {
             isCorrect: false,
             answer: null
-        }
+        };
     },
     methods: {
         checkAnswer(answer) {
@@ -49,10 +51,10 @@ export default {
             answer.toLowerCase();
             this.isCorrect = correctAnswers.includes(answer);
 
-            this.$emit('displayResults', this.isCorrect);
+            this.$emit("displayResults", this.isCorrect);
         }
     }
-}
+};
 </script>
 
 <style scoped>
@@ -72,14 +74,14 @@ export default {
 }
 .submitButton {
     width: 100%;
-        background-color: var(--secondary-color);
-        border-color: var(--primary-color);
-        color: var(--base-color);
-        font-weight: bold;
-        border-width: 5px;
-        transition: 0.3s;
+    background-color: var(--secondary-color);
+    border-color: var(--primary-color);
+    color: var(--base-color);
+    font-weight: bold;
+    border-width: 5px;
+    transition: 0.3s;
 }
-.submitButton:hover:enabled{
+.submitButton:hover:enabled {
     background-color: var(--primary-color);
     color: var(--base-color);
 }
@@ -100,7 +102,7 @@ export default {
 }
 .correct {
     border-color: var(--correct-answer-border-color);
-    color: var(--correct-answer-border-color) ;
+    color: var(--correct-answer-border-color);
 }
 .incorrect {
     border-color: var(--wrong-answer-border-color);
