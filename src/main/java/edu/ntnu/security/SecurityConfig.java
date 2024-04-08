@@ -37,6 +37,7 @@ public class SecurityConfig {
                 "/swagger-ui.html",
                 "/swagger-ui/index.html",
                 "/swagger-resources/",
+                "/",
                 "/webjars/", "/error").permitAll()
         .anyRequest().authenticated().and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
