@@ -1,44 +1,56 @@
 <template>
-    <div class="login-form">
+    <div class="signUp-form">
         <h2>Sign up</h2>
         <form @submit.prevent="signup">
-            <div class="form-group">
-                <div class="first-name-lastname">
-                    <div class="half-width">
-                        <label for="first_name">First Name:</label>
-                        <input type="text" id="first_name" v-model="firstName" required />
-                    </div>
-                    <div class="half-width">
-                        <label for="last_name">Last Name:</label>
-                        <input type="text" id="last_name" v-model="lastName" required />
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="username">Username:</label>
-                <input type="username" id="username" v-model="username" required />
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" v-model="email" required />
-            </div>
-            <div class="form-group">
-                <label for="password">Password:</label>
-                <input type="password" id="password" v-model="password" required />
-            </div>
-            <div class="form-group">
-                <label for="confirm_password">Confirm Password:</label>
-                <input type="password" id="repeatPassword" v-model="repeatPassword" required />
-                <div v-if="!isPasswordValid" class="password-mismatch">Passwords do not match</div>
-                <div v-if="userNameExists" class="password-mismatch">Username already exists</div>
-                <button
-                    type="submit"
-                    :disabled="isFormIncomplete || !isPasswordValid"
-                    :class="{ disabled: isFormIncomplete || !isPasswordValid }"
-                >
-                    Sign up
-                </button>
-            </div>
+            <BaseInput
+                id="first_name"
+                v-model="firstName"
+                label="First Name"
+                class="field"
+            />
+            <BaseInput
+                id="last_name"
+                v-model="lastName"
+                label="Last Name"
+                class="field"
+            />
+            <BaseInput
+                id="username"
+                v-model="username"
+                label="Username"
+                class="field"
+            />
+            <BaseInput
+                id="email"
+                v-model="email"
+                label="Email"
+                class="field"
+            />
+            <BaseInput
+                id="password"
+                v-model="password"
+                label="Password"
+                class="field"
+                type="password"
+            />
+            <BaseInput
+                id="repeatPassword"
+                v-model="repeatPassword"
+                label="Confirm Password"
+                class="field"
+                type="password"
+            />
+
+            <div v-if="!isPasswordValid" class="password-mismatch">Passwords do not match</div>
+            <div v-if="userNameExists" class="password-mismatch">Username already exists</div>
+            <button
+                type="submit"
+                :disabled="isFormIncomplete || !isPasswordValid"
+                :class="{ disabled: isFormIncomplete || !isPasswordValid }"
+            >
+                Sign up
+            </button>
+
         </form>
         <div>
             <p>Already have an account? <router-link to="/login">Log in</router-link></p>
@@ -50,8 +62,11 @@
 import {signUpUser} from "../utils/httputils.js";
 import router from "../router/index.js";
 import { useTokenStore } from "../stores/token.js";
+import BaseInput from "@/components/BaseInput.vue";
 
 export default {
+    components: { BaseInput },
+
   setup() {
     const tokenStore = useTokenStore();
     return { tokenStore };
@@ -216,11 +231,13 @@ window.addEventListener("beforeunload", function (event) {
 </script>
 
 <style scoped>
-.login-form {
-    width: 70%;
+.signUp-form {
+    min-width: 50vw;
+    max-width: 100vw;
     padding: 50px;
     border: 1px solid #ccc;
     border-radius: 5px;
+
 }
 
 .form-group {
@@ -268,9 +285,12 @@ button.disabled {
     cursor: not-allowed;
     background-color: #ccc;
 }
+button.disabled:hover {
+    background-color: #ccc;
+}
 
 .password-mismatch {
-    color: red;
+    color: var(--wrong-answer-border-color);
 }
 
 button:hover {
