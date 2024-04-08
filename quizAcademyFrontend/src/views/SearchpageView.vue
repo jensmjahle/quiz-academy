@@ -1,3 +1,11 @@
+<template>
+  <div id="body">
+    <h1>Search Results for: {{ route.query.search }}</h1> <!-- Display the search term -->
+    <h3 v-if="quizzes.length === 0" class="noResults">No quizzes found :(</h3>
+    <QuizList :quizzes="quizzes"></QuizList>
+  </div>
+</template>
+
 <script setup>
 import { onMounted, ref, watch } from "vue";
 import QuizList from "../components/QuizList.vue";
@@ -23,14 +31,6 @@ onMounted(async () => {
 });
 
 </script>
-
-<template>
-    <div id="body">
-  <h1>Search Results for: {{ route.query.search }}</h1> <!-- Display the search term -->
-    <h3 v-if="quizzes.length === 0" class="noResults">No quizzes found :(</h3>
-  <QuizList :quizzes="quizzes"></QuizList>
-    </div>
-</template>
 
 <style scoped>
 #body {

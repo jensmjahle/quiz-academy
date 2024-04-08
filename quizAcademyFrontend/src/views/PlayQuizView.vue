@@ -1,3 +1,27 @@
+<template>
+  <div class="header">
+    <div class="underline">
+      <h5 >{{store.quiz.quizName}}: </h5>
+      <h5 class="qNr">Question {{questionNr+1}} of {{store.quiz.questions.length}}</h5>
+      <h5 class="user">Created By: {{store.quiz.user}}</h5>
+    </div>
+    <div class="question" v-if="!isCompleted">
+      <h2 v-if="store.quiz.questions && store.quiz.questions.length > 0">
+        {{ store.quiz.questions[questionNr].questionText }}
+      </h2>
+    </div>
+  </div>
+  <div class="answers" v-if="!isCompleted">
+    <BaseAnswerContainer :question="store.getCurrentQuestion" @nextQuestion='nextQuestion' class="component"></BaseAnswerContainer>
+  </div>
+  <div v-else>
+    <Summary :score="store.getScore" :total-score="questionNr+1" @finishQuiz='finishQuiz' @resetQuiz='resetQuiz' ></Summary>
+
+
+  </div>
+
+</template>
+
 <script>
 import { usePlayQuizStore } from "../stores/playQuizStore.js";
 import router from "../router/index.js";
@@ -43,30 +67,6 @@ export default {
 
 
 </script>
-
-<template>
-    <div class="header">
-        <div class="underline">
-            <h5 >{{store.quiz.quizName}}: </h5>
-            <h5 class="qNr">Question {{questionNr+1}} of {{store.quiz.questions.length}}</h5>
-            <h5 class="user">Created By: {{store.quiz.user}}</h5>
-        </div>
-        <div class="question" v-if="!isCompleted">
-            <h2 v-if="store.quiz.questions && store.quiz.questions.length > 0">
-                {{ store.quiz.questions[questionNr].questionText }}
-            </h2>
-        </div>
-    </div>
-    <div class="answers" v-if="!isCompleted">
-        <BaseAnswerContainer :question="store.getCurrentQuestion" @nextQuestion='nextQuestion' class="component"></BaseAnswerContainer>
-    </div>
-    <div v-else>
-        <Summary :score="store.getScore" :total-score="questionNr+1" @finishQuiz='finishQuiz' @resetQuiz='resetQuiz' ></Summary>
-
-
-    </div>
-
-</template>
 
 <style scoped>
     .header {

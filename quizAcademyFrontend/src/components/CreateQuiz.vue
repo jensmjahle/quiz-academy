@@ -1,3 +1,68 @@
+<template>
+  <div id="title">
+    <h5>Name your quiz:</h5>
+    <div id="title_and_id">
+      <input type="text" id="quiz_name" v-model="quizName" placeholder="Quiz name" />
+      <button class="button" @click="createQuiz" v-if="!quizCreated">Create Quiz</button>
+    </div>
+    <div id="quiz_description_and_public">
+      <input type = "text" id="quiz_description" v-model="quizDescription" placeholder="give a short description for your quiz">
+      <div id="is_quiz_public">
+        <h5>Tick if quiz should be public:</h5>
+        <input type="checkbox" id="is_public" name="is_public" v-model="quizPublicStatus" value="is_public">
+      </div>
+    </div>
+    <div id="add_picture" v-if="quizCreated">
+      <h5>Add or change picture for your question:</h5>
+      <div v-if="imageUploaded">
+        <h5 >Current image</h5>
+        <img :src="quizPhoto" alt="Question image"/>
+      </div>
+      <input type="file" @change="handleFileUpload" accept="image/*" />
+    </div>
+    <div id="question_creation" v-if="quizCreated">
+      <hr>
+      <h5>Add questions to your quiz:</h5>
+      <!-- Only render the router-link if quizId is not null -->
+      <router-link v-if="quizId" class="button" :to="{ name: 'multichoice', params: { quizId: quizId.value }}">Add multiple choice question</router-link>
+      <router-link v-if="quizId" class="button" :to="{ name: 'text_input', params: { quizId: quizId.value }}">Add text input question</router-link>
+      <router-link v-if="quizId" class="button" :to="{ name: 'drag_and_drop', params: { quizId: quizId.value }}">Add drag and drop question</router-link>
+      <router-link v-if="quizId" class="button" :to="{ name: 'true_false', params: { quizId: quizId.value }}">Add true or false question</router-link>
+
+    </div>
+  </div>
+  <div id="question_list" v-if="quizCreated">
+    <h5>Questions (click to edit):</h5>
+    <ul>
+      <li v-for="(question, index) in questions" :key="question.id" @click="editQuestion(index)" id="question_in_list" >
+        <span style="cursor: pointer; margin-left: 5px;" @click.stop="deleteQuestion(index)">[X]</span>
+        {{ question.type }}: {{ index  + 1 }}. {{ question.questionText }}
+      </li>
+    </ul>
+  </div>
+  <div v-if="quizCreated">
+    <h5>Select Tags:</h5>
+    <select v-model="selectedTag" @change="addTagToQuiz">
+      <option v-for="tag in allTags" :key="tag" :value="tag">{{ tag }}</option>
+    </select>
+  </div>
+  <div v-if="quizCreated">
+    <h5>Current tags:</h5>
+    <ul>
+      <li v-for="tag in quizTags" :key="tag.tagId" @click="removeTag(tag)">
+        <span style="cursor: pointer; margin-left: 5px;" @click.stop="removeTag(tag)">[X]</span>
+        {{ tag.tagName }}
+      </li>
+    </ul>
+  </div>
+  <div v-if="quizCreated">
+    <h5 v-if="showSavedMessage">Quiz saved!</h5>
+    <button class="button" @click="updateQuiz">Save quiz</button>
+    <button class="button" @click="exitAndSave">Exit and save</button>
+    <button class="button" @click="resetWithConfirm">Exit without saving</button>
+  </div>
+</template>
+
 <script setup>
 import { ref, onMounted } from 'vue';
 import { useQuizStore } from '../stores/QuizStore.js';
@@ -168,71 +233,6 @@ const resetWithConfirm = () => {
 }
 
 </script>
-
-<template>
-    <div id="title">
-        <h5>Name your quiz:</h5>
-        <div id="title_and_id">
-            <input type="text" id="quiz_name" v-model="quizName" placeholder="Quiz name" />
-            <button class="button" @click="createQuiz" v-if="!quizCreated">Create Quiz</button>
-        </div>
-        <div id="quiz_description_and_public">
-            <input type = "text" id="quiz_description" v-model="quizDescription" placeholder="give a short description for your quiz">
-            <div id="is_quiz_public">
-                <h5>Tick if quiz should be public:</h5>
-                <input type="checkbox" id="is_public" name="is_public" v-model="quizPublicStatus" value="is_public">
-            </div>
-        </div>
-        <div id="add_picture" v-if="quizCreated">
-            <h5>Add or change picture for your question:</h5>
-            <div v-if="imageUploaded">
-                <h5 >Current image</h5>
-                <img :src="quizPhoto" alt="Question image"/>
-            </div>
-            <input type="file" @change="handleFileUpload" accept="image/*" />
-        </div>
-        <div id="question_creation" v-if="quizCreated">
-            <hr>
-            <h5>Add questions to your quiz:</h5>
-            <!-- Only render the router-link if quizId is not null -->
-            <router-link v-if="quizId" class="button" :to="{ name: 'multichoice', params: { quizId: quizId.value }}">Add multiple choice question</router-link>
-            <router-link v-if="quizId" class="button" :to="{ name: 'text_input', params: { quizId: quizId.value }}">Add text input question</router-link>
-            <router-link v-if="quizId" class="button" :to="{ name: 'drag_and_drop', params: { quizId: quizId.value }}">Add drag and drop question</router-link>
-            <router-link v-if="quizId" class="button" :to="{ name: 'true_false', params: { quizId: quizId.value }}">Add true or false question</router-link>
-
-        </div>
-    </div>
-    <div id="question_list" v-if="quizCreated">
-        <h5>Questions (click to edit):</h5>
-        <ul>
-            <li v-for="(question, index) in questions" :key="question.id" @click="editQuestion(index)" id="question_in_list" >
-                <span style="cursor: pointer; margin-left: 5px;" @click.stop="deleteQuestion(index)">[X]</span>
-                {{ question.type }}: {{ index  + 1 }}. {{ question.questionText }}
-            </li>
-        </ul>
-    </div>
-    <div v-if="quizCreated">
-        <h5>Select Tags:</h5>
-        <select v-model="selectedTag" @change="addTagToQuiz">
-            <option v-for="tag in allTags" :key="tag" :value="tag">{{ tag }}</option>
-        </select>
-    </div>
-    <div v-if="quizCreated">
-        <h5>Current tags:</h5>
-        <ul>
-            <li v-for="tag in quizTags" :key="tag.tagId" @click="removeTag(tag)">
-                <span style="cursor: pointer; margin-left: 5px;" @click.stop="removeTag(tag)">[X]</span>
-                {{ tag.tagName }}
-            </li>
-        </ul>
-    </div>
-    <div v-if="quizCreated">
-        <h5 v-if="showSavedMessage">Quiz saved!</h5>
-        <button class="button" @click="updateQuiz">Save quiz</button>
-        <button class="button" @click="exitAndSave">Exit and save</button>
-        <button class="button" @click="resetWithConfirm">Exit without saving</button>
-    </div>
-</template>
 
 <style scoped>
 #title {

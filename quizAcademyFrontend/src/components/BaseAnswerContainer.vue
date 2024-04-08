@@ -1,3 +1,13 @@
+<template>
+  <div>
+    <img :src="base64Image" alt="" class="image" v-if="base64Image && !hasAnswered"/>
+    <h1 v-if="hasAnswered && isCorrect" class="correct">Correct answer!</h1>
+    <h1 v-if="hasAnswered && !isCorrect" class="wrong">Wrong answer!</h1>
+    <component :is="answerComponent" :question="question"  :hasAnswered="hasAnswered" @displayResults="displayResults" class="component"/>
+    <button v-if="hasAnswered" @click=(handleNext) class="nextQuestion">Next</button>
+  </div>
+</template>
+
 <script>
 import MultipleChoiceAnswers from '../components/questionComponents/MultipleChoiceAnswers.vue';
 import logo from "../assets/logo.png";
@@ -76,16 +86,6 @@ export default {
 }
 
 </script>
-
-<template>
-<div>
-    <img :src="base64Image" alt="" class="image" v-if="base64Image && !hasAnswered"/>
-    <h1 v-if="hasAnswered && isCorrect" class="correct">Correct answer!</h1>
-    <h1 v-if="hasAnswered && !isCorrect" class="wrong">Wrong answer!</h1>
-    <component :is="answerComponent" :question="question"  :hasAnswered="hasAnswered" @displayResults="displayResults" class="component"/>
-    <button v-if="hasAnswered" @click=(handleNext) class="nextQuestion">Next</button>
-</div>
-</template>
 
 <style scoped>
 component {
