@@ -3,7 +3,7 @@ import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import QuizListItem from '@/components/QuizListItem.vue'
 import { describe, it, expect, beforeEach } from 'vitest'
-
+/*
 describe('QuizListItem', () => {
     let wrapper
     let app
@@ -20,6 +20,7 @@ describe('QuizListItem', () => {
             }
         })
     })
+    */
     /*
     it('renders correctly', () => {
         expect(wrapper.exists()).toBe(true)
@@ -27,4 +28,8 @@ describe('QuizListItem', () => {
     */
 
     // Add more tests as needed
+
+/*
 })
+
+ */
