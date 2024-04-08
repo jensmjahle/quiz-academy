@@ -1,6 +1,5 @@
 package edu.ntnu.dto.questions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

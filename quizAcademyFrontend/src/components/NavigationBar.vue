@@ -209,20 +209,7 @@ nav {
 
 .arrow-icon {
   font-size: calc(1.2vw + 1.2vh);
-  margin-left: 0px;
-}
-
-.dropdownButton {
-  color: var(--fourth-color);
-  text-decoration: none;
-  text-align: center;
-  padding: 0;
-  margin: 0 10px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: border-color 0.3s;
-  height: 100%;
+  margin-left: 0;
 }
 
 .arrow-rotate {
@@ -324,43 +311,6 @@ nav {
   justify-self: center;
 }
 
-.router-button-search {
-  color: var(--fourth-color);
-  text-decoration: none;
-  text-align: center;
-  padding: 10px;
-  margin: 0 10px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: border-color 0.3s;
-  height: 100%;
-  font-size: calc(1.2vw + 1.2vh);
-}
-
-.router-button-search:hover {
-  color: var(--base-color);
-  border-color: transparent;
-}
-
-.router-button-mypage {
-  color: var(--fourth-color);
-  text-decoration: none;
-  text-align: center;
-  padding: 0;
-  margin: 0 10px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-  transition: border-color 0.3s;
-  font-size: calc(1.2vw + 1.2vh);
-}
-
-.router-button-mypage:hover {
-  color: var(--base-color);
-  border-color: transparent;
-}
-
 @media screen and (max-width: 450px) {
   nav {
     display: inline-grid;
@@ -371,9 +321,7 @@ nav {
     font-size: calc(2.2vw + 1.2vh);
   }
 
-  #categorySearch,
-  .router-button-search,
-  .router-button-mypage {
+  #categorySearch{
     padding: 10px;
     margin: 5px 0;
     width: 90%;

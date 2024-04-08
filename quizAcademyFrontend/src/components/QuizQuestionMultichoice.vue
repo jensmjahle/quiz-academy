@@ -313,10 +313,6 @@ const cancelPressed = () => {
     }
   }
 }
- .checkbox-label {
-   display: inline-block;
-   margin-right: 10px; /* Adjust spacing as needed */
- }
 
 #checkbox {
   vertical-align: middle; /* Align checkbox with label vertically */
