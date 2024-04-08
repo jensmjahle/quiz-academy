@@ -32,7 +32,7 @@
 import { usePlayQuizStore } from "../stores/playQuizStore.js";
 import router from "../router/index.js";
 import BaseAnswerContainer from "../components/BaseAnswerContainer.vue";
-import Summary from "../components/PlaythroughSummary.vue";
+import Summary from "../components/Summary.vue";
 export default {
     components: { Summary, BaseAnswerContainer },
     data() {

@@ -10,7 +10,7 @@
             @displayResults="displayResults"
             class="component"
         />
-        <button v-if="hasAnswered" @click="handleNext;" class="nextQuestion">Next</button>
+        <button v-if="hasAnswered" @click="handleNext" class="nextQuestion">Next</button>
     </div>
 </template>
 

@@ -29,6 +29,7 @@ public class SecurityConfig {
         .requestMatchers("/token/new",
                 "/quiz/create",
                 "/users/create",
+                "/quiz/update",
                 "/tag/all",
                 "/token/delete",
                 "/quiz/public/**",
